@@ -1,30 +1,21 @@
 {
   "author": "Evan Tahler <evantahler@gmail.com>",
-  "name": "actionHero",
-  "description": "actionHero is a minimalist, multi-node, transactional API framework written in javaScript",
-  "version": "0.1.6",
-  "homepage": "https://github.com/evantahler/actionHero",
+  "name": "ndoePhidgets",
+  "description": "a way for nodeJS to talk to a phidget interface kit",
+  "version": "0.1.0",
+  "homepage": "https://github.com/evantahler/ndoePhidgets",
   "repository": {
     "type": "git",
-    "url": "git://github.com/evantahler/actionHero.git"
+    "url": "git://github.com/evantahler/nodePhidgets.git"
   },
-  "main": "./api.js",
+  "main": "./phidgets.js",
   "engines": {
     "node": "0.6.x"
   },
   "dependencies": {
-    "async":"0.x.x", 
-    "mysql":"0.x.x", 
-    "sequelize":"1.x.x", 
-    "request":"2.x.x",
-    "validator":"0.x.x",
-    "formidable":"1.x.x",
-    "colors":"0.x.x"
+    "request":"2.x.x"
 	},
-  "devDependencies": {
-    "vows":"0.x.x"
-  },
   "scripts": {
-    "test": "./node_modules/.bin/vows ./spec/*"
+    "test": ""
   }
 }
