@@ -13,7 +13,6 @@
     "node": "0.6.x"
   },
   "dependencies": {
-    "request":"2.x.x"
 	},
   "scripts": {
     "test": ""

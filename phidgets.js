@@ -1,14 +1,20 @@
-var phidgets = {};
+// Phidgets for nodeJS
+// Evan Tahler 
+// https://github.com/evantahler/ndoePhidgets
+// 2012
+
+////////////////////////////////////////////////////////////////////////////
+// SETUP
+
+var net = require('net');
+var EventEmitter = require('events').EventEmitter;
+
+var phidgets = new EventEmitter;
 phidgets.data = {} // data array of current sensor values
 phidgets.data.inputs = {};
 phidgets.data.outputs = {};
 phidgets.data.sensors = {};
-
-////////////////////////////////////////////////////////////////////////////
-// REQUIRES
-phidgets.fs = require('fs');
-phidgets.net = require('net');
-phidgets.request = require('request');
+phidgets.ready = false;
 
 ////////////////////////////////////////////////////////////////////////////
 // DEFAULTS
@@ -16,13 +22,22 @@ phidgets.defaults = {
 	host: "127.0.0.1",
 	port: 5001,
 	version: "1.0.9",
+	password: null,
 	rawLog: false
 };
 
 ////////////////////////////////////////////////////////////////////////////
-// LOG (I will be overwtitten by a wrapper)
-phidgets.log = function(msg){
-	console.log(msg);
+// EVENTS (to be emitted)
+var emit_log = function(msg){
+	phidgets.emit('log', msg);
+};
+
+var emit_data = function(type, id, value){
+	phidgets.emit('data', type, id, value);
+};
+
+var emit_error = function(e){
+	phidgets.emit('error', e);
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -35,44 +50,52 @@ phidgets.connect = function(params, next){
 	if(params.rawLog == null){params.rawLog = phidgets.defaults.rawLog;}
 	phidgets.params = params;
 	
-	phidgets.log("Connecting:");
-	phidgets.log(params);
+	emit_log("Connecting:");
+	emit_log(params);
 	
-	phidgets.client = phidgets.net.createConnection(params.port, params.host, function(){
-		var conn = phidgets.client;
-		conn.setEncoding('utf8');
-		conn.setKeepAlive("enable", 10000)
-		conn.on('data', phidgets.handleData);
-		conn.on('end', phidgets.handleConnectionEnd);
-		conn.on('close', phidgets.handleConnectionEnd);
-		conn.on('error', phidgets.handleError);
+	/*
+	995 authenticate, version=1.0.9
+	report 8 report
+	set /PCK/Client/0.0.0.0/123/PhidgetInterfaceKit="Open" for session
+	listen /PSK/PhidgetInterfaceKit lid0
+	*/
+	
+	phidgets.client = net.createConnection(params.port, params.host, function(){
+		phidgets.client.setEncoding('utf8');
+		phidgets.client.setKeepAlive("enable", 10000)
+		phidgets.client.on('data', phidgets.handleData);
+		phidgets.client.on('end', phidgets.handleConnectionEnd);
+		phidgets.client.on('close', phidgets.handleConnectionEnd);
+		phidgets.client.on('error', function(e){ throw "Error with connection to Phidget Board"; });
 		
-		/*
-need nulls
-995 authenticate, version=1.0.9
-report 8 report
-set /PCK/Client/0.0.0.0/123/PhidgetInterfaceKit="Open" for session
-listen /PSK/PhidgetInterfaceKit lid0
-		*/
+		phidgets.client.write("995 authenticate, version="+params.version+"\r\n");
+		phidgets.client.write("report 8 report\r\n");
+		phidgets.client.write("set /PCK/Client/0.0.0.0/1/PhidgetInterfaceKit=\"Open\" for session\r\n");
+		phidgets.client.write("listen /PSK/PhidgetInterfaceKit lid0\r\n");
 		
-		conn.write("need nulls\r\n");
-		conn.write("995 authenticate, version="+params.version+"\r\n");
-		conn.write("report 8 report\r\n");
-		conn.write("set /PCK/Client/0.0.0.0/1/PhidgetInterfaceKit=\"Open\" for session\r\n");
-		conn.write("listen /PSK/PhidgetInterfaceKit lid0\r\n");
-		
-		next(conn);
+		phidgets.checkReady(next);
 	});	
+	
+	phidgets.client.on("error", function(e){
+		throw "Cannot connect to phidget board.  Check you params"
+	});
 };
 
-phidgets.connectionConfigure = function(){
-	// get the board's ID for use in setting values
-	// set the number of outputs to equal the number of inputs
-	// get the types of all the analog sensors
-}
+phidgets.checkReady = function(next){
+	if(phidgets.ready == false){
+		emit_log("Not ready yet...");
+		setTimeout(phidgets.checkReady, 1000, next);
+	}else{
+		emit_log("Connected to PhidgetBoard with ID #"+phidgets.data.boardID);
+		next(phidgets.data);
+	}
+};
 
 phidgets.quit = function(){
-	
+	phidgets.data = {};
+	phidgets.ready = false;
+	phidgets.client.write("quit\r\n");
+	emit_log("Disconnected");
 };
 
 ////////////////////////////////////////////////////////////////////////////
@@ -84,33 +107,71 @@ phidgets.handleData = function(data){
 			var line = lines[i];
 			line = line.replace(/\u0000/gi, "");
 			line = line.replace(/\u0001/gi, "");
-			if (phidgets.params.rawLog){ phidgets.log(line); }
+			if (phidgets.params.rawLog){ emit_log(line); }
 			var words = line.split(" ");
 			if(words[0] == "report" && words[3] == "pending,"){
 				var keys = words[5].split("/");
 				if(keys[5] == "Input"){
 					var thisValue = words[8].replace('"',""); 
-					phidgets.data.inputs[keys[6]] = thisValue;
+					phidgets.data.inputs[parseInt(keys[6])] = parseInt(thisValue);
+					emit_data("Input", parseInt(keys[6]), parseInt(thisValue));
 				} else if(keys[5] == "Sensor"){
 					var thisValue = words[8].replace('"',""); 
-					phidgets.data.sensors[keys[6]] = thisValue;
+					phidgets.data.sensors[parseInt(keys[6])] = parseInt(thisValue);
+					emit_data("Sensor", parseInt(keys[6]), parseInt(thisValue));
+				} else if(keys[5] == "Output"){
+					var thisValue = words[8].replace('"',""); 
+					phidgets.data.outputs[parseInt(keys[6])] = parseInt(thisValue);
+					emit_data("Output", parseInt(keys[6]), parseInt(thisValue));
+				} 
+				if (phidgets.data.boardID == null){
+					phidgets.data.boardID = parseInt(keys[4]);
 				}
+			}
+			if(phidgets.ready == false && line == "report 200-that's all for now"){
+				phidgets.ready = true;
 			}
 		}
 	}catch(e){}
 }
 
 phidgets.setOutput = function(output, value){
-	// set /PCK/PhidgetInterfaceKit/85030/Output/3="1"
+	if(value == true){ value = "1"; }
+	if(value == false){ value = "0"; }
+	output = parseInt(output);
+	value = parseInt(value);
+	if(value == "1" || value == "0"){
+		if(objLenght(phidgets.data.outputs) >= output){
+			var msg = 'set /PCK/PhidgetInterfaceKit/'+phidgets.data.boardID+'/Output/'+output+'="'+value+'"\r\n';
+			phidgets.client.write(msg);
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		return false
+	}
 }
 
-phidgets.handleConnectionEnd = function(data){
-	phidgets.log(data);
+phidgets.handleConnectionEnd = function(){
+	if(phidgets.ready == false){
+		emit_log("Connection to Phidget Board closed.");
+		delete phidgets.client;
+	}else{
+		throw "Connection to Phidget Board lost.";
+	}
 }
 
-phidgets.handleError = function(data){
-	phidgets.log(data);
-}
+////////////////////////////////////////////////////////////////////////////
+// LOCAL UTILS
+
+var objLenght = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
 
 ////////////////////////////////////////////////////////////////////////////
 // EXPORT
