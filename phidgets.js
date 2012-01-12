@@ -46,7 +46,7 @@ phidgets.connect = function(params, next){
 	if(params.rawLog == null){params.rawLog = phidgets.defaults.rawLog;}
 	phidgets.params = params;
 	
-	emit_log("Connecting:");
+	emit_log("Connecting...");
 	emit_log(params);
 	
 	phidgets.client = net.createConnection(params.port, params.host, function(){
@@ -159,7 +159,7 @@ phidgets.handleConnectionEnd = function(){
 	if(objLenght(phidgets.data) > 0){
 		phidgets.data = {};
 		if(phidgets.ready == false){
-			emit_log("Connection to Phidget Board closed.");
+			emit_log("Connection to Phidget Board closed");
 			delete phidgets.client;
 		}else{
 			throw "Connection to Phidget Board lost.";

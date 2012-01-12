@@ -1,9 +1,9 @@
 {
   "author": "Evan Tahler <evantahler@gmail.com>",
-  "name": "ndoePhidgets",
+  "name": "phidgets",
   "description": "a way for nodeJS to talk to a phidget interface kit",
   "version": "0.1.0",
-  "homepage": "https://github.com/evantahler/ndoePhidgets",
+  "homepage": "https://github.com/evantahler/nodePhidgets",
   "repository": {
     "type": "git",
     "url": "git://github.com/evantahler/nodePhidgets.git"
