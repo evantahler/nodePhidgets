@@ -12,7 +12,12 @@ phidgets.on("data", function(type, id, value){
 });
 phidgets.on("log", function(data){
 	console.log(" phidgets log >> "+data);
+	if(typeof data == "object"){ console.log(data); }
 });
+phidgets.on("error", function(e){
+	console.log(" phidgets error >> "+e);
+});
+
 
 ////////////////////////////////////////////////////////////////////////////
 // PARAMS TO CONNECT TO YOUR PHIDGET BOARD (defaults will be used if none provided)
@@ -44,6 +49,7 @@ function b(p){
 ////////////////////////////////////////////////////////////////////////////
 // DISCONNECT
 function c(){
-	phidgets.quit();
-	console.log("ALL DONE!");
+	phidgets.quit(function(){
+		console.log("ALL DONE!");
+	});
 }

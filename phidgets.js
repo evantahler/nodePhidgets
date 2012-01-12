@@ -36,10 +36,6 @@ var emit_data = function(type, id, value){
 	phidgets.emit('data', type, id, value);
 };
 
-var emit_error = function(e){
-	phidgets.emit('error', e);
-};
-
 ////////////////////////////////////////////////////////////////////////////
 // CONNECTING AND DISCONNECTING
 phidgets.connect = function(params, next){
@@ -52,13 +48,6 @@ phidgets.connect = function(params, next){
 	
 	emit_log("Connecting:");
 	emit_log(params);
-	
-	/*
-	995 authenticate, version=1.0.9
-	report 8 report
-	set /PCK/Client/0.0.0.0/123/PhidgetInterfaceKit="Open" for session
-	listen /PSK/PhidgetInterfaceKit lid0
-	*/
 	
 	phidgets.client = net.createConnection(params.port, params.host, function(){
 		phidgets.client.setEncoding('utf8');
@@ -73,7 +62,9 @@ phidgets.connect = function(params, next){
 		phidgets.client.write("set /PCK/Client/0.0.0.0/1/PhidgetInterfaceKit=\"Open\" for session\r\n");
 		phidgets.client.write("listen /PSK/PhidgetInterfaceKit lid0\r\n");
 		
-		phidgets.checkReady(next);
+		if(typeof next == "function"){
+			phidgets.checkReady(next);
+		}
 	});	
 	
 	phidgets.client.on("error", function(e){
@@ -87,16 +78,27 @@ phidgets.checkReady = function(next){
 		setTimeout(phidgets.checkReady, 1000, next);
 	}else{
 		emit_log("Connected to PhidgetBoard with ID #"+phidgets.data.boardID);
-		next(phidgets.data);
+		if(typeof next == "function"){
+			next(phidgets.data);
+		}
 	}
 };
 
-phidgets.quit = function(){
-	phidgets.data = {};
+phidgets.quit = function(next){
 	phidgets.ready = false;
 	phidgets.client.write("quit\r\n");
-	emit_log("Disconnected");
+	if(typeof next == "function"){ 
+		phidgets.checkDisconnect(next); 
+	}
 };
+
+phidgets.checkDisconnect = function(next){
+	if(objLenght(phidgets.data) > 0){
+		setTimeout(phidgets.checkDisconnect, 1000, next);
+	}else{
+		if(typeof next == "function"){ next(); }
+	}
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // EVENTS
@@ -154,11 +156,14 @@ phidgets.setOutput = function(output, value){
 }
 
 phidgets.handleConnectionEnd = function(){
-	if(phidgets.ready == false){
-		emit_log("Connection to Phidget Board closed.");
-		delete phidgets.client;
-	}else{
-		throw "Connection to Phidget Board lost.";
+	if(objLenght(phidgets.data) > 0){
+		phidgets.data = {};
+		if(phidgets.ready == false){
+			emit_log("Connection to Phidget Board closed.");
+			delete phidgets.client;
+		}else{
+			throw "Connection to Phidget Board lost.";
+		}
 	}
 }
 
