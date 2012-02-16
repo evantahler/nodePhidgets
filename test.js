@@ -12,7 +12,6 @@ phidgets.on("data", function(type, id, value){
 });
 phidgets.on("log", function(data){
 	console.log(" phidgets log >> "+data);
-	if(typeof data == "object"){ console.log(data); }
 });
 phidgets.on("error", function(e){
 	console.log(" phidgets error >> "+e);

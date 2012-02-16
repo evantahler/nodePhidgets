@@ -148,6 +148,5 @@ This example should produce output like this:
 
 ## ToDo:
 * Support for phidget authentication
-* Support for multi-line streaming which sometimes looses line breaks (some lines of data are currently lost)
 * compile nodeJS on the phidgetsbc board 
 

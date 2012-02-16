@@ -15,6 +15,7 @@ phidgets.data.inputs = {};
 phidgets.data.outputs = {};
 phidgets.data.sensors = {};
 phidgets.ready = false;
+phidgets.socketDataString = "";
 
 ////////////////////////////////////////////////////////////////////////////
 // DEFAULTS
@@ -47,7 +48,10 @@ phidgets.connect = function(params, next){
 	phidgets.params = params;
 	
 	emit_log("Connecting...");
-	emit_log(params);
+	emit_log("Parms:");
+	for (var i in params){
+		emit_log("  "+i+": "+params[i]);
+	}
 	
 	phidgets.client = net.createConnection(params.port, params.host, function(){
 		phidgets.client.setEncoding('utf8');
@@ -98,15 +102,17 @@ phidgets.checkDisconnect = function(next){
 	}else{
 		if(typeof next == "function"){ next(); }
 	}
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////
 // EVENTS
-phidgets.handleData = function(data){
+phidgets.handleData = function(chunk){
 	try{
-		var lines = data.split("\n");
-		for (i in lines){
-			var line = lines[i];
+		var index, line;
+		phidgets.socketDataString += chunk.toString('utf8');
+		while((index = phidgets.socketDataString.indexOf('\n')) > -1) {
+			var line = phidgets.socketDataString.slice(0, index);
+			phidgets.socketDataString = phidgets.socketDataString.slice(index + 1);
 			line = line.replace(/\u0000/gi, "");
 			line = line.replace(/\u0001/gi, "");
 			if (phidgets.params.rawLog){ emit_log(line); }
@@ -134,8 +140,10 @@ phidgets.handleData = function(data){
 				phidgets.ready = true;
 			}
 		}
-	}catch(e){}
-}
+	}catch(e){
+		console.log(e);
+	}
+};
 
 phidgets.setOutput = function(output, value){
 	if(value == true){ value = "1"; }
@@ -153,7 +161,7 @@ phidgets.setOutput = function(output, value){
 	}else{
 		return false
 	}
-}
+};
 
 phidgets.handleConnectionEnd = function(){
 	if(objLenght(phidgets.data) > 0){
@@ -165,7 +173,7 @@ phidgets.handleConnectionEnd = function(){
 			throw "Connection to Phidget Board lost.";
 		}
 	}
-}
+};
 
 ////////////////////////////////////////////////////////////////////////////
 // LOCAL UTILS
