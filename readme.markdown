@@ -17,6 +17,9 @@ OR
 
 * git clone git://github.com/evantahler/nodePhidgets.git
 
+## Running node.js on a phidget board
+Phidget makes a line of phidget boards which themselves are small ARM Debian comptuers.  It it possble to run node.js on them, and use this package locally.  Here's a [gist](https://gist.github.com/1574158) with the steps and a [Blog Post](http://blog.evantahler.com/node-js-running-on-a-phidgets-sbc2-board) about hot to get this up and running.
+
 ## Interaction
 
 The Phidgets package exposes a few different ways of interacting with your Phidget board:
@@ -148,5 +151,3 @@ This example should produce output like this:
 
 ## ToDo:
 * Support for phidget authentication
-* compile nodeJS on the phidgetsbc board 
-
