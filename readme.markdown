@@ -7,9 +7,6 @@ _A node.js library for interacting with a Phidget board_
 ## Phidget Server
 This project assumes you have the Phidget server up and running.  For most "regular" (USB) Phidget boards, that assumes that the computer you have connected to the Phidget board via USB has the server up and running.  For stand-alone Phidget micro-computers (phidgetsbc), this assumes you have configured the server via the web portal.  You will be connecting to the Phidget server via TCP, so be sure you can access the server from the machine running this project.
 
-__A note on the phidgetsbc micro computer:__
-If you ave trying to run node.js ON your phidgedSBC, [please take a look at my instructions for doing so](https://gist.github.com/1574158).
-
 ## Installation
 * npm install phidgets
 
