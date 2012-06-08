@@ -108,9 +108,9 @@ phidget.update = function(buffer){
         
     phidget.socketDataString += buffer.toString('utf8');
     
-    /*
+    
     console.log(phidget.socketDataString)
-    */
+    
    
     if(phidget.socketDataString.indexOf('\n')<0)
         return;
@@ -131,10 +131,11 @@ phidget.update = function(buffer){
             continue;
         }
         chunk=chunk.split(' latest value ');
+        chunk[0]=chunk[0].split('/');
         chunk[1]=chunk[1].split('"');
         chunk[2]=chunk[1][1];
         chunk[3]=chunk[1][2].replace(/[\s()]/ig,'');
-        chunk[0]=chunk[0].split('/');
+        chunk[4]=chunk[0][4];
         chunk[1]=chunk[0].pop();
         chunk[0]=chunk[0].pop();
         
@@ -145,7 +146,7 @@ phidget.update = function(buffer){
         */
         
         if(!phidget.data.boardID)
-            phidget.data.boardID=chunk[0];
+            phidget.data.boardID=chunk[4];
         
         if(phidget.data.boardID==chunk[0])
             chunk[0]='board';
@@ -170,6 +171,7 @@ phidget.update = function(buffer){
 };
 
 phidget.set = function(params){
+        var packet='';
         if(
                 !params.type ||
                 !params.key ||
@@ -209,6 +211,7 @@ phidget.set = function(params){
                 break;
         }
         
+        console.log(packet);
         phidget.data[params.type][params.key]=params.value;
         phidget.client.write(packet);
 };

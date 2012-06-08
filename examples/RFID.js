@@ -1,4 +1,4 @@
-var phidget = require('phidgetAPI').phidget;
+var phidget = require('../phidgetAPI').phidget;
 
 phidget.on(
     "log", 
@@ -19,7 +19,6 @@ phidget.on(
     function(data){
         console.log('changed');
         console.log('data ',data);
-        console.log('new phidgets data ',phidget.data);
         
         switch(data.key){
             case 'TagState' :
@@ -51,7 +50,6 @@ phidget.on(
     function(data){
         console.log('added');
         console.log('data ',data);
-        console.log('new phidgets data ',phidget.data);
     }
 );
 
