@@ -1,20 +1,33 @@
 {
-  "author": "Evan Tahler <evantahler@gmail.com>",
-  "name": "phidgets",
-  "description": "a way for nodeJS to talk to a phidget interface kit",
-  "version": "0.2.0",
-  "homepage": "https://github.com/evantahler/nodePhidgets",
+  "author": {
+    "name": "Brandon Miller",
+    "email": "brandon@1942design.com"
+  },
+  "name": "phidgetAPI",
+  "description": "a nodeJS - phidget interface API",
+  "version": "0.0.1",
+  "homepage": "https://diginow.it",
   "repository": {
     "type": "git",
-    "url": "git://github.com/evantahler/nodePhidgets.git"
+    "url": "git://github.com/RIAEvangelist/nodeAPI.git"
   },
-  "main": "./phidgets.js",
+  "main": "./phidgetAPI.js",
   "engines": {
     "node": "0.6.x"
   },
-  "dependencies": {
-	},
+  "dependencies": {},
   "scripts": {
     "test": "node test.js"
-  }
+  },
+  "_id": "phidgetAPI@0.0.1",
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "_engineSupported": true,
+  "_npmVersion": "1.1.21",
+  "_nodeVersion": "v0.6.18",
+  "_defaultsLoaded": true,
+  "dist": {
+    "shasum": ""
+  },
+  "_from": "phidgetAPI"
 }
