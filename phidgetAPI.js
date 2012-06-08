@@ -109,7 +109,7 @@ phidget.update = function(buffer){
     phidget.socketDataString += buffer.toString('utf8');
     
     
-    console.log(phidget.socketDataString)
+    //console.log(phidget.socketDataString)
     
    
     if(phidget.socketDataString.indexOf('\n')<0)
