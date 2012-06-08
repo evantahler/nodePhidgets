@@ -58,6 +58,14 @@ phidget.on(
     function(){
         console.log('phidget ready');
         console.log(phidget.data);
+        
+        phidget.set(
+            {
+                type:'board',
+                key:'LEDOn',
+                value:'1'
+            }
+        );
     }
 );
 

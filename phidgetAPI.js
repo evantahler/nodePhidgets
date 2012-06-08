@@ -211,7 +211,7 @@ phidget.set = function(params){
                 break;
         }
         
-        console.log(packet);
+        //console.log(packet);
         phidget.data[params.type][params.key]=params.value;
         phidget.client.write(packet);
 };
@@ -224,9 +224,13 @@ phidget.quit = function(){
 
 phidget.disconnected = function(){
     phidget.ready=false;
-    phidgit.emit(
-        'disconnected'
-    );
+    try{
+        phidgit.emit(
+            'disconnected'
+        );
+    }catch(e){
+        console.log(e)
+    }
     delete phidget.client;
 };
 
