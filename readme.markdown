@@ -1,5 +1,5 @@
 # nodePhidgetsAPI
-_A node.js library for interacting with any type of Phidget_
+_A nodeJS API for interacting with any type of Phidget_
 
 ## ABOUT PHIDGETS AND NODE
 [Phidget boards](http://http://www.phidgets.com/) are a great prototyping tool which can handle digital inputs and outputs, along with a great array of analog sensors (RFID, temperature, etc).  [nodeJS](http://nodejs.org) is a fantastic networking library which makes it easy to create fast networked applications.  Currently there is no API supported by Phidgets for nodeJS, this project aims to become the default library for Phidget - nodeJS integration.
