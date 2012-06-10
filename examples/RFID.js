@@ -1,20 +1,22 @@
 var phidget = require('../phidgetAPI').phidget;
 
-phidget.on(
+var RFID=new phidget();
+
+RFID.on(
     "log", 
     function(data){
         console.log('log ',data);
     }
 );
 
-phidget.on(
+RFID.on(
     "error", 
     function(data){
         console.log('error ',data);
     }
 );
 
-phidget.on(
+RFID.on(
     'changed', 
     function(data){
         console.log('changed');
@@ -23,7 +25,7 @@ phidget.on(
         switch(data.key){
             case 'TagState' :
                 if(data.value=='1'){
-                    phidget.set(
+                    RFID.set(
                         {
                             type:'board',
                             key:'LEDOn',
@@ -33,7 +35,7 @@ phidget.on(
                     break;
                 }
                 
-                phidget.set(
+                RFID.set(
                     {
                         type:'board',
                         key:'LEDOn',
@@ -45,7 +47,7 @@ phidget.on(
     }
 );
     
-phidget.on(
+RFID.on(
     'added', 
     function(data){
         console.log('added');
@@ -53,13 +55,13 @@ phidget.on(
     }
 );
 
-phidget.on(
+RFID.on(
     'phidgetReady',
     function(){
         console.log('phidget ready');
-        console.log(phidget.data);
+        console.log(RFID.data);
         
-        phidget.set(
+        RFID.set(
             {
                 type:'board',
                 key:'LEDOn',
@@ -73,7 +75,7 @@ phidget.on(
 /*
  * Connect to phidget 
  */
-phidget.connect(
+RFID.connect(
     {
         type:'PhidgetRFID'
     }

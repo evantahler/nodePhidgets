@@ -1,27 +1,29 @@
 var phidget = require('../phidgetAPI').phidget;
 
-phidget.on(
+var IK=new phidget();
+
+IK.on(
     "log", 
     function(data){
         console.log('log ',data);
     }
 );
 
-phidget.on(
+IK.on(
     "error", 
     function(data){
         console.log('error ',data);
     }
 );
 
-phidget.on(
+IK.on(
     'changed', 
     function(data){
         console.log('changed');
         console.log('data ',data);
         
         if(data.type=='Sensor'){
-            phidget.set(
+            IK.set(
                 {
                     type:'Output',
                     key:'0',
@@ -30,7 +32,7 @@ phidget.on(
             );
             setTimeout(
                 function(){
-                    phidget.set(
+                    IK.set(
                         {
                             type:'Output',
                             key:'0',
@@ -45,7 +47,7 @@ phidget.on(
     }
 );
     
-phidget.on(
+IK.on(
     'added', 
     function(data){
         console.log('added');
@@ -53,13 +55,13 @@ phidget.on(
     }
 );
 
-phidget.on(
+IK.on(
     'phidgetReady',
     function(){
-        console.log('phidget ready');
-        console.log(phidget.data);
+        console.log('InterfaceKit (IK) ready');
+        console.log(IK.data);
         
-        phidget.set(
+        IK.set(
                 {
                     type:'Output',
                     key:'0',
@@ -73,7 +75,7 @@ phidget.on(
 /*
  * Connect to phidget 
  */
-phidget.connect(
+IK.connect(
     {
         type:'PhidgetInterfaceKit'
     }
