@@ -1,7 +1,5 @@
 var phidget = require('../phidgetAPI').phidget;
 
-console.log(phidget);
-
 var RFID=new phidget();
 
 var IK888=new phidget();

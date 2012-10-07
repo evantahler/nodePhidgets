@@ -19,12 +19,12 @@ function phidgetConnection(){
     phidget.socketDataString = '';
 
     phidget.defaults = {
-        host: 'localhost',
-        port: 5001,
-        version: '1.0.9',
+        host    : 'localhost',
+        port    : 5001,
+        version : '1.0.9',
         password: null,
-        rawLog: false,
-        type:'PhidgetInterfaceKit'
+        rawLog  : false,
+        type    : 'PhidgetManager'
     };
 
     phidget.ready = false;
@@ -82,13 +82,21 @@ function phidgetConnection(){
                     phidget.params.type+
                     '="Open" for session\r\n'
                 );
-
+                
+                if(phidget.params.type=='PhidgetManager'){
+                    phidget.client.write(
+                        'listen /PSK/List/ lid0\r\n'
+                    );
+                    
+                    return;
+                }
+                
                 phidget.client.write(
                     'listen /PSK/'+
                     phidget.params.type+
                     ' lid0\r\n'
                 );
-
+                
             }
         );	
 
@@ -110,8 +118,12 @@ function phidgetConnection(){
 
         phidget.socketDataString += buffer.toString('utf8');
 
-
-        //console.log(phidget.socketDataString)
+        
+        if(phidget.params.rawLog)
+                phidget.emit(
+                    'log',
+                    phidget.socketDataString
+                );
 
 
         if(phidget.socketDataString.indexOf('\n')<0)
@@ -163,6 +175,23 @@ function phidgetConnection(){
                 key:chunk[1],
                 value:chunk[2]
             }
+            
+            if(phidget.params.type=='PhidgetManager'){
+                var managerData=chunk[2].split(' ');
+                e={
+                    attached    : (managerData[0]=='Attached'),
+                    id          : managerData[2].split('=')[1],
+                    label       : managerData[3].split('=')[1],
+                    serial      : chunk[1],
+                    type        : chunk[0]
+                }
+                phidget.emit(
+                    managerData[0].toLowerCase(),
+                    e
+                ); 
+                phidget.data[chunk[0]][chunk[1]]=e;
+            }
+            
             e[chunk[1]]=chunk[2];
 
             phidget.emit(
@@ -213,7 +242,12 @@ function phidgetConnection(){
                     break;
             }
 
-            //console.log(packet);
+            if(phidget.params.rawLog)
+                phidget.emit(
+                    'log',
+                    packet
+                );
+            
             phidget.data[params.type][params.key]=params.value;
             phidget.client.write(packet);
     };
@@ -227,11 +261,15 @@ function phidgetConnection(){
     phidget.disconnected = function(){
         phidget.ready=false;
         try{
-            phidgit.emit(
+            phidget.emit(
                 'disconnected'
             );
         }catch(e){
-            console.log(e)
+            if(phidget.params.rawLog)
+                phidget.emit(
+                    'log',
+                    e
+                );
         }
         delete phidget.client;
     };

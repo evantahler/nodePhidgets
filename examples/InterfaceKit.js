@@ -46,14 +46,6 @@ IK.on(
         
     }
 );
-    
-IK.on(
-    'added', 
-    function(data){
-        console.log('added');
-        console.log('data ',data);
-    }
-);
 
 IK.on(
     'phidgetReady',
@@ -80,3 +72,14 @@ IK.connect(
         type:'PhidgetInterfaceKit'
     }
 );
+    
+/*
+ * an example of how to see the data being transferred to and from the phidget
+ * 
+ * IK.connect(
+ *      {
+ *          rawLog:true
+ *      }
+ * );
+ * 
+ */

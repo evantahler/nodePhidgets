@@ -80,3 +80,14 @@ RFID.connect(
         type:'PhidgetRFID'
     }
 );
+    
+/*
+ * an example of how to see the data being transferred to and from the phidget
+ * 
+ * RFID.connect(
+ *      {
+ *          rawLog:true
+ *      }
+ * );
+ * 
+ */
