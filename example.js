@@ -1,4 +1,6 @@
-var phidget = require('./phidgetAPI').phidget;
+var phidgetAPI = require('./phidgetAPI').phidget;
+
+var phidget=new phidgetAPI();
 
 phidget.on(
     "log", 
