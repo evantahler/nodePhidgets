@@ -78,6 +78,6 @@ var update=function(data){
 */
 phidget.connect(
     {
-        type:'PhidgetInterfaceKit'
+        type:'PhidgetInterfaceKit' // other example types are 'PhidgetRFID' or 'PhidgetGPS' etc.
     }
 );
