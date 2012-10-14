@@ -8,9 +8,10 @@ _A nodeJS API for interacting with any type of Phidget_
 This project assumes you have the Phidget server up and running.  For most "regular" (USB) Phidget boards, that assumes that the computer you have connected to the Phidget board via USB has the webservice up and running.  For stand-alone Phidget micro-computers (phidgetsbc), this assumes you have configured the server via the web portal.  You will be connecting to the Phidget server via TCP, so be sure you can access the server from the machine running this project.
 
 ## Installation
-* npm will be created when stable
+#NPM
+* npm install phidgetapi
 
-OR
+#GIT
 
 * git clone git://github.com/RIAEvangelist/nodePhidgetsAPI.git
 
