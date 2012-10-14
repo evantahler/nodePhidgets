@@ -1,6 +1,6 @@
 {
   "author": "Brandon Nozaki Miller <brandon@1942design.com>",
-  "name": "phidgetAPI",
+  "name": "phidgetapi",
   "description": "a nodeJS - phidget interface API",
   "version": "0.1.0",
   "homepage": "https://www.diginow.it",
