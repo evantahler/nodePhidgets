@@ -1,4 +1,4 @@
-# nodePhidgetsAPI
+# nodejs Phidgets API
 _A nodeJS API for interacting with any type of Phidget_
 
 [![Endorse Me](http://api.coderwall.com/riaevangelist/endorsecount.png)](http://coderwall.com/riaevangelist)
