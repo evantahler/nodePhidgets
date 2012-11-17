@@ -145,6 +145,10 @@ function phidgetConnection(){
                 continue;
             }
             chunk=chunk.split(' latest value ');
+            if(!chunk[1]){
+                phidget.socketDataString=phidget.socketDataString+phidget.socketDataString;
+                continue;
+            }
             chunk[0]=chunk[0].split('/');
             chunk[1]=chunk[1].split('"');
             chunk[2]=chunk[1][1];
