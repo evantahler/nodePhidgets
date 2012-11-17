@@ -29,5 +29,8 @@
     "phidget",
     "phidgets"
   ],
-  "license": "BSD"
+  "license": "BSD",
+  "publishConfig":{
+      "tag":"latest"
+  }
 }
