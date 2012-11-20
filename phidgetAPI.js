@@ -4,9 +4,6 @@
  * 
  * June 2012
  * 
- * inspired by Evan Tahler's 
- * https://github.com/evantahler/nodephidget
- * commit # 59d4424dea4fb4eeaea10591b6817c07a09d8726
  */
 
 var net = require('net');
@@ -152,6 +149,8 @@ function phidgetConnection(){
             chunk[0]=chunk[0].split('/');
             chunk[1]=chunk[1].split('"');
             chunk[2]=chunk[1][1];
+            if(!chunk[1][2])
+                chunk[1][2]='undefinedEvent';
             chunk[3]=chunk[1][2].replace(/[\s()]/ig,'');
             chunk[4]=chunk[0][4];
             chunk[1]=chunk[0].pop();
@@ -252,19 +251,8 @@ function phidgetConnection(){
                     packet
                 );
             
-            if(phidget.data[params.type]){
-                phidget.data[params.type][params.key]=params.value;
-                phidget.client.write(packet);
-                return;
-            }
-            
-            phidget.emit(
-                'error',
-                {
-                    message : 'phidget.data.'+params.type+' not available.',
-                    type    : params.type
-                }
-            );
+            phidget.data[params.type][params.key]=params.value;
+            phidget.client.write(packet);
     };
 
     phidget.quit = function(){
