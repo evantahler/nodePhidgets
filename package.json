@@ -10,7 +10,7 @@
   },
   "main": "./phidgetAPI.js",
   "engines": {
-    "node": "0.6.x"
+    "node": "*"
   },
   "dependencies": {},
   "scripts": {},
@@ -18,7 +18,7 @@
   "optionalDependencies": {},
   "_engineSupported": true,
   "_npmVersion": "1.1.4",
-  "_nodeVersion": "v0.6.12",
+  "_nodeVersion": "*",
   "_defaultsLoaded": true,
   "dist": {},
   "_from": "phidgetAPI",
