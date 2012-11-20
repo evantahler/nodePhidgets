@@ -30,7 +30,7 @@
     "phidgets"
   ],
   "license": "BSD",
-  "publishConfig":{
-      "tag":"latest"
+  "publishConfig": {
+    "tag": "latest"
   }
 }
