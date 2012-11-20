@@ -251,6 +251,20 @@ function phidgetConnection(){
                     packet
                 );
             
+            if(phidget.data[params.type]){
+                phidget.data[params.type][params.key]=params.value;
+                phidget.client.write(packet);
+                return;
+            }
+            
+            phidget.emit(
+                'error',
+                {
+                    message : 'phidget.data.'+params.type+' not available.',
+                    type    : params.type
+                }
+            );
+
             phidget.data[params.type][params.key]=params.value;
             phidget.client.write(packet);
     };
