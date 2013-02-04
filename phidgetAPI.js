@@ -18,7 +18,7 @@ function phidgetConnection(){
     phidget.defaults = {
         host    : 'localhost',
         port    : 5001,
-        version : '1.0.9',
+        version : '1.0.10',//older phidgetwebservice21 builds may require 1.0.9
         password: null,
         rawLog  : false,
         type    : 'PhidgetManager'
