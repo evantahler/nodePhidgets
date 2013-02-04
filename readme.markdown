@@ -53,10 +53,10 @@ __phidgets.quit()__ This method requests a disconnect from the phidget board.  T
 	{
 		host    : 'localhost',
 		port    : 5001,
-		version : '1.0.9',
+		version : '1.0.10', //older phidgetwebservice installs may require 1.0.9
 		password: null,
-        type    : 'PhidgetManager',
-        rawLog  : false
+        	type    : 'PhidgetManager',
+        	rawLog  : false
 	}
 
 __Note on `version`__: version in this case is the version of the phidget server and associated API.  You should check your phidget server to learn the version in use.  The good news is that the APIs we are using here have not changed for the past 3 years, and appear to be unlikely to do so in the future.  If you run into errors with newer versions, let me know.
