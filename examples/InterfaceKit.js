@@ -21,7 +21,7 @@ IK.on(
     function(data){
         console.log('changed');
         console.log('data ',data);
-        
+        /*
         if(data.type=='Sensor'){
             IK.set(
                 {
@@ -43,7 +43,7 @@ IK.on(
                 200
             );
         }
-        
+        */
     }
 );
 
@@ -53,13 +53,15 @@ IK.on(
         console.log('InterfaceKit (IK) ready');
         console.log(IK.data);
         
+        /*
         IK.set(
                 {
                     type:'Output',
                     key:'0',
                     value:'1'
                 }
-            );
+        );
+        */
     }
 );
 
