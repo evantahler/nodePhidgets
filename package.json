@@ -2,19 +2,16 @@
   "author": "Evan Tahler <evantahler@gmail.com>",
   "name": "phidgets",
   "description": "a way for nodeJS to talk to a phidget interface kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/evantahler/nodePhidgets",
   "repository": {
     "type": "git",
     "url": "git://github.com/evantahler/nodePhidgets.git"
   },
-  "main": "./phidgets.js",
+  "main": "./lib/phidgets.js",
   "engines": {
-    "node": "0.6.x"
+    "node": ">0.6.x"
   },
   "dependencies": {
 	},
-  "scripts": {
-    "test": "node test.js"
-  }
 }
