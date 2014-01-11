@@ -9,7 +9,9 @@ This project assumes you have the Phidget server up and running.  For most "regu
 
 ## Installation
 #NPM
-* npm install phidgetapi
+* npm install phidgetapi  
+![alt phidgetapi npm downloads](https://nodei.co/npm-dl/phidgetapi.png "number of times the phidget api has been downloaded from npm")
+
 
 #GIT
 
