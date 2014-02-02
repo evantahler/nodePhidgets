@@ -4,8 +4,10 @@ _A node.js library for interacting with a Phidget board_
 ## WHAT?!
 [Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle digital inputs and outputs, along with a great array of analog sensors (RFID, temperature, etc).  [node.js](http://nodejs.org) is a fantastic networking library which makes it easy to create fast networked applications.  This project aims to make it simple to interact with them both.  Synergy!
 
-## Phidget Server
+## Phidget Web Service
 This project assumes you have the Phidget server up and running.  For most "regular" (USB) Phidget boards, that assumes that the computer you have connected to the Phidget board via USB has the server up and running.  For stand-alone Phidget micro-computers (phidgetsbc), this assumes you have configured the server via the web portal.  You will be connecting to the Phidget server via TCP, so be sure you can access the server from the machine running this project.
+
+This package can interact with multiple phidget boards connected to a single phidgetWebService
 
 ## Installation
 `npm install phidgets`
@@ -28,14 +30,15 @@ var options = {
 var phidgets = new phidgetsPrototype(options);
 
 // events
-phidgets.on('state',  function(state){  console.log("[state] " + state);   });
-phidgets.on('error',  function(error){  console.log("[error] " + error);   });
-phidgets.on('input',  function(id, value){  console.log("[input] " + id + " @ " + value);   });
-phidgets.on('sensor', function(id, value){ console.log("[sensor] " + id + " @ " + value); });
-phidgets.on('output', function(id, value){ console.log("[output] " + id + " @ " + value); });
+phidgets.on('state',  function(state){              console.log("[state] " + state);   });
+phidgets.on('error',  function(error){              console.log("[error] " + error);   });
+phidgets.on('input',  function(boardId, id, value){ console.log("[" + boardId + "][input] " + id + " @ " + value);  });
+phidgets.on('sensor', function(boardId, id, value){ console.log("[" + boardId + "][sensor] " + id + " @ " + value); });
+phidgets.on('output', function(boardId, id, value){ console.log("[" + boardId + "][output] " + id + " @ " + value); });
 
 phidgets.connect(function(){
-  console.log("Board ID: " + phidgets.id);
+  console.log('connected to PhidgetBoards:');
+  console.log(phidgets.ids);
 })
 ```
 
@@ -44,19 +47,24 @@ phidgets.connect(function(){
 You can also read the state of your board from `phidget.data` which will be an object like below:
 
 ```javascript
-  { inputs: { '0': 0, '1': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
-    outputs: { '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
-    sensors: { '0': 371, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 259 },
+  {
+    1234:
+    { inputs: { '0': 0, '1': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
+      outputs: { '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
+      sensors: { '0': 371, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 259 },
+    }
   }
 ```
 
-The number of inputs, sensors, and outputs will vary depending on your phidget board.  Please DO NOT set the output values via this object.
+The number of inputs, sensors, and outputs will vary depending on your phidget board.  DO NOT set the output values via this object, as it won't work.
 
 ### Methods
 
 __phidgets.connect()__  
 
-__phidgets.setOutput(id, value)__  This method is used to set the digital outputs of the phidget board.  `id` is a number from 0 to n, and value is `true` for on, and `false` for off.  There will be some lag (~0.5 seconds) when sending the set command to seeing the change reflected via the server and associated node event.  This is normal.  Keep this in mind, and try not to send `set` commands too fast.
+__phidgets.setOutput(boardId, id, value)__  This method is used to set the digital outputs of the phidget board.  `id` is a number from 0 to n, and value is `true` for on, and `false` for off.  There will be some lag (~0.5 seconds) when sending the set command to seeing the change reflected via the server and associated node event.  This is normal.  Keep this in mind, and try not to send `set` commands too fast.
+
+If your phidgetWebService is connected to more than 1 board, you will need to provide a boardId.  Otherwise, you can send `null`, and we will look up the boardId for you.
 
 __phidgets.quit()__ 
 

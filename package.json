@@ -2,7 +2,7 @@
   "author": "Evan Tahler <evantahler@gmail.com>",
   "name": "phidgets",
   "description": "a library for nodeJS to talk to a phidget interface kit",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "keywords": ["phidgets", "phidgetsbc", "socket", "interface", "kit"],
   "homepage": "https://github.com/evantahler/nodePhidgets",
   "repository": {
