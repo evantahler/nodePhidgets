@@ -25,22 +25,22 @@ The Phidgets package exposes a few different ways of interacting with your Phidg
 
 ```javascript
 
-var phidgetsPrototype = require('phidgets');
+var phidgets = require('phidgets');
 var options = {
   host: "phidgetsbc.local"
-}
-var phidgets = new phidgetsPrototype(options);
+};
+var phidget = new phidgets.Phidget(options);
 
 // events
-phidgets.on('state',  function(state){              console.log("[state] " + state);   });
-phidgets.on('error',  function(error){              console.log("[error] " + error);   });
-phidgets.on('input',  function(boardId, id, value){ console.log("[" + boardId + "][input] " + id + " @ " + value);  });
-phidgets.on('sensor', function(boardId, id, value){ console.log("[" + boardId + "][sensor] " + id + " @ " + value); });
-phidgets.on('output', function(boardId, id, value){ console.log("[" + boardId + "][output] " + id + " @ " + value); });
+phidget.on('state',  function(state){              console.log("[state] " + state);   });
+phidget.on('error',  function(error){              console.log("[error] " + error);   });
+phidget.on('input',  function(boardId, id, value){ console.log("[" + boardId + "][input] " + id + " @ " + value);  });
+phidget.on('sensor', function(boardId, id, value){ console.log("[" + boardId + "][sensor] " + id + " @ " + value); });
+phidget.on('output', function(boardId, id, value){ console.log("[" + boardId + "][output] " + id + " @ " + value); });
 
-phidgets.connect(function(){
-  console.log('connected to PhidgetBoards:');
-  console.log(phidgets.ids);
+phidget.connect(function(){
+  console.log('connected to PhidgetBoard:');
+  console.log(phidget.ids);
 })
 ```
 
@@ -62,16 +62,16 @@ The number of inputs, sensors, and outputs will vary depending on your phidget b
 
 ### Methods
 
-__phidgets.connect()__  
+__phidget.connect()__
 
-__phidgets.setOutput(boardId, id, value)__  This method is used to set the digital outputs of the phidget board.  `id` is a number from 0 to n, and value is `true` for on, and `false` for off.  There will be some lag (~0.5 seconds) when sending the set command to seeing the change reflected via the server and associated node event.  This is normal.  Keep this in mind, and try not to send `set` commands too fast.
+__phidget.setOutput(boardId, id, value)__  This method is used to set the digital outputs of the phidget board.  `id` is a number from 0 to n, and value is `true` for on, and `false` for off.  There will be some lag (~0.5 seconds) when sending the set command to seeing the change reflected via the server and associated node event.  This is normal.  Keep this in mind, and try not to send `set` commands too fast.
 
 If your phidgetWebService is connected to more than 1 board, you will need to provide a boardId.  Otherwise, you can send `null`, and we will look up the boardId for you.
 
-__phidgets.quit()__ 
+__phidget.quit()__
 
 ## Connecting & Configuration Params
-`phidgets.connect` can be passed an a JSON object of options.  Here are the options and their defaults:
+`phidget.connect` can be passed an a JSON object of options.  Here are the options and their defaults:
 
 ```javascript
 {
@@ -81,6 +81,7 @@ __phidgets.quit()__
   password:         null,
   delimiter:        '\r\n',
   readyWaitTimeout: 200,
+  reconnectionDelay: 200
 }
 ```
 
