@@ -138,7 +138,7 @@ is available for download in the *docs* folder. You can also view it online.
 ### Warning to users of version <= 0.4.0
 
 The API in version 0.5.0 has changed and is not backwards-compatible. This change was made
-mandatory bin order to support more than the original InterfaceKit boards. 
+mandatory bin order to support more than the original InterfaceKit boards.
 
 An archived copy of [version 0.4.0]
 (http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
@@ -147,5 +147,5 @@ recommend you to update to the new version and architecture. It already provides
 improvements and more are to come.
 
 
-## ToDo:
+### ToDo:
 * Support for phidget authentication
