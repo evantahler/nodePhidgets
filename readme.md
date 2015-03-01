@@ -10,6 +10,17 @@ distance, etc.).  [Node.js](http://nodejs.org) and [io.js](http://iojs.org) are 
 networking library which makes it easy to create fast networked applications.  This
 project aims to make it simple for them to interact. Synergy!
 
+>### Warning to users of version <= 0.4.0
+>
+>The API in version 0.5.0 has changed and is not backwards-compatible. This change was made
+>mandatory bin order to support more than the original InterfaceKit boards.
+>
+>An archived copy of [version 0.4.0]
+>(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
+>kept around for those needing to maintain older projects. However, if possible we
+>recommend you to update to the new version and architecture. It already provides plenty of
+>improvements and more are to come.
+
 ## Getting started
 This project assumes you have the [Phidget WebService]
 (http://www.phidgets.com/docs/Phidget_WebService) up and running.  For "regular" (USB)
@@ -131,19 +142,6 @@ If you are in a hurry, and can support the development effort, please contact on
 
 The full [API documentation](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)
 is available for download in the *docs* folder. You can also view it online.
-
-
->### Warning to users of version <= 0.4.0
->
->The API in version 0.5.0 has changed and is not backwards-compatible. This change was made
->mandatory bin order to support more than the original InterfaceKit boards.
->
->An archived copy of [version 0.4.0]
->(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
->kept around for those needing to maintain older projects. However, if possible we
->recommend you to update to the new version and architecture. It already provides plenty of
->improvements and more are to come.
-
 
 ### ToDo:
 * Support for phidget authentication
