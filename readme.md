@@ -2,7 +2,7 @@
 _A [Node.js](http://www.nodejs.org/) and [iojs.org](http://www.iojs.org/)-compatible
 JavaScript library to interface with the Phidgets line of hardware boards._
 
-[![NPM](https://nodei.co/npm/phidgets.png)](https://nodei.co/npm/phidgets/) [![NPM](https://nodei.co/npm-dl/phidgets.png?months=6)](https://nodei.co/npm/phidgets/)
+[![NPM](https://nodei.co/npm/phidgets.png?downloads=true)](https://nodei.co/npm/phidgets/) [![NPM](https://nodei.co/npm-dl/phidgets.png?months=6&height=2)](https://nodei.co/npm/phidgets/)
 
 [Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle
 digital inputs and outputs, along with a great array of analog sensors (RFID, temperature,
@@ -133,17 +133,18 @@ The full [API documentation](http://cote.cc/w/wp-content/uploads/projects/phidge
 is available for download in the *docs* folder. You can also view it online.
 
 
-### Warning to users of version <= 0.4.0
-
-The API in version 0.5.0 has changed and is not backwards-compatible. This change was made
-mandatory bin order to support more than the original InterfaceKit boards.
-
-An archived copy of [version 0.4.0]
-(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
-kept around for those needing to maintain older projects. However, if possible we
-recommend you to update to the new version and architecture. It already provides plenty of
-improvements and more are to come.
+>### Warning to users of version <= 0.4.0
+>
+>The API in version 0.5.0 has changed and is not backwards-compatible. This change was made
+>mandatory bin order to support more than the original InterfaceKit boards.
+>
+>An archived copy of [version 0.4.0]
+>(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
+>kept around for those needing to maintain older projects. However, if possible we
+>recommend you to update to the new version and architecture. It already provides plenty of
+>improvements and more are to come.
 
 
 ### ToDo:
 * Support for phidget authentication
+* Support for more boards
