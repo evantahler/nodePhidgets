@@ -97,15 +97,41 @@ of outputs by looking at the `PhidgetLED.outputs` object. This object will look 
     '0': 0,
     '1': 67,
     '2': 0,
-    '3': 12,
-
+    '3': 13,
     // etc.
 }
 ```
 
+The `outputs` object is read-only. If you want to change the value of an output, use the
+relevant method. For example, to change the output on a `PhidgetInterfaceKit`, you would
+use the `setOutput()` method. To do the same on a `PhidgetLED`, you would use
+`setBrightness()`.
 
+### Supported boards
 
-### Objects
+Currently, all interface kit boards are supported through the `PhidgetInterfaceKit`
+object. This includes boards such as:
+
+ * PhidgetAnalog 4-Output
+ * PhidgetInterfaceKit 8/8/8 normal and mini-format
+ * PhidgetInterfaceKit 2/2/2
+ * PhidgetInterfaceKit 0/16/16
+ * PhidgetInterfaceKit 8/8/8 (with and without hub)
+ * PhidgetFrequencyCounter
+ * etc.
+
+Also included via the `PhidgetLED` object is the following:
+
+ * PhidgetLED
+
+Other boards will be added in the future. If you are in a hurry, and could support the
+development effort, please contact one of the [project contributors]
+(https://github.com/cotejp/node-phidgets/graphs/contributors).
+
+### Documentation
+
+The full API documentation is available for download in the *docs* folder. You can also
+view it online.
 
 You can also read the state of your board from `phidget.data` which will be an object like below:
 
