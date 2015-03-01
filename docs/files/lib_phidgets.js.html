@@ -112,6 +112,7 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  * @todo there seems to be an issue in nw.js when the app is realoded.
  * @todo create getter and setter for label because it must match certain requirements
  * @todo parse missing report lines for PhidgetInterfaceKit and PhidgetLED
+ * @todo create getter/setter for interReportPeriod. it cannot be set after the connection
  *
  * done: chainable, timeout if no connection, module, recovers when server goes down or
  * device unplugged, name and label retrieved from server, phidgetled, connect by label,
@@ -129,6 +130,8 @@ var phidgets = {};
  * @constructor
  */
 var Phidget = function(type) {
+
+  var self = this;
 
   if (this.constructor === Phidget) {
     throw new Error(&quot;This class is abstract, you cannot instantiate it directly.&quot;);
@@ -177,7 +180,7 @@ var Phidget = function(type) {
   Object.defineProperty(this, &#x27;ready&#x27;, {
     enumerable: true,
     get: function () {
-      return (this._ready);
+      return (self._ready);
     }
   });
 
@@ -237,7 +240,7 @@ var Phidget = function(type) {
   Object.defineProperty(this, &#x27;name&#x27;, {
     enumerable: true,
     get: function () {
-      return (this._name);
+      return (self._name);
     }
   });
 
@@ -253,11 +256,21 @@ var Phidget = function(type) {
   Object.defineProperty(this, &#x27;version&#x27;, {
     enumerable: true,
     get: function () {
-      return (this._version);
+      return (self._version);
     }
   });
 
-  /** @private */
+  /**
+   * The delay (in milliseconds) between report updates sent from the webservice. This is
+   * requested of the server during the opening of a phidget. Therefore, if you want to
+   * use it, you must assign it before calling &#x60;open()&#x60;.
+   *
+   * @property serial
+   * @type {int}
+   * @default 8
+   */
+  this.interReportPeriod = 8;
+
   this._ready = false;
   this._client = null;
   this._name = undefined;
@@ -323,7 +336,7 @@ Phidget.prototype.open = function(options) {
 
     // Open connection to web service
     self._sendLine(&quot;995 authenticate, version=&quot; + self._protocol);
-    self._sendLine(&quot;report 8 report&quot;);
+    self._sendLine(&quot;report &quot; + self.interReportPeriod + &quot; report&quot;);
     var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
 
     // If a label or a serial has been specified, add them to the connect query (priority
@@ -779,7 +792,7 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
   var self = this;
   if (self.ready !== true) { return self; }
 
-  value = (value === true) ? true : false;
+  value = (value === true);
   index = self._forceBetween(index, 0, 7);
   var vOut = (value === true) ? 1 : 0;
 
