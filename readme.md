@@ -37,46 +37,73 @@ to get this up and running.
 
 ## Examples
 
-There are typically two ways of interacting with the *phidgets* package: 1) you can set up
-listeners to alert you when changes are detected or 2) you can repeatedly check by
-yourself for those changes.
-
-Here's how to set up listeners:
+The most common way to interact with a *phidgets* board is to set up listeners for the
+things you are interested in. For example, this code will log to the console all changes
+detected on the analog sensor inputs of the device:
 
 ```javascript
-    var phidgets = require('phidgets');
-
-    var pik = new phidgets.PhidgetInterfaceKit();
-
-    pik.on('sensor', function(emitter, data) {
-        console.log('Sensor: ' + data.index + ', Value: ' + data.value);
-    });
-    
-    pik.open();
-```
-
-### Events
-
-```javascript
-
 var phidgets = require('phidgets');
-var options = {
-  host: "phidgetsbc.local"
-};
-var phidget = new phidgets.Phidget(options);
 
-// events
-phidget.on('state',  function(state){              console.log("[state] " + state);   });
-phidget.on('error',  function(error){              console.log("[error] " + error);   });
-phidget.on('input',  function(boardId, id, value){ console.log("[" + boardId + "][input] " + id + " @ " + value);  });
-phidget.on('sensor', function(boardId, id, value){ console.log("[" + boardId + "][sensor] " + id + " @ " + value); });
-phidget.on('output', function(boardId, id, value){ console.log("[" + boardId + "][output] " + id + " @ " + value); });
+var pik = new phidgets.PhidgetInterfaceKit();
 
-phidget.connect(function(){
-  console.log('connected to PhidgetBoard:');
-  console.log(phidget.ids);
-})
+pik.on('sensor', function(emitter, data) {
+    console.log('Sensor: ' + data.index + ', value: ' + data.value);
+});
+
+pik.open();
 ```
+
+Since the all relevant functions are chainable, the above example can be written more
+concisely:
+
+```javascript
+var phidgets = require('phidgets');
+
+var pik = new phidgets.PhidgetInterfaceKit()
+    .on('sensor', function(emitter, data) {
+        console.log('Sensor: ' + data.index + ', value: ' + data.value);
+    })
+    .open();
+```
+
+When no parameters are passed to the `open()` method, the first matching device on the
+local machine is used. If you have multiple devices connected, you can connect to a
+specific one by passing its serial number or label (as defined in the webservice control
+panel):
+
+```javascript
+pik.open({
+    serial: 123456,
+    label: mydevice
+});
+```
+
+You can also connect to devices on another machine:
+
+```javascript
+pik.open({
+    host: 123.123.123.123,
+    port: 5001
+});
+```
+
+At any time, you can check the status of any inputs, sensors or outputs. Depending on the
+type of board you are using, all of these will or will not be available. For example, on a
+`PhidgetLED` board, there are not inputs or sensors. However, you can still read the state
+of outputs by looking at the `PhidgetLED.outputs` object. This object will look like this:
+
+```javascript
+{
+    '0': 0,
+    '1': 67,
+    '2': 0,
+    '3': 12,
+
+    // etc.
+}
+```
+
+
 
 ### Objects
 
