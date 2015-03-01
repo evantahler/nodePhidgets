@@ -13,7 +13,7 @@ project aims to make it simple for them to interact. Synergy!
 >#### Warning to users of version <= 0.4.0
 >
 >The API in version 0.5.0 and above has changed and is not backwards-compatible. We had to
-> make this change in order to support more than jsut the PhidgetInterfaceKit board. An
+> make this change in order to support more than just the PhidgetInterfaceKit board. An
 > archived copy of [version 0.4.0]
 >(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
 >kept around for those needing to maintain older projects.
@@ -59,7 +59,7 @@ pik.on('sensor', function(emitter, data) {
 pik.open();
 ```
 
-Since the all relevant functions are chainable, the above example can be written more
+Since all relevant functions are chainable, the above example can be written more
 concisely:
 
 ```javascript
@@ -115,7 +115,7 @@ use the `setOutput()` method. To do the same on a `PhidgetLED`, you would use
 
 ### Supported boards
 
-Currently, all interface kit boards are supported through the `PhidgetInterfaceKit`
+Currently, all *interface kit* boards are supported through the `PhidgetInterfaceKit`
 object. This includes boards such as:
 
  * PhidgetAnalog 4-Output
@@ -126,20 +126,21 @@ object. This includes boards such as:
  * PhidgetFrequencyCounter
  * etc.
 
-Also included via the `PhidgetLED` object is the following:
+Also included in the library (via the `PhidgetLED` object) is basic support for the
+following:
 
  * PhidgetLED
 
-Other boards will be added in the future. Help from contributors is always welcomed.
-
-If you are in a hurry, and can support the development effort, please contact one of the
+Other boards will be added in the future. Help from contributors is always welcomed. If
+you are in a hurry, and can support the development effort, please contact one of the
 [project contributors](https://github.com/cotejp/node-phidgets/graphs/contributors).
 
 ### Documentation
 
-The full [API documentation](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)
-is available for download in the *docs* folder. You can also view it online.
+The full **[API documentation]
+(http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)** is available for download
+in the *docs* folder. You can also view it online.
 
 ### ToDo:
 * Support for phidget authentication
-* Support for more boards
+* Support for missing boards
