@@ -2,30 +2,58 @@
 _A [Node.js](http://www.nodejs.org/) and [iojs.org](http://www.iojs.org/)-compatible
 JavaScript library to interface with the Phidgets line of hardware boards._
 
-[![Nodei stats](https://nodei.co/npm/phidgets.png?downloads=true)](https://npmjs.org/package/phidgets)
-
 [![NPM](https://nodei.co/npm/phidgets.png)](https://nodei.co/npm/phidgets/) [![NPM](https://nodei.co/npm-dl/phidgets.png?months=6)](https://nodei.co/npm/phidgets/)
 
-
-## WHAT?!
-[Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle digital inputs and outputs, along with a great array of analog sensors (RFID, temperature, distance, etc.).  [Node.js](http://nodejs.org) is a fantastic networking library which makes it easy to create fast networked applications.  This project aims to make it simple to interact with them both.  Synergy!
+[Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle
+digital inputs and outputs, along with a great array of analog sensors (RFID, temperature,
+distance, etc.).  [Node.js](http://nodejs.org) and [io.js](http://iojs.org) are fantastic
+networking library which makes it easy to create fast networked applications.  This
+project aims to make it simple for them to interact. Synergy!
 
 ## Missing boards!
 
-## Phidget Web Service
-This project assumes you have the Phidget server up and running.  For most "regular" (USB) Phidget boards, that assumes that the computer you have connected to the Phidget board via USB has the server up and running.  For stand-alone Phidget micro-computers (phidgetsbc), this assumes you have configured the server via the web portal.  You will be connecting to the Phidget server via TCP, so be sure you can access the server from the machine running this project.
+## Getting started
+This project assumes you have the [Phidget WebService]
+(http://www.phidgets.com/docs/Phidget_WebService) up and running.  For "regular" (USB)
+Phidget boards, this simply means that the computer you are connecting to has got the
+webservice installed and activated.
 
-This package can interact with multiple phidget boards connected to a single phidgetWebService
+For stand-alone Phidget Single Board Computers (phidgetsbc), this assumes you have
+configured the server via the web portal. Since you will be connecting to the Phidget
+server via TCP, be sure you can access the server from the machine running this project.
+
+This library can interface with multiple phidget boards connected to a single computer via
+the Phidget WebService.
 
 ## Installation
-`npm install phidgets`
+If you already have Node.js installed, you also have npm installed. This means you can
+install the *phidgets* package with: `npm install phidgets`.
 
-## Running Node.js on a phidget board
-Phidgets Inc. makes a line of phidget boards which themselves are small ARM Debian comptuers.  It it possble to run Node.js on them, and use this package locally.  Here's a [gist](https://gist.github.com/1574158) with the steps and a [Blog Post](http://blog.evantahler.com/node-js-running-on-a-phidgets-sbc2-board) about hot to get this up and running.
+[Phidgets Inc.](http://www.phidgets.com) makes a line of phidget boards which are
+themselves small ARM Debian computers. It it possble to run Node.js on them, and use this
+package locally. Here's a [gist](https://gist.github.com/1574158) with the steps and a
+[blog post](http://blog.evantahler.com/node-js-running-on-a-phidgets-sbc2-board) about how
+to get this up and running.
 
-## Interaction
+## Examples
 
-The Phidgets package exposes a few different ways of interacting with your Phidget board:
+There are typically two ways of interacting with the *phidgets* package: 1) you can set up
+listeners to alert you when changes are detected or 2) you can repeatedly check by
+yourself for those changes.
+
+Here's how to set up listeners:
+
+```javascript
+    var phidgets = require('phidgets');
+
+    var pik = new phidgets.PhidgetInterfaceKit();
+
+    pik.on('sensor', function(emitter, data) {
+        console.log('Sensor: ' + data.index + ', Value: ' + data.value);
+    });
+    
+    pik.open();
+```
 
 ### Events
 
