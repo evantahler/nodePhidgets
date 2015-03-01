@@ -1,10 +1,13 @@
 # nodePhidgets
-_A Node.js library enabling the use of various Phidgets interface boards._
+_A [Node.js](http://www.nodejs.org/) and [iojs.org](http://www.iojs.org/)-compatible
+JavaScript library to interface with the Phidgets line of hardware boards._
 
 [![Nodei stats](https://nodei.co/npm/phidgets.png?downloads=true)](https://npmjs.org/package/phidgets)
 
 ## WHAT?!
 [Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle digital inputs and outputs, along with a great array of analog sensors (RFID, temperature, distance, etc.).  [Node.js](http://nodejs.org) is a fantastic networking library which makes it easy to create fast networked applications.  This project aims to make it simple to interact with them both.  Synergy!
+
+## Missing boards!
 
 ## Phidget Web Service
 This project assumes you have the Phidget server up and running.  For most "regular" (USB) Phidget boards, that assumes that the computer you have connected to the Phidget board via USB has the server up and running.  For stand-alone Phidget micro-computers (phidgetsbc), this assumes you have configured the server via the web portal.  You will be connecting to the Phidget server via TCP, so be sure you can access the server from the machine running this project.
