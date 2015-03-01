@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0</em>
+            <em>API Docs for: 0.5.0-alpha.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_phidgets.js.html#l626"><code>lib&#x2F;phidgets.js:626</code></a>
+            Defined in: <a href="../files/lib_phidgets.js.html#l665"><code>lib&#x2F;phidgets.js:665</code></a>
         </div>
 
             Module: <a href="../modules/phidgets.html">phidgets</a>
@@ -128,7 +128,7 @@ compatibility, let us know.</p>
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/lib_phidgets.js.html#l626"><code>lib&#x2F;phidgets.js:626</code></a>
+                <a href="../files/lib_phidgets.js.html#l665"><code>lib&#x2F;phidgets.js:665</code></a>
                 </p>
         
         
@@ -170,6 +170,10 @@ compatibility, let us know.</p>
                                 <a href="#method__makeIndexedKey">_makeIndexedKey</a>
 
                             </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__parsePhidgetSpecificReport">_parsePhidgetSpecificReport</a>
+
+                            </li>
                             <li class="index-item method protected inherited">
                                 <a href="#method__sendKey">_sendKey</a>
 
@@ -197,8 +201,16 @@ compatibility, let us know.</p>
                                 <a href="#property_host">host</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_inputs">inputs</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_label">label</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_outputs">outputs</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -211,6 +223,10 @@ compatibility, let us know.</p>
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_reopen">reopen</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_sensors">sensors</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -292,7 +308,7 @@ compatibility, let us know.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__forceBetween">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l570"><code>lib&#x2F;phidgets.js:570</code></a>
+        <a href="../files/lib_phidgets.js.html#l607"><code>lib&#x2F;phidgets.js:607</code></a>
         </p>
 
 
@@ -323,7 +339,7 @@ compatibility, let us know.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__makeIndexedKey">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l549"><code>lib&#x2F;phidgets.js:549</code></a>
+        <a href="../files/lib_phidgets.js.html#l586"><code>lib&#x2F;phidgets.js:586</code></a>
         </p>
 
 
@@ -334,6 +350,79 @@ compatibility, let us know.</p>
         
     </div>
 
+
+
+
+</div>
+<div id="method__parsePhidgetSpecificReport" class="method item private">
+    <h3 class="name"><code>_parsePhidgetSpecificReport</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>line</code>
+                </li>
+                <li class="arg">
+                        <code>parts</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/Phidget.html#method__parsePhidgetSpecificReport">
+                Phidget
+            </a>
+            but overwritten in
+        <a href="../files/lib_phidgets.js.html#l745"><code>lib&#x2F;phidgets.js:745</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Parses &#39;report&#39; lines received from the webservice that are specific to the
+PhidgetInterfaceKit boards.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">line</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The raw line received from the webservice.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">parts</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The raw line split on the &quot;/&quot; character.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -354,7 +443,7 @@ compatibility, let us know.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__sendKey">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l558"><code>lib&#x2F;phidgets.js:558</code></a>
+        <a href="../files/lib_phidgets.js.html#l595"><code>lib&#x2F;phidgets.js:595</code></a>
         </p>
 
 
@@ -387,7 +476,7 @@ compatibility, let us know.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method_close">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l229"><code>lib&#x2F;phidgets.js:229</code></a>
+        <a href="../files/lib_phidgets.js.html#l243"><code>lib&#x2F;phidgets.js:243</code></a>
         </p>
 
 
@@ -436,7 +525,7 @@ compatibility, let us know.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method_open">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l138"><code>lib&#x2F;phidgets.js:138</code></a>
+        <a href="../files/lib_phidgets.js.html#l152"><code>lib&#x2F;phidgets.js:152</code></a>
         </p>
 
 
@@ -537,7 +626,7 @@ compatibility, let us know.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l652"><code>lib&#x2F;phidgets.js:652</code></a>
+        <a href="../files/lib_phidgets.js.html#l721"><code>lib&#x2F;phidgets.js:721</code></a>
         </p>
 
 
@@ -545,7 +634,7 @@ compatibility, let us know.</p>
     </div>
 
     <div class="description">
-        <p>Set the specified output to open (true) or closed (false).</p>
+        <p>Sets the specified output to active (true) or inactive (false).</p>
 
     </div>
 
@@ -566,11 +655,11 @@ compatibility, let us know.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">value</code>
-                        <span class="type">Int</span>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
 
 
                     <div class="param-description">
-                        <p>The value (true/false) you wish to set the output to</p>
+                        <p>The value you wish to set the output to</p>
 
                     </div>
 
@@ -606,7 +695,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_host">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l65"><code>lib&#x2F;phidgets.js:65</code></a>
+                            <a href="../files/lib_phidgets.js.html#l79"><code>lib&#x2F;phidgets.js:79</code></a>
                             </p>
                     
                     
@@ -621,6 +710,33 @@ compatibility, let us know.</p>
                     
                     
                     </div>
+                    <div id="property_inputs" class="property item">
+                        <h3 class="name"><code>inputs</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l687"><code>lib&#x2F;phidgets.js:687</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>An object containing the current value for all board inputs. The values are boolean.
+                    To retrieve a value simply use the input number. For example:
+                    PhidgetInterfaceKit.inputs[5].</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
                     <div id="property_label" class="property item inherited">
                         <h3 class="name"><code>label</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
@@ -632,7 +748,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_label">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l89"><code>lib&#x2F;phidgets.js:89</code></a>
+                            <a href="../files/lib_phidgets.js.html#l103"><code>lib&#x2F;phidgets.js:103</code></a>
                             </p>
                     
                     
@@ -647,6 +763,33 @@ compatibility, let us know.</p>
                     
                     
                     </div>
+                    <div id="property_outputs" class="property item">
+                        <h3 class="name"><code>outputs</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l707"><code>lib&#x2F;phidgets.js:707</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>An object containing the current value for all board outputs. The values are
+                    boolean. To retrieve a value, simply use the output number. For example:
+                    PhidgetInterfaceKit.outputs[5].</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
                     <div id="property_port" class="property item inherited">
                         <h3 class="name"><code>port</code></h3>
                         <span class="type">Int</span>
@@ -658,7 +801,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_port">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l73"><code>lib&#x2F;phidgets.js:73</code></a>
+                            <a href="../files/lib_phidgets.js.html#l87"><code>lib&#x2F;phidgets.js:87</code></a>
                             </p>
                     
                     
@@ -684,7 +827,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_ready">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l48"><code>lib&#x2F;phidgets.js:48</code></a>
+                            <a href="../files/lib_phidgets.js.html#l62"><code>lib&#x2F;phidgets.js:62</code></a>
                             </p>
                     
                     
@@ -711,7 +854,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_reopen">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l57"><code>lib&#x2F;phidgets.js:57</code></a>
+                            <a href="../files/lib_phidgets.js.html#l71"><code>lib&#x2F;phidgets.js:71</code></a>
                             </p>
                     
                     
@@ -726,6 +869,33 @@ compatibility, let us know.</p>
                     
                     
                     </div>
+                    <div id="property_sensors" class="property item">
+                        <h3 class="name"><code>sensors</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l697"><code>lib&#x2F;phidgets.js:697</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>An object containing the current value for all board sensors. The values are
+                    integers. To retrieve a vlaue simply use the sensor number. For example:
+                    PhidgetInterfaceKit.sensors[5].</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
                     <div id="property_serial" class="property item inherited">
                         <h3 class="name"><code>serial</code></h3>
                         <span class="type">Int</span>
@@ -737,7 +907,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_serial">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l81"><code>lib&#x2F;phidgets.js:81</code></a>
+                            <a href="../files/lib_phidgets.js.html#l95"><code>lib&#x2F;phidgets.js:95</code></a>
                             </p>
                     
                     
@@ -763,7 +933,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_type">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l41"><code>lib&#x2F;phidgets.js:41</code></a>
+                            <a href="../files/lib_phidgets.js.html#l55"><code>lib&#x2F;phidgets.js:55</code></a>
                             </p>
                     
                     
@@ -794,7 +964,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_closed">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l251"><code>lib&#x2F;phidgets.js:251</code></a>
+                            <a href="../files/lib_phidgets.js.html#l265"><code>lib&#x2F;phidgets.js:265</code></a>
                             </p>
                     
                     
@@ -836,7 +1006,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_error">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l292"><code>lib&#x2F;phidgets.js:292</code></a>
+                            <a href="../files/lib_phidgets.js.html#l306"><code>lib&#x2F;phidgets.js:306</code></a>
                             </p>
                     
                     
@@ -930,7 +1100,7 @@ compatibility, let us know.</p>
                     
                     
                     </div>
-                    <div id="event_input" class="events item inherited">
+                    <div id="event_input" class="events item">
                         <h3 class="name"><code>input</code></h3>
                         <span class="type"></span>
                     
@@ -939,9 +1109,12 @@ compatibility, let us know.</p>
                     
                     
                         <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/Phidget.html#event_input">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l447"><code>lib&#x2F;phidgets.js:447</code></a>
+                                <p>Inherited from
+                                <a href="../classes/Phidget.html#event_input">
+                                    Phidget
+                                </a>
+                                but overwritten in
+                            <a href="../files/lib_phidgets.js.html#l770"><code>lib&#x2F;phidgets.js:770</code></a>
                             </p>
                     
                     
@@ -958,11 +1131,12 @@ compatibility, let us know.</p>
                                 <ul class="params-list">
                                     <li class="param">
                                             <code class="param-name">emitter</code>
-                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                                            <span class="type"><a href="../classes/PhidgetInterfaceKit.html" class="crosslink">PhidgetInterfaceKit</a></span>
                     
                     
                                         <div class="param-description">
-                                            <p>The actual Phidget object that emitted the event.</p>
+                                            <p>The actual PhidgetInterfaceKit object that
+                           emitted the event.</p>
                     
                                         </div>
                     
@@ -1016,7 +1190,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_opened">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l535"><code>lib&#x2F;phidgets.js:535</code></a>
+                            <a href="../files/lib_phidgets.js.html#l484"><code>lib&#x2F;phidgets.js:484</code></a>
                             </p>
                     
                     
@@ -1058,7 +1232,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_opening">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l157"><code>lib&#x2F;phidgets.js:157</code></a>
+                            <a href="../files/lib_phidgets.js.html#l171"><code>lib&#x2F;phidgets.js:171</code></a>
                             </p>
                     
                     
@@ -1089,7 +1263,7 @@ compatibility, let us know.</p>
                     
                     
                     </div>
-                    <div id="event_output" class="events item inherited">
+                    <div id="event_output" class="events item">
                         <h3 class="name"><code>output</code></h3>
                         <span class="type"></span>
                     
@@ -1098,9 +1272,12 @@ compatibility, let us know.</p>
                     
                     
                         <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/Phidget.html#event_output">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l485"><code>lib&#x2F;phidgets.js:485</code></a>
+                                <p>Inherited from
+                                <a href="../classes/Phidget.html#event_output">
+                                    Phidget
+                                </a>
+                                but overwritten in
+                            <a href="../files/lib_phidgets.js.html#l810"><code>lib&#x2F;phidgets.js:810</code></a>
                             </p>
                     
                     
@@ -1117,11 +1294,12 @@ compatibility, let us know.</p>
                                 <ul class="params-list">
                                     <li class="param">
                                             <code class="param-name">emitter</code>
-                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                                            <span class="type"><a href="../classes/PhidgetInterfaceKit.html" class="crosslink">PhidgetInterfaceKit</a></span>
                     
                     
                                         <div class="param-description">
-                                            <p>The actual Phidget object that emitted the event.</p>
+                                            <p>The actual PhidgetInterfaceKit object that
+                           emitted the event.</p>
                     
                                         </div>
                     
@@ -1175,7 +1353,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_received">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l325"><code>lib&#x2F;phidgets.js:325</code></a>
+                            <a href="../files/lib_phidgets.js.html#l339"><code>lib&#x2F;phidgets.js:339</code></a>
                             </p>
                     
                     
@@ -1229,7 +1407,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_reopening">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l266"><code>lib&#x2F;phidgets.js:266</code></a>
+                            <a href="../files/lib_phidgets.js.html#l280"><code>lib&#x2F;phidgets.js:280</code></a>
                             </p>
                     
                     
@@ -1295,7 +1473,7 @@ compatibility, let us know.</p>
                     
                     
                     </div>
-                    <div id="event_sensor" class="events item inherited">
+                    <div id="event_sensor" class="events item">
                         <h3 class="name"><code>sensor</code></h3>
                         <span class="type"></span>
                     
@@ -1304,9 +1482,12 @@ compatibility, let us know.</p>
                     
                     
                         <div class="meta">
-                                    <p>Inherited from
-                                    <a href="../classes/Phidget.html#event_sensor">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l466"><code>lib&#x2F;phidgets.js:466</code></a>
+                                <p>Inherited from
+                                <a href="../classes/Phidget.html#event_sensor">
+                                    Phidget
+                                </a>
+                                but overwritten in
+                            <a href="../files/lib_phidgets.js.html#l790"><code>lib&#x2F;phidgets.js:790</code></a>
                             </p>
                     
                     
@@ -1323,11 +1504,12 @@ compatibility, let us know.</p>
                                 <ul class="params-list">
                                     <li class="param">
                                             <code class="param-name">emitter</code>
-                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                                            <span class="type"><a href="../classes/PhidgetInterfaceKit.html" class="crosslink">PhidgetInterfaceKit</a></span>
                     
                     
                                         <div class="param-description">
-                                            <p>The actual Phidget object that emitted the event.</p>
+                                            <p>The actual PhidgetInterfaceKit object that
+                           emitted the event.</p>
                     
                                         </div>
                     
@@ -1381,7 +1563,7 @@ compatibility, let us know.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_timeout">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l207"><code>lib&#x2F;phidgets.js:207</code></a>
+                            <a href="../files/lib_phidgets.js.html#l221"><code>lib&#x2F;phidgets.js:221</code></a>
                             </p>
                     
                     

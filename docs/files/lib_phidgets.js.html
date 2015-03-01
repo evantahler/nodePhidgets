@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0</em>
+            <em>API Docs for: 0.5.0-alpha.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -101,6 +101,7 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  * @todo understand what lid0 does ?!
  * @todo implement a decent toString() method
  * @todo get rid of data and put innput, output and sensors at the top
+ * @todo make label, serial and name read-omly
  *
  *
  * done: chainable, timeout if no connection, module, recovers when server goes down or
@@ -120,6 +121,19 @@ var Phidget = function(type) {
 
   if (this.constructor === Phidget) {
     throw new Error(&quot;This class is abstract, you cannot instantiate it directly.&quot;);
+  }
+
+  /**
+   * Array of all the devices supported by this library.
+   * @type {string[]}
+   */
+  this.supportedDevices = [
+    &#x27;PhidgetInterfaceKit&#x27;,
+    &#x27;PhidgetLED&#x27;
+  ];
+
+  if (this.supportedDevices.indexOf(type) &lt; 0) {
+    throw new Error(&quot;Unsupported device type&quot;);
   }
 
   /**
@@ -506,84 +520,19 @@ Phidget.prototype._parseReport = function(line, self) {
   //    report 200-that&#x27;s all for now
 
 
-  var infos = line.split(&quot;/&quot;).slice(1);
+  var parts = line.split(&quot;/&quot;).slice(1);
 
   if (!self.serial) {
-    self.serial = parseInt(infos[3]);
+    self.serial = parseInt(parts[3]);
   }
 
   //if (self.label === undefined) {
   //  self.label = infos[2];
   //}
 
-  var type = infos[4];
+  var type = parts[4];
 
-  if (type === &#x27;Input&#x27; || type === &#x27;Output&#x27; || type === &#x27;Sensor&#x27;) {
-
-    var parts = infos[5].split(&quot; &quot;);
-    var index = parseInt(parts[0]);
-    var value = parseInt(parts[3].replace(&#x27;&quot;&#x27;,&quot;&quot;));
-
-    if (type === &quot;Input&quot;){
-
-      self.data.inputs[index] = (value === 1);
-
-      /**
-       * Event emitted when binary input data is received.
-       *
-       * @event input
-       * @param {Phidget} emitter The actual Phidget object that emitted the event.
-       * @param {Object} data An object containing the input data and related information
-       * @param {int} data.index The input&#x27;s index number
-       * @param {Boolean} data.value The input&#x27;s received value
-       */
-      self.emit(
-        &quot;input&quot;,
-        self,
-        { &quot;index&quot;: index, &quot;value&quot;: value }
-      );
-
-    } else if(type === &quot;Sensor&quot;){
-
-      self.data.sensors[index] = value;
-
-      /**
-       * Event emitted when analog sensor data is received
-       *
-       * @event sensor
-       * @param {Phidget} emitter The actual Phidget object that emitted the event.
-       * @param {Object} data An object containing the sensor data and related information
-       * @param {int} data.index The sensor&#x27;s index number
-       * @param {int} data.value The sensor&#x27;s received value
-       */
-      self.emit(
-        &quot;sensor&quot;,
-        self,
-        { &quot;index&quot;: index, &quot;value&quot;: value }
-      );
-
-    } else if(type === &quot;Output&quot;){
-
-      self.data.outputs[index] = value;
-
-      /**
-       * Event emitted when data is being outputted through one of the outputs
-       *
-       * @event output
-       * @param {Phidget} emitter The actual Phidget object that emitted the event.
-       * @param {Object} data An object containing the output data and related information
-       * @param {int} data.index The sensor&#x27;s index number
-       * @param {int} data.value The sensor&#x27;s received value
-       */
-      self.emit(
-        &quot;output&quot;,
-        self,
-        { &quot;index&quot;: index, &quot;value&quot;: value }
-      );
-
-    }
-
-  } else if (type &amp;&amp; type === &#x27;Status latest value &quot;Detached&quot; (removing)&#x27;) {
+  if (type &amp;&amp; type === &#x27;Status latest value &quot;Detached&quot; (removing)&#x27;) {
 
     self._handleConnectionEnd(self);
 
@@ -626,9 +575,97 @@ Phidget.prototype._parseReport = function(line, self) {
 
     }
 
+  } else {
+
+    self._parsePhidgetSpecificReport(line, parts);
+
   }
 
 };
+
+/**
+ * Parses &#x27;report&#x27; lines that are specific to one phidget model. Should be overridden by
+ * subclasses
+ *
+ * @method _parsePhidgetSpecificReport
+ * @param line {String} The raw line received from the webservice.
+ * @param parts {Array} The raw line split on the &quot;/&quot; character.
+ * @protected
+ */
+Phidget.prototype._parsePhidgetSpecificReport = function (line, parts) {
+
+  var self = this;
+
+  var type = parts[4];
+
+  if (type === &#x27;Input&#x27; || type === &#x27;Output&#x27; || type === &#x27;Sensor&#x27;) {
+
+    var infos = parts[5].split(&quot; &quot;);
+    var index = parseInt(infos[0]);
+    var value = parseInt(infos[3].replace(&#x27;&quot;&#x27;, &quot;&quot;));
+
+    if (type === &quot;Input&quot;) {
+
+      self.inputs[index] = (value === 1);
+
+      /**
+       * Event emitted when binary input data is received.
+       *
+       * @event input
+       * @param {Phidget} emitter The actual Phidget object that emitted the event.
+       * @param {Object} data An object containing the input data and related information
+       * @param {int} data.index The input&#x27;s index number
+       * @param {Boolean} data.value The input&#x27;s received value
+       */
+      self.emit(
+        &quot;input&quot;,
+        self,
+        {&quot;index&quot;: index, &quot;value&quot;: value}
+      );
+
+    } else if (type === &quot;Sensor&quot;) {
+
+      self.sensors[index] = value;
+
+      /**
+       * Event emitted when analog sensor data is received
+       *
+       * @event sensor
+       * @param {Phidget} emitter The actual Phidget object that emitted the event.
+       * @param {Object} data An object containing the sensor data and related information
+       * @param {int} data.index The sensor&#x27;s index number
+       * @param {int} data.value The sensor&#x27;s received value
+       */
+      self.emit(
+        &quot;sensor&quot;,
+        self,
+        {&quot;index&quot;: index, &quot;value&quot;: value}
+      );
+
+    } else if (type === &quot;Output&quot;) {
+
+      self.outputs[index] = value;
+
+      /**
+       * Event emitted when data is being outputted through one of the outputs
+       *
+       * @event output
+       * @param {Phidget} emitter The actual Phidget object that emitted the event.
+       * @param {Object} data An object containing the output data and related information
+       * @param {int} data.index The sensor&#x27;s index number
+       * @param {int} data.value The sensor&#x27;s received value
+       */
+      self.emit(
+        &quot;output&quot;,
+        self,
+        {&quot;index&quot;: index, &quot;value&quot;: value}
+      );
+
+    }
+  }
+
+};
+
 
 /**
  * @method _makeIndexedKey
@@ -705,7 +742,9 @@ Phidget.prototype._forceBetween = function(value, min, max) {
 
 
 
-
+/****************************************************************************************/
+/*********************************  PhidgetInterfaceKit  ********************************/
+/****************************************************************************************/
 
 /**
  * The PhidgetInterfaceKit class allows you to control and receive data from all Phidget
@@ -728,41 +767,154 @@ Phidget.prototype._forceBetween = function(value, min, max) {
  */
 var PhidgetInterfaceKit = function() {
   PhidgetInterfaceKit.super_.call(this, &#x27;PhidgetInterfaceKit&#x27;);
-  this.data = { inputs: {}, sensors: {}, outputs: {} };
+
+  /**
+   * An object containing the current value for all board inputs. The values are boolean.
+   * To retrieve a value simply use the input number. For example:
+   * PhidgetInterfaceKit.inputs[5].
+   *
+   * @property inputs
+   * @type {{}}
+   */
+  this.inputs = {};
+
+  /**
+   * An object containing the current value for all board sensors. The values are
+   * integers. To retrieve a vlaue simply use the sensor number. For example:
+   * PhidgetInterfaceKit.sensors[5].
+   *
+   * @property sensors
+   * @type {{}}
+   */
+  this.sensors = {};
+
+  /**
+   * An object containing the current value for all board outputs. The values are
+   * boolean. To retrieve a value, simply use the output number. For example:
+   * PhidgetInterfaceKit.outputs[5].
+   *
+   * @property outputs
+   * @type {{}}
+   */
+  this.outputs = {};
+
 };
 
 util.inherits(PhidgetInterfaceKit, Phidget);
 
 /**
- * Set the specified output to open (true) or closed (false).
+ * Sets the specified output to active (true) or inactive (false).
  *
  * @method setOutput
  * @param {int} index The output number to set
- * @param {int} value The value (true/false) you wish to set the output to
+ * @param {Boolean} value The value you wish to set the output to
  * @returns {Phidget} Returns the Phidget to allow method chaining
  */
-PhidgetInterfaceKit.prototype.setOutput = function(output, value) {
+PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
 
   var self = this;
   if (self.ready !== true) { return self; }
 
-  if(value === true){ value = 1; }
-  if(value === false){ value = 0; }
-  output = parseInt(output);
-  value = parseInt(value);
+  value = (value === true) ? true : false;
+  index = self._forceBetween(index, 0, 7);
+  var vOut = (value === true) ? 1 : 0;
 
-  if(value === 1 || value === 0){
-    var msg = &#x27;set /PCK/&#x27; + this.type + &#x27;/&#x27; + this.serial;
-    msg += &#x27;/Output/&#x27; + output + &#x27;=&quot;&#x27; + value + &#x27;&quot;&#x27; + this._delimiter;
-    self._client.write(msg);
-    self.data.outputs[output] = value;
-  } else {
-    throw new Error(&#x27;digital input must be true/false or 1/0&#x27;);
-  }
+  self.outputs[index] = value;
+  self._sendKey(self._makeIndexedKey(&#x27;Output&#x27;, index), vOut, true);
 
   return self;
 
 };
+
+/**
+ * Parses &#x27;report&#x27; lines received from the webservice that are specific to the
+ * PhidgetInterfaceKit boards.
+ *
+ * @method _parsePhidgetSpecificReport
+ * @param line {String} The raw line received from the webservice.
+ * @param parts {Array} The raw line split on the &quot;/&quot; character.
+ * @private
+ */
+PhidgetInterfaceKit.prototype._parsePhidgetSpecificReport = function (line, parts) {
+
+  var self = this;
+
+  var type = parts[4];
+
+  if (type === &#x27;Input&#x27; || type === &#x27;Output&#x27; || type === &#x27;Sensor&#x27;) {
+
+    var infos = parts[5].split(&quot; &quot;);
+    var index = parseInt(infos[0]);
+    var value = parseInt(infos[3].replace(&#x27;&quot;&#x27;, &quot;&quot;));
+
+    if (type === &quot;Input&quot;) {
+
+      self.inputs[index] = (value === 1);
+
+      /**
+       * Event emitted when binary input data is received.
+       *
+       * @event input
+       * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+       *        emitted the event.
+       * @param {Object} data An object containing the input data and related information
+       * @param {int} data.index The input&#x27;s index number
+       * @param {Boolean} data.value The input&#x27;s received value
+       */
+      self.emit(
+        &quot;input&quot;,
+        self,
+        {&quot;index&quot;: index, &quot;value&quot;: value}
+      );
+
+    } else if (type === &quot;Sensor&quot;) {
+
+      self.sensors[index] = value;
+
+      /**
+       * Event emitted when analog sensor data is received
+       *
+       * @event sensor
+       * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+       *        emitted the event.
+       * @param {Object} data An object containing the sensor data and related information
+       * @param {int} data.index The sensor&#x27;s index number
+       * @param {int} data.value The sensor&#x27;s received value
+       */
+      self.emit(
+        &quot;sensor&quot;,
+        self,
+        {&quot;index&quot;: index, &quot;value&quot;: value}
+      );
+
+    } else if (type === &quot;Output&quot;) {
+
+      self.outputs[index] = value;
+
+      /**
+       * Event emitted when data is being outputted through one of the outputs
+       *
+       * @event output
+       * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+       *        emitted the event.
+       * @param {Object} data An object containing the output data and related information
+       * @param {int} data.index The sensor&#x27;s index number
+       * @param {int} data.value The sensor&#x27;s received value
+       */
+      self.emit(
+        &quot;output&quot;,
+        self,
+        {&quot;index&quot;: index, &quot;value&quot;: value}
+      );
+
+    }
+  }
+
+};
+
+/****************************************************************************************/
+/*************************************  PhidgetLED  *************************************/
+/****************************************************************************************/
 
 /**
  * The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.
@@ -773,7 +925,17 @@ PhidgetInterfaceKit.prototype.setOutput = function(output, value) {
  */
 var PhidgetLED = function() {
   PhidgetLED.super_.call(this, &#x27;PhidgetLED&#x27;);
-  this.data = { outputs: {} };
+
+  /**
+   * An object containing the current value for all board outputs. The values are
+   * integers between 0 and 100. To retrieve the value simply use the output number. For
+   * example: PhidgetLED.outputs[5].
+   *
+   * @property outputs
+   * @type {{}}
+   */
+  this.outputs = {};
+
 };
 
 util.inherits(PhidgetLED, Phidget);
@@ -794,8 +956,8 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
   index = self._forceBetween(index, 0, 63);
   value = self._forceBetween(value, 0, 100);
 
-  self._sendKey(self._makeIndexedKey(&#x27;Brightness&#x27;, index, 63), value, true);
-  self.data.outputs[index] = value;
+  self._sendKey(self._makeIndexedKey(&#x27;Brightness&#x27;, index), value, true);
+  self.outputs[index] = value;
 
   return self;
 
