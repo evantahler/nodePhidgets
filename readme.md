@@ -10,8 +10,6 @@ distance, etc.).  [Node.js](http://nodejs.org) and [io.js](http://iojs.org) are 
 networking library which makes it easy to create fast networked applications.  This
 project aims to make it simple for them to interact. Synergy!
 
-## Missing boards!
-
 ## Getting started
 This project assumes you have the [Phidget WebService]
 (http://www.phidgets.com/docs/Phidget_WebService) up and running.  For "regular" (USB)
