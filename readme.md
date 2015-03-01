@@ -97,7 +97,7 @@ of outputs by looking at the `PhidgetLED.outputs` object. This object will look 
     '0': 0,
     '1': 67,
     '2': 0,
-    '3': 12,
+    '3': 13,
 
     // etc.
 }
