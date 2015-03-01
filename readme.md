@@ -124,55 +124,28 @@ Also included via the `PhidgetLED` object is the following:
 
  * PhidgetLED
 
-Other boards will be added in the future. If you are in a hurry, and could support the
-development effort, please contact one of the [project contributors]
-(https://github.com/cotejp/node-phidgets/graphs/contributors).
+Other boards will be added in the future. Help from contributors is always welcomed.
+
+If you are in a hurry, and can support the development effort, please contact one of the
+[project contributors](https://github.com/cotejp/node-phidgets/graphs/contributors).
 
 ### Documentation
 
-The full API documentation is available for download in the *docs* folder. You can also
-view it online.
+The full [API documentation](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)
+is available for download in the *docs* folder. You can also view it online.
 
-You can also read the state of your board from `phidget.data` which will be an object like below:
 
-```javascript
-  {
-    1234:
-    { inputs: { '0': 0, '1': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
-      outputs: { '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
-      sensors: { '0': 371, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 259 },
-    }
-  }
-```
+### Warning to users of version <= 0.4.0
 
-The number of inputs, sensors, and outputs will vary depending on your phidget board.  DO NOT set the output values via this object, as it won't work.
+The API in version 0.5.0 has changed and is not backwards-compatible. This change was made
+mandatory bin order to support more than the original InterfaceKit boards. 
 
-### Methods
+An archived copy of [version 0.4.0]
+(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
+kept around for those needing to maintain older projects. However, if possible we
+recommend you to update to the new version and architecture. It already provides plenty of
+improvements and more are to come.
 
-__phidget.connect()__
-
-__phidget.setOutput(boardId, id, value)__  This method is used to set the digital outputs of the phidget board.  `id` is a number from 0 to n, and value is `true` for on, and `false` for off.  There will be some lag (~0.5 seconds) when sending the set command to seeing the change reflected via the server and associated node event.  This is normal.  Keep this in mind, and try not to send `set` commands too fast.
-
-If your phidgetWebService is connected to more than 1 board, you will need to provide a boardId.  Otherwise, you can send `null`, and we will look up the boardId for you.
-
-__phidget.quit()__
-
-## Connecting & Configuration Params
-`phidget.connect` can be passed an a JSON object of options.  Here are the options and their defaults:
-
-```javascript
-{
-  host:             "127.0.0.1",
-  port:             5001,
-  version:          "1.0.10",
-  password:         null,
-  delimiter:        '\r\n',
-  readyWaitTimeout: 200,
-  reconnectionDelay: 200
-}
-```
-
-__Note on `version`__: version in this case is the version of the phidget server and associated API.  You should check your phidget server to learn the version in use.  The good news is that the APIs we are using here have not changed for the bast 3 years, and appear to be unlikely to do so in the future.  If you run into errors with newer versions, let me know.
 
 ## ToDo:
 * Support for phidget authentication
