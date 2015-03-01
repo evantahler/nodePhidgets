@@ -88,31 +88,42 @@ var net = require(&#x27;net&#x27;);
 var util = require(&#x27;util&#x27;);
 var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
 
+/****************************************************************************************/
+/**************************************  Phidget  ***************************************/
+/****************************************************************************************/
+
 /**
- * The &#x60;Phidgets&#x60; library module makes it easy to connect to a variety of boards made by
- * [Phidgets Inc.](http://www.phidgets.com)
+ * The &#x60;Phidgets&#x60; library module makes it easy to connect to various sensor and controller
+ * boards made by [Phidgets Inc.](http://www.phidgets.com) This library works under
+ * [Node.js](http://www.nodejs.org) and other compatible frameworks such as
+ * [io.js](http://www.iojs.org)
+ *
+ * For support, go to the GitHub [project page](https://github.com/evantahler/nodePhidgets).
+ *
+ * Please note that this library is an open source project that is not affiliated with
+ * Phidgets Inc.
  *
  * @module phidgets
  *
- *
- * @todo add support for connecting to a board by label.
  * @todo add support for authentication
- * @todo complete close function
+ * @todo complete close function ?
  * @todo understand what lid0 does ?!
  * @todo implement a decent toString() method
- * @todo get rid of data and put innput, output and sensors at the top
- * @todo make label, serial and name read-omly
- *
+ * @todo there seems to be an issue in nw.js when the app is realoded.
+ * @todo create getter and setter for label because it must match certain requirements
+ * @todo parse missing report lines for PhidgetInterfaceKit and PhidgetLED
  *
  * done: chainable, timeout if no connection, module, recovers when server goes down or
- * device unplugged, name and label retrieved from server
+ * device unplugged, name and label retrieved from server, phidgetled, connect by label,
+ * version
  */
 var phidgets = {};
 
 /**
- * The Phidget class is an abstract class providing common properties and methods to all
+ * The &#x60;Phidget&#x60; class is an abstract class providing common properties and methods to all
  * the board-specific child classes. This class cannot be instantiated directly. Please
- * instantiate one of the child classes instead (PhidgetInterfaceKit, PhidgetLED, etc.).
+ * instantiate one of the child classes instead (&#x60;PhidgetInterfaceKit&#x60;, &#x60;PhidgetLED&#x60;,
+ * etc.).
  *
  * @class Phidget
  * @constructor
@@ -124,33 +135,51 @@ var Phidget = function(type) {
   }
 
   /**
-   * Array of all the devices supported by this library.
+   * [read-only] Array of all the devices supported by this library.
+   * @property supportedDevices
    * @type {string[]}
+   * @readOnly
    */
-  this.supportedDevices = [
-    &#x27;PhidgetInterfaceKit&#x27;,
-    &#x27;PhidgetLED&#x27;
-  ];
+  Object.defineProperty(this, &#x27;supportedDevices&#x27;, {
+    enumerable: true,
+    writable: false,
+    value: [
+      &#x27;PhidgetInterfaceKit&#x27;,
+      &#x27;PhidgetLED&#x27;
+    ]
+  });
 
   if (this.supportedDevices.indexOf(type) &lt; 0) {
     throw new Error(&quot;Unsupported device type&quot;);
   }
 
   /**
-   * The type of device (i.e. PhidgetInterfaceKit, PhidgetLED, etc.)
+   * [read-only] The type of device (i.e. PhidgetInterfaceKit, PhidgetLED, etc.).
+   *
    * @property type
    * @type {String}
+   * @readOnly
    */
-  this.type = type;
+  Object.defineProperty(this, &#x27;type&#x27;, {
+    enumerable: true,
+    writable: false,
+    value: type
+  });
 
   /**
-   * Whether the device is ready for use or not. A device must be &#x27;opened&#x27; before it can
-   * be used.
+   * [read-only]  Whether the device is ready for use or not. A device must be &#x27;opened&#x27;
+   * before it can be used.
+   *
    * @property ready
    * @type {Boolean}
-   * @default false
+   * @readOnly
    */
-  this.ready = false;
+  Object.defineProperty(this, &#x27;ready&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (this._ready);
+    }
+  });
 
   /**
    * Whether to try automatically reopen the device if it gets remotely closed.
@@ -177,7 +206,9 @@ var Phidget = function(type) {
   this.port = 5001;
 
   /**
-   * The unique serial number of the device. This is undefined until the device is opened.
+   * The unique serial number of the device. If specified, it will be used to connect to
+   * the matching device.
+   *
    * @property serial
    * @type {int}
    * @default undefined
@@ -185,7 +216,9 @@ var Phidget = function(type) {
   this.serial = undefined;
 
   /**
-   * The unique label of the device. This is undefined until the device is opened.
+   * The unique label of the device. If specified, it will be used to connect to the
+   * matching device.
+   *
    * @property label
    * @type {String}
    * @default undefined
@@ -193,16 +226,44 @@ var Phidget = function(type) {
   this.label = undefined;
 
   /**
-   * Human-readable version of the board&#x27;s name (i.e. &quot;Phidget InterfaceKit 8/8/8&quot;. This
-   * information is only available after the connection has been successfully opened.
+   * [read-only] Human-readable version of the board&#x27;s name (i.e. &quot;Phidget InterfaceKit
+   * 8/8/8&quot;. This information is only available some time after the connection has been
+   * successfully opened.
+   *
+   * @property name
    * @type {String}
    * @default undefined
    */
-  this.name = undefined;
+  Object.defineProperty(this, &#x27;name&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (this._name);
+    }
+  });
 
+  /**
+   * [read-only] This number distinguishes between revisions of a specific type of
+   * Phidget. It is only useful for debugging purposes. This information is only available
+   * some time after the connection has been successfully opened.
+   *
+   * @property version
+   * @type {String}
+   * @default undefined
+   */
+  Object.defineProperty(this, &#x27;version&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (this._version);
+    }
+  });
+
+  /** @private */
+  this._ready = false;
   this._client = null;
+  this._name = undefined;
+  this._version = undefined;
   this._randomId = Math.floor(Math.random() * 99999);
-  this._socketDataString = &#x27;&#x27;;
+  this._inputBuffer = &#x27;&#x27;;
   this._protocol = &quot;1.0.10&quot;;
   this._delimiter = &#x27;\r\n&#x27;;
   this._reopeningDelay = 1000;
@@ -217,30 +278,14 @@ var Phidget = function(type) {
 
 util.inherits(Phidget, EventEmitter);
 
-
-
-
-//Phidget.prototype._cleanup = function(self) {
-//console.log(&quot;CLEANUP!!!&quot;);
-//  if (this._client) {
-//    this._client.destroy();
-//  }
-//};
-
-////process.stdin.resume();
-//process.on(&#x27;exit&#x27;, function() {this._cleanup(self);} );
-//process.on(&#x27;SIGINT&#x27;, function() {this._cleanup(self);} );
-////process.on(&#x27;uncaughtException&#x27;, this._cleanup(self));
-
-
 /**
  * Opens a connection to a Phidget device (via the webservice).
  *
  * @method open
- * @param {Object} options Options
- * @param {String} options.host Hostname or IP address to connect to
- * @param {int} options.port Port to connect to
- * @param {int} options.serial Serial of the device to connect to
+ * @param {Object} [options] Options
+ * @param {String} [options.host] Hostname or IP address to connect to
+ * @param {int} [options.port] Port to connect to
+ * @param {int} [options.serial] Serial number of the device to connect to
  * @returns {Phidget} Returns the Phidget to allow method chaining
  */
 Phidget.prototype.open = function(options) {
@@ -251,6 +296,7 @@ Phidget.prototype.open = function(options) {
   if (options.host)   { this.host = options.host; }
   if (options.port)   { this.port = options.port; }
   if (options.serial) { this.serial = options.serial; }
+  if (options.label)  { this.label = options.label; }
 
   /**
    * Event emitted when an attempt to open a Phidget has been initiated.
@@ -261,40 +307,38 @@ Phidget.prototype.open = function(options) {
   self.emit(&#x27;opening&#x27;, self);
 
   // The function passed as a parameter is only executed when the &#x27;connect&#x27; event is
-  // received.
+  // received (only on success). That&#x27;s why the &#x27;error&#x27; handler needs to be below.
   self._client = net.createConnection(self.port, self.host, function() {
 
     self._client.setEncoding(&#x27;utf8&#x27;);
     self._client.setKeepAlive(&quot;enable&quot;, 10000);
 
     self._client.on(&#x27;end&#x27;, function() {
-      console.log(&quot;end end end&quot;);
-      self._handleConnectionEnd(self);
+      self._handleConnectionEnd();
     });
 
     self._client.on(&#x27;data&#x27;, function(d) {
       self._handleData(d, self);
     });
 
-    self._client.write(&quot;995 authenticate, version=&quot; + self._protocol + self._delimiter);
-    self._client.write(&quot;report 8 report&quot; + self._delimiter);
-
     // Open connection to web service
+    self._sendLine(&quot;995 authenticate, version=&quot; + self._protocol);
+    self._sendLine(&quot;report 8 report&quot;);
     var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
 
-    // If a label has been specified, use it. If not, use the serial.
-    //if (self.label !== undefined) {
-    //  message   += &quot;/-1/&quot; + _escapeLabel(self.label);
-    //} else if (self.serial !== -1) {
-    if (self.serial &gt; 0) {
-      message   += &quot;/&quot; + self.serial;
+    // If a label or a serial has been specified, add them to the connect query (priority
+    // to the label)
+    if (self.label) {
+      message += &quot;/-1/&quot; + self.label;
+    } else if (self.serial &amp;&amp; self.serial &gt; 0) {
+        message += &quot;/&quot; + self.serial;
     }
 
-    message += &quot;=\&quot;Open\&quot; for session&quot; + self._delimiter;
-    self._client.write(message);
+    message += &quot;=\&quot;Open\&quot; for session&quot;;
+    self._sendLine(message);
 
     // Listen message
-    self._client.write(&quot;listen /PSK/&quot; + self.type + &quot; lid0&quot; + self._delimiter);
+    self._sendLine(&quot;listen /PSK/&quot; + self.type + &quot; lid0&quot;);
 
     // Here we have a challenge: if we connect successfully to the web service but the
     // device is not plugged in, we do not know. That&#x27;s why the device is set as ready
@@ -309,7 +353,7 @@ Phidget.prototype.open = function(options) {
          * @param {Phidget} emitter The actual Phidget object that emitted the event.
          */
         self.emit(&#x27;timeout&#x27;, self);
-        self._handleConnectionEnd(self);
+        self._handleConnectionEnd();
       },
       self._openingTimeoutDuration
     );
@@ -317,7 +361,7 @@ Phidget.prototype.open = function(options) {
   });
 
   self._client.on(&#x27;error&#x27;, function(e) {
-    self._handleConnectionError(e, self);
+    self._handleConnectionError(e);
   });
 
   return self;
@@ -331,20 +375,30 @@ Phidget.prototype.open = function(options) {
  * @returns {Phidget} Returns the Phidget to allow method chaining
  */
 Phidget.prototype.close = function() {
+
   var self = this;
-  self.reopen = false;
-  self._client.write(&quot;quit\r\n&quot;);
-  return self;
+
+  // Only close if open
+  if (self.ready) {
+    self.reopen = false;
+    // In case close() is called before the initial check timeout has had time to expire
+    clearTimeout(self._openingTimeoutId);
+    self._sendLine(&quot;quit&quot;);
+    self._terminateConnection();
+  }
+
 };
 
 /** @private */
-Phidget.prototype._handleConnectionEnd = function(self) {
+Phidget.prototype._terminateConnection = function() {
 
-  self._client.removeAllListeners([&#x27;end&#x27;, &#x27;close&#x27;, &#x27;error&#x27;, &#x27;data&#x27;]);
+  var self = this;
+
+  self._client.removeAllListeners([&#x27;end&#x27;, &#x27;error&#x27;, &#x27;data&#x27;]);
   self._client.end();
   self._client.destroy();
   //self._client.unref();
-  self.ready = false;
+  self._ready = false;
 
   /**
    * Event emitted when the connection to a phidget has been remotely closed.
@@ -353,6 +407,15 @@ Phidget.prototype._handleConnectionEnd = function(self) {
    * @param {Phidget} emitter The actual object that emitted the event.
    */
   self.emit(&#x27;closed&#x27;, self);
+
+};
+
+/** @private */
+Phidget.prototype._handleConnectionEnd = function() {
+
+  var self = this;
+
+  self._terminateConnection();
 
   // Attempt to reopen if configured as such
   if(self.reopen === true &amp;&amp; self._reopeningCount &lt; self._maxReopeningAttempts) {
@@ -386,7 +449,10 @@ Phidget.prototype._handleConnectionEnd = function(self) {
 };
 
 /** @private */
-Phidget.prototype._handleConnectionError = function(e, self) {
+Phidget.prototype._handleConnectionError = function(e) {
+
+  var self = this;
+
   /**
    * Event emitted when an error occurs while trying to open a phidget
    *
@@ -401,7 +467,7 @@ Phidget.prototype._handleConnectionError = function(e, self) {
    */
   self.emit(&#x27;error&#x27;, self, e);
 
-  self._handleConnectionEnd(self);
+  self._handleConnectionEnd();
 
 };
 
@@ -411,22 +477,24 @@ Phidget.prototype._handleData = function(chunk, self) {
   var index, line;
 
   chunk = chunk.toString(&#x27;utf8&#x27;);
-  self._socketDataString += chunk;
+  self._inputBuffer += chunk;
 
-  while( (index = self._socketDataString.indexOf(&#x27;\n&#x27;)) &gt; -1 ) {
+  while( (index = self._inputBuffer.indexOf(&#x27;\n&#x27;)) &gt; -1 ) {
 
-    line = self._socketDataString.slice(0, index);
-    self._socketDataString = self._socketDataString.slice(index + 1);
+    line = self._inputBuffer.slice(0, index);
+    self._inputBuffer = self._inputBuffer.slice(index + 1);
     line = line.replace(/\u0000/gi, &quot;&quot;);
     line = line.replace(/\u0001/gi, &quot;&quot;);
 
     /**
      * Event emitted when a new line of data has been received from the web service. This
-     * is mostly useful for debugging purposes. It will let you view all data coming in.
+     * is mostly useful for debugging purposes (hence the @private denomination). It will
+     * let you view all data coming in.
      *
      * @event received
      * @param {Phidget} emitter The actual Phidget object that emitted the event.
      * @param {String} data The actual string data received.
+     * @private
      */
     self.emit(&#x27;received&#x27;, self, line);
 
@@ -484,41 +552,12 @@ Phidget.prototype._parseLineInput = function(line, self) {
 /** @private */
 Phidget.prototype._parseReport = function(line, self) {
 
-  // A typical report line looks like this (for DataRate, RawSensor, Sensor, Input, Output)
+  // The following report lines are not currently being parsed by this library. It&#x27;s not
+  // clear whether there are actual use cases for them:
   //
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Output/6 latest value &quot;0&quot; (changed)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/RawSensor/6 latest value &quot;0&quot; (removing)
-  //
-  // We extract the infos into an array
-  //
-  //    0: PSK
-  //    1: PhidgetInterfaceKit
-  //    2: mylabel
-  //    3: 48587
-  //    4: Output
-  //    5: 6 latest value &quot;0&quot; (changed)
-  //
-  // A report line when the device is unplugged
-  //
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Detached&quot; (removing)
-  //
-  // More examples that remain to be done:
-  //
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRate/5 latest value &quot;16&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMax latest value &quot;16&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMin latest value &quot;1000&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InitKeys latest value &quot;61&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/ID latest value &quot;69&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfOutputs latest value &quot;8&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfInputs latest value &quot;8&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfSensors latest value &quot;8&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Ratiometric latest value &quot;1&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Attached&quot; (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Detached&quot; (removing)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Version latest value &quot;904&quot; (added)
-  //    report 200-that&#x27;s all for now
-
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InitKeys latest value &quot;61&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/ID latest value &quot;69&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Attached&quot; (added)
 
   var parts = line.split(&quot;/&quot;).slice(1);
 
@@ -534,17 +573,27 @@ Phidget.prototype._parseReport = function(line, self) {
 
   if (type &amp;&amp; type === &#x27;Status latest value &quot;Detached&quot; (removing)&#x27;) {
 
-    self._handleConnectionEnd(self);
+    self._handleConnectionEnd();
 
   } else if (
     type &amp;&amp;
     type.indexOf(&#x27;Name latest value &quot;&#x27;) === 0 &amp;&amp;
-    type.indexOf(&quot;(added)&quot;) &gt; -1
+    line.indexOf(&quot;(added)&quot;) &gt; -1
   ) {
 
     // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (removing)
     // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (added)
-    self.name = line.split(&#x27;&quot;&#x27;)[1];
+    self._name = line.split(&#x27;&quot;&#x27;)[1];
+    console.log(&quot;NAME NAME: &quot; + self._name);
+
+  } else if (
+    type &amp;&amp;
+    type.indexOf(&#x27;Version latest value &quot;&#x27;) === 0 &amp;&amp;
+    line.indexOf(&quot;(added)&quot;) &gt; -1
+  ) {
+
+    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Version latest value &quot;904&quot; (added)
+    self._version = parseInt(line.split(&#x27;&quot;&#x27;)[1]);
 
   } else if (
     type &amp;&amp;
@@ -561,7 +610,7 @@ Phidget.prototype._parseReport = function(line, self) {
 
     if (self.ready === false) {
 
-      self.ready = true;
+      self._ready = true;
       clearTimeout(self._openingTimeoutId);
       self._reopeningCount = 0;
 
@@ -574,6 +623,10 @@ Phidget.prototype._parseReport = function(line, self) {
       self.emit(&quot;opened&quot;, self);
 
     }
+
+  //} else if (line === &quot;report 200-that&#x27;s all for now&quot;) {
+  //
+  //  // nothing to do!
 
   } else {
 
@@ -592,83 +645,14 @@ Phidget.prototype._parseReport = function(line, self) {
  * @param parts {Array} The raw line split on the &quot;/&quot; character.
  * @protected
  */
-Phidget.prototype._parsePhidgetSpecificReport = function (line, parts) {
-
-  var self = this;
-
-  var type = parts[4];
-
-  if (type === &#x27;Input&#x27; || type === &#x27;Output&#x27; || type === &#x27;Sensor&#x27;) {
-
-    var infos = parts[5].split(&quot; &quot;);
-    var index = parseInt(infos[0]);
-    var value = parseInt(infos[3].replace(&#x27;&quot;&#x27;, &quot;&quot;));
-
-    if (type === &quot;Input&quot;) {
-
-      self.inputs[index] = (value === 1);
-
-      /**
-       * Event emitted when binary input data is received.
-       *
-       * @event input
-       * @param {Phidget} emitter The actual Phidget object that emitted the event.
-       * @param {Object} data An object containing the input data and related information
-       * @param {int} data.index The input&#x27;s index number
-       * @param {Boolean} data.value The input&#x27;s received value
-       */
-      self.emit(
-        &quot;input&quot;,
-        self,
-        {&quot;index&quot;: index, &quot;value&quot;: value}
-      );
-
-    } else if (type === &quot;Sensor&quot;) {
-
-      self.sensors[index] = value;
-
-      /**
-       * Event emitted when analog sensor data is received
-       *
-       * @event sensor
-       * @param {Phidget} emitter The actual Phidget object that emitted the event.
-       * @param {Object} data An object containing the sensor data and related information
-       * @param {int} data.index The sensor&#x27;s index number
-       * @param {int} data.value The sensor&#x27;s received value
-       */
-      self.emit(
-        &quot;sensor&quot;,
-        self,
-        {&quot;index&quot;: index, &quot;value&quot;: value}
-      );
-
-    } else if (type === &quot;Output&quot;) {
-
-      self.outputs[index] = value;
-
-      /**
-       * Event emitted when data is being outputted through one of the outputs
-       *
-       * @event output
-       * @param {Phidget} emitter The actual Phidget object that emitted the event.
-       * @param {Object} data An object containing the output data and related information
-       * @param {int} data.index The sensor&#x27;s index number
-       * @param {int} data.value The sensor&#x27;s received value
-       */
-      self.emit(
-        &quot;output&quot;,
-        self,
-        {&quot;index&quot;: index, &quot;value&quot;: value}
-      );
-
-    }
-  }
-
-};
-
+Phidget.prototype._parsePhidgetSpecificReport = function (line, parts) {};
 
 /**
+ * Returns a /PCK string built from the parameters
+ *
  * @method _makeIndexedKey
+ * @param keyword {String} The operation keyword to use
+ * @param index {int} The index of the output to use
  * @protected
  */
 Phidget.prototype._makeIndexedKey = function (keyword, index) {
@@ -677,7 +661,13 @@ Phidget.prototype._makeIndexedKey = function (keyword, index) {
 };
 
 /**
+ * Sends the /PCK string (with attached value) to the webservice.
+ *
  * @method _sendKey
+ * @param key {String} A /PCK string (typically form the _makeIndexedKey() method)
+ * @param value {int|string} The value to set
+ * @param persistent {Boolean} Whether the value should persist or whether its for the
+ *        session only
  * @protected
  */
 Phidget.prototype._sendKey = function (key, value, persistent) {
@@ -685,60 +675,33 @@ Phidget.prototype._sendKey = function (key, value, persistent) {
   var request = &quot;set &quot; + key + &quot;=\&quot;&quot; + value + &quot;\&quot;&quot;;
   if(!persistent) { request += &quot; for session&quot;; }
   self._client.write(request + self._delimiter);
-  console.log(&#x27;request: &#x27; + request);
 };
 
 /**
+ * Sends a line of data to the webservice
+ *
+ * @method _sendLine
+ * @param line {String} A non-terminated line of data to send
+ * @protected
+ */
+Phidget.prototype._sendLine = function (line) {
+  var self = this;
+  self._client.write(line + self._delimiter);
+};
+
+/**
+ * Returns the value after making sure it falls between min and max.
+ *
  * @method _forceBetween
+ * @param value {int|Number} The value to check
+ * @param min {int} The minimum value desired
+ * @param max {int} The maximum value desired
+ * @return int
  * @protected
  */
 Phidget.prototype._forceBetween = function(value, min, max) {
   return (Math.min(max, Math.max(min, value)));
 };
-
-
-//function _escapeLabel(val, escBacks) {
-//
-//  var esc = escBacks || false;
-//
-//  var newVal = &quot;&quot;;
-//  if(val.length === 0) {
-//    newVal = (esc ? &quot;\\\\x01&quot; : &quot;\\x01&quot;);
-//  } else {
-//    for (var i = 0; i &lt; val.length; i++) {
-//      var charCode = val.charCodeAt(i);
-//      if (!_isGoodChar(charCode)) {
-//        newVal = newVal.concat((escBacks ? &quot;\\\\x&quot; : &quot;\\x&quot;) + _hexChar(charCode / 16) + _hexChar(charCode % 16));
-//      } else {
-//        newVal = newVal.concat(String.fromCharCode(charCode));
-//      }
-//    }
-//  }
-//  return newVal;
-//}
-//
-//function _isGoodChar(charCode) {
-//  var chars = &quot;09azAZ ./&quot;;
-//  if(charCode &lt;= chars.charCodeAt(1) &amp;&amp; charCode &gt;= chars.charCodeAt(0)) { return true; }
-//  if(charCode &lt;= chars.charCodeAt(3) &amp;&amp; charCode &gt;= chars.charCodeAt(2)) { return true; }
-//  if(charCode &lt;= chars.charCodeAt(5) &amp;&amp; charCode &gt;= chars.charCodeAt(4)) { return true; }
-//  if(
-//    charCode === chars.charCodeAt(6) ||
-//    charCode === chars.charCodeAt(7) ||
-//    charCode === chars.charCodeAt(8)
-//  ) { return true; }
-//  return false;
-//}
-//
-//function _hexChar(num) {
-//  var chars = &quot;0123456789abcdef&quot;;
-//  if(num &gt; 0xF) { return &quot;f&quot;; }
-//  return chars.charAt(num);
-//}
-
-
-
-
 
 
 
@@ -747,8 +710,8 @@ Phidget.prototype._forceBetween = function(value, min, max) {
 /****************************************************************************************/
 
 /**
- * The PhidgetInterfaceKit class allows you to control and receive data from all Phidget
- * I/O boards :
+ * The &#x60;PhidgetInterfaceKit&#x60; class allows you to control and receive data from all Phidget
+ * interface boards :
  *
  *  * PhidgetAnalog 4-Output
  *  * PhidgetInterfaceKit 8/8/8 normal and mini-format
@@ -780,7 +743,7 @@ var PhidgetInterfaceKit = function() {
 
   /**
    * An object containing the current value for all board sensors. The values are
-   * integers. To retrieve a vlaue simply use the sensor number. For example:
+   * integers. To retrieve a value simply use the sensor number. For example:
    * PhidgetInterfaceKit.sensors[5].
    *
    * @property sensors
@@ -806,9 +769,10 @@ util.inherits(PhidgetInterfaceKit, Phidget);
  * Sets the specified output to active (true) or inactive (false).
  *
  * @method setOutput
- * @param {int} index The output number to set
- * @param {Boolean} value The value you wish to set the output to
- * @returns {Phidget} Returns the Phidget to allow method chaining
+ * @param index {int} The output number to set
+ * @param value {Boolean} The value you wish to set the output to
+ * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
+ *          chaining.
  */
 PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
 
@@ -828,7 +792,8 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
 
 /**
  * Parses &#x27;report&#x27; lines received from the webservice that are specific to the
- * PhidgetInterfaceKit boards.
+ * PhidgetInterfaceKit line of boards. By design, this function overrides the one in the
+ * super class.
  *
  * @method _parsePhidgetSpecificReport
  * @param line {String} The raw line received from the webservice.
@@ -836,6 +801,17 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
  * @private
  */
 PhidgetInterfaceKit.prototype._parsePhidgetSpecificReport = function (line, parts) {
+
+  // Several report lines are not currently being parsed:
+  //
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRate/5 latest value &quot;16&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMax latest value &quot;16&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMin latest value &quot;1000&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfOutputs latest value &quot;8&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfInputs latest value &quot;8&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfSensors latest value &quot;8&quot; (added)
+  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Ratiometric latest value &quot;1&quot; (added)
 
   var self = this;
 
@@ -919,6 +895,8 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificReport = function (line, part
 /**
  * The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.
  *
+ * Warning: as of now, only basic functionalities have been implemented. More to come...
+ *
  * @class PhidgetLED
  * @constructor
  * @extends Phidget
@@ -944,7 +922,7 @@ util.inherits(PhidgetLED, Phidget);
  * Adjusts the brightness of a LED.
  *
  * @method setBrightness
- * @param {int} index The LED to for which to adjust the brightness
+ * @param {int|int[]} index The LED to for which to adjust the brightness
  * @param {int} value The value (0-100) you wish to adjust the brightness to
  * @returns {Phidget} Returns the Phidget to allow method chaining
  */
@@ -953,11 +931,15 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
   var self = this;
   if (self.ready !== true) { return self; }
 
-  index = self._forceBetween(index, 0, 63);
+  index = [].concat(index);
   value = self._forceBetween(value, 0, 100);
 
-  self._sendKey(self._makeIndexedKey(&#x27;Brightness&#x27;, index), value, true);
-  self.outputs[index] = value;
+  for (var i = 0; i &lt; index.length; i++) {
+    console.log(&quot;pos: &quot; + index[i]);
+    var pos = self._forceBetween(index[i], 0, 63);
+    self._sendKey(self._makeIndexedKey(&#x27;Brightness&#x27;, pos), value, true);
+    self.outputs[pos] = value;
+  }
 
   return self;
 
