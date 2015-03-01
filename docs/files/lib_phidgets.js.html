@@ -1,11 +1,95 @@
-'use strict';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/phidgets.js - phidgets</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
 
-var net = require('net');
-var util = require('util');
-var EventEmitter = require('events').EventEmitter;
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.5.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Phidget.html">Phidget</a></li>
+                                <li><a href="../classes/PhidgetInterfaceKit.html">PhidgetInterfaceKit</a></li>
+                                <li><a href="../classes/PhidgetLED.html">PhidgetLED</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/phidgets.html">phidgets</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: lib/phidgets.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+var net = require(&#x27;net&#x27;);
+var util = require(&#x27;util&#x27;);
+var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
 
 /**
- * The `Phidgets` library module makes it easy to connect to a variety of boards made by
+ * The &#x60;Phidgets&#x60; library module makes it easy to connect to a variety of boards made by
  * [Phidgets Inc.](http://www.phidgets.com)
  *
  * @module phidgets
@@ -35,7 +119,7 @@ var phidgets = {};
 var Phidget = function(type) {
 
   if (this.constructor === Phidget) {
-    throw new Error("This class is abstract, you cannot instantiate it directly.");
+    throw new Error(&quot;This class is abstract, you cannot instantiate it directly.&quot;);
   }
 
   /**
@@ -46,7 +130,7 @@ var Phidget = function(type) {
   this.type = type;
 
   /**
-   * Whether the device is ready for use or not. A device must be 'opened' before it can
+   * Whether the device is ready for use or not. A device must be &#x27;opened&#x27; before it can
    * be used.
    * @property ready
    * @type {Boolean}
@@ -68,7 +152,7 @@ var Phidget = function(type) {
    * @type {String}
    * @default 127.0.0.1
    */
-  this.host = "127.0.0.1";
+  this.host = &quot;127.0.0.1&quot;;
 
   /**
    * The port of the Phidgets webservice to connect to.
@@ -95,7 +179,7 @@ var Phidget = function(type) {
   this.label = undefined;
 
   /**
-   * Human-readable version of the board's name (i.e. "Phidget InterfaceKit 8/8/8". This
+   * Human-readable version of the board&#x27;s name (i.e. &quot;Phidget InterfaceKit 8/8/8&quot;. This
    * information is only available after the connection has been successfully opened.
    * @type {String}
    * @default undefined
@@ -104,9 +188,9 @@ var Phidget = function(type) {
 
   this._client = null;
   this._randomId = Math.floor(Math.random() * 99999);
-  this._socketDataString = '';
-  this._protocol = "1.0.10";
-  this._delimiter = '\r\n';
+  this._socketDataString = &#x27;&#x27;;
+  this._protocol = &quot;1.0.10&quot;;
+  this._delimiter = &#x27;\r\n&#x27;;
   this._reopeningDelay = 1000;
   this._reopeningCount = 0;
   this._maxReopeningAttempts = 5;
@@ -123,16 +207,16 @@ util.inherits(Phidget, EventEmitter);
 
 
 //Phidget.prototype._cleanup = function(self) {
-//console.log("CLEANUP!!!");
+//console.log(&quot;CLEANUP!!!&quot;);
 //  if (this._client) {
 //    this._client.destroy();
 //  }
 //};
 
 ////process.stdin.resume();
-//process.on('exit', function() {this._cleanup(self);} );
-//process.on('SIGINT', function() {this._cleanup(self);} );
-////process.on('uncaughtException', this._cleanup(self));
+//process.on(&#x27;exit&#x27;, function() {this._cleanup(self);} );
+//process.on(&#x27;SIGINT&#x27;, function() {this._cleanup(self);} );
+////process.on(&#x27;uncaughtException&#x27;, this._cleanup(self));
 
 
 /**
@@ -160,47 +244,47 @@ Phidget.prototype.open = function(options) {
    * @event opening
    * @param {Phidget} emitter The actual Phidget object that emitted the event.
    */
-  self.emit('opening', self);
+  self.emit(&#x27;opening&#x27;, self);
 
-  // The function passed as a parameter is only executed when the 'connect' event is
+  // The function passed as a parameter is only executed when the &#x27;connect&#x27; event is
   // received.
   self._client = net.createConnection(self.port, self.host, function() {
 
-    self._client.setEncoding('utf8');
-    self._client.setKeepAlive("enable", 10000);
+    self._client.setEncoding(&#x27;utf8&#x27;);
+    self._client.setKeepAlive(&quot;enable&quot;, 10000);
 
-    self._client.on('end', function() {
-      console.log("end end end");
+    self._client.on(&#x27;end&#x27;, function() {
+      console.log(&quot;end end end&quot;);
       self._handleConnectionEnd(self);
     });
 
-    self._client.on('data', function(d) {
+    self._client.on(&#x27;data&#x27;, function(d) {
       self._handleData(d, self);
     });
 
-    self._client.write("995 authenticate, version=" + self._protocol + self._delimiter);
-    self._client.write("report 8 report" + self._delimiter);
+    self._client.write(&quot;995 authenticate, version=&quot; + self._protocol + self._delimiter);
+    self._client.write(&quot;report 8 report&quot; + self._delimiter);
 
     // Open connection to web service
-    var message  = "set /PCK/Client/0.0.0.0/" + self._randomId + "/" + self.type;
+    var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
 
     // If a label has been specified, use it. If not, use the serial.
     //if (self.label !== undefined) {
-    //  message   += "/-1/" + _escapeLabel(self.label);
+    //  message   += &quot;/-1/&quot; + _escapeLabel(self.label);
     //} else if (self.serial !== -1) {
-    if (self.serial > 0) {
-      message   += "/" + self.serial;
+    if (self.serial &gt; 0) {
+      message   += &quot;/&quot; + self.serial;
     }
 
-    message += "=\"Open\" for session" + self._delimiter;
+    message += &quot;=\&quot;Open\&quot; for session&quot; + self._delimiter;
     self._client.write(message);
 
     // Listen message
-    self._client.write("listen /PSK/" + self.type + " lid0" + self._delimiter);
+    self._client.write(&quot;listen /PSK/&quot; + self.type + &quot; lid0&quot; + self._delimiter);
 
     // Here we have a challenge: if we connect successfully to the web service but the
-    // device is not plugged in, we do not know. That's why the device is set as ready
-    // only when the following line is received: 'report 200-periodic report follows:'. If
+    // device is not plugged in, we do not know. That&#x27;s why the device is set as ready
+    // only when the following line is received: &#x27;report 200-periodic report follows:&#x27;. If
     // that line is not received within a certain delay, we must issue a timeout.
     self._openingTimeoutId = setTimeout(
       function() {
@@ -210,7 +294,7 @@ Phidget.prototype.open = function(options) {
          * @event timeout
          * @param {Phidget} emitter The actual Phidget object that emitted the event.
          */
-        self.emit('timeout', self);
+        self.emit(&#x27;timeout&#x27;, self);
         self._handleConnectionEnd(self);
       },
       self._openingTimeoutDuration
@@ -218,7 +302,7 @@ Phidget.prototype.open = function(options) {
 
   });
 
-  self._client.on('error', function(e) {
+  self._client.on(&#x27;error&#x27;, function(e) {
     self._handleConnectionError(e, self);
   });
 
@@ -235,14 +319,14 @@ Phidget.prototype.open = function(options) {
 Phidget.prototype.close = function() {
   var self = this;
   self.reopen = false;
-  self._client.write("quit\r\n");
+  self._client.write(&quot;quit\r\n&quot;);
   return self;
 };
 
 /** @private */
 Phidget.prototype._handleConnectionEnd = function(self) {
 
-  self._client.removeAllListeners(['end', 'close', 'error', 'data']);
+  self._client.removeAllListeners([&#x27;end&#x27;, &#x27;close&#x27;, &#x27;error&#x27;, &#x27;data&#x27;]);
   self._client.end();
   self._client.destroy();
   //self._client.unref();
@@ -254,10 +338,10 @@ Phidget.prototype._handleConnectionEnd = function(self) {
    * @event closed
    * @param {Phidget} emitter The actual object that emitted the event.
    */
-  self.emit('closed', self);
+  self.emit(&#x27;closed&#x27;, self);
 
   // Attempt to reopen if configured as such
-  if(self.reopen === true && self._reopeningCount < self._maxReopeningAttempts) {
+  if(self.reopen === true &amp;&amp; self._reopeningCount &lt; self._maxReopeningAttempts) {
 
     self._reopeningCount++;
 
@@ -275,7 +359,7 @@ Phidget.prototype._handleConnectionEnd = function(self) {
          * failing.
          */
         self.emit(
-          'reopening',
+          &#x27;reopening&#x27;,
           self,
           {attempt: self._reopeningCount, max: self._maxReopeningAttempts}
         );
@@ -301,7 +385,7 @@ Phidget.prototype._handleConnectionError = function(e, self) {
    * @param {String} error.message The error message
    * @param {String} error.port The network port
    */
-  self.emit('error', self, e);
+  self.emit(&#x27;error&#x27;, self, e);
 
   self._handleConnectionEnd(self);
 
@@ -312,15 +396,15 @@ Phidget.prototype._handleData = function(chunk, self) {
 
   var index, line;
 
-  chunk = chunk.toString('utf8');
+  chunk = chunk.toString(&#x27;utf8&#x27;);
   self._socketDataString += chunk;
 
-  while( (index = self._socketDataString.indexOf('\n')) > -1 ) {
+  while( (index = self._socketDataString.indexOf(&#x27;\n&#x27;)) &gt; -1 ) {
 
     line = self._socketDataString.slice(0, index);
     self._socketDataString = self._socketDataString.slice(index + 1);
-    line = line.replace(/\u0000/gi, "");
-    line = line.replace(/\u0001/gi, "");
+    line = line.replace(/\u0000/gi, &quot;&quot;);
+    line = line.replace(/\u0001/gi, &quot;&quot;);
 
     /**
      * Event emitted when a new line of data has been received from the web service. This
@@ -330,7 +414,7 @@ Phidget.prototype._handleData = function(chunk, self) {
      * @param {Phidget} emitter The actual Phidget object that emitted the event.
      * @param {String} data The actual string data received.
      */
-    self.emit('received', self, line);
+    self.emit(&#x27;received&#x27;, self, line);
 
     self._parseLineInput(line, self);
 
@@ -349,33 +433,33 @@ Phidget.prototype._parseLineInput = function(line, self) {
   //    996 No need to authenticate, version=1.0.10
 
   // Split on spaces
-  var status = line.split(" ")[0];
+  var status = line.split(&quot; &quot;)[0];
 
-  if (status === 'report') {
+  if (status === &#x27;report&#x27;) {
 
     self._parseReport(line, self);
 
-  //} else if(status === '200') {
+  //} else if(status === &#x27;200&#x27;) {
 
     // Positive response. Nothing to do.
 
-  } else if(status === '994') { // Version mismatch
+  } else if(status === &#x27;994&#x27;) { // Version mismatch
 
-    err = new Error('Protocol version mismatch.', 'PROTOCOLMISMATCH');
+    err = new Error(&#x27;Protocol version mismatch.&#x27;, &#x27;PROTOCOLMISMATCH&#x27;);
     err.details = line;
-    self.emit('error', self, err);
+    self.emit(&#x27;error&#x27;, self, err);
 
-  //} else if(status === '996') { // Authenticated or no authentication necessary
+  //} else if(status === &#x27;996&#x27;) { // Authenticated or no authentication necessary
 
     // Nothing to do.
 
-  } else if(status === '998') { // Authentication failed
+  } else if(status === &#x27;998&#x27;) { // Authentication failed
 
-    err = new Error('Authentication failed', 'AUTHFAILED');
+    err = new Error(&#x27;Authentication failed&#x27;, &#x27;AUTHFAILED&#x27;);
     err.details = line;
-    self.emit('error', self, err);
+    self.emit(&#x27;error&#x27;, self, err);
 
-  //} else if(status === '999') { // Authentication required
+  //} else if(status === &#x27;999&#x27;) { // Authentication required
 
     // to complete!
 
@@ -388,8 +472,8 @@ Phidget.prototype._parseReport = function(line, self) {
 
   // A typical report line looks like this (for DataRate, RawSensor, Sensor, Input, Output)
   //
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Output/6 latest value "0" (changed)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/RawSensor/6 latest value "0" (removing)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Output/6 latest value &quot;0&quot; (changed)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/RawSensor/6 latest value &quot;0&quot; (removing)
   //
   // We extract the infos into an array
   //
@@ -398,31 +482,31 @@ Phidget.prototype._parseReport = function(line, self) {
   //    2: mylabel
   //    3: 48587
   //    4: Output
-  //    5: 6 latest value "0" (changed)
+  //    5: 6 latest value &quot;0&quot; (changed)
   //
   // A report line when the device is unplugged
   //
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value "Detached" (removing)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Detached&quot; (removing)
   //
   // More examples that remain to be done:
   //
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRate/5 latest value "16" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMax latest value "16" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMin latest value "1000" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InitKeys latest value "61" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value "8" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/ID latest value "69" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfOutputs latest value "8" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfInputs latest value "8" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfSensors latest value "8" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Ratiometric latest value "1" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value "Attached" (added)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value "Detached" (removing)
-  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Version latest value "904" (added)
-  //    report 200-that's all for now
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRate/5 latest value &quot;16&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMax latest value &quot;16&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMin latest value &quot;1000&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InitKeys latest value &quot;61&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/ID latest value &quot;69&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfOutputs latest value &quot;8&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfInputs latest value &quot;8&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfSensors latest value &quot;8&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Ratiometric latest value &quot;1&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Attached&quot; (added)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Detached&quot; (removing)
+  //    report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Version latest value &quot;904&quot; (added)
+  //    report 200-that&#x27;s all for now
 
 
-  var infos = line.split("/").slice(1);
+  var infos = line.split(&quot;/&quot;).slice(1);
 
   if (!self.serial) {
     self.serial = parseInt(infos[3]);
@@ -434,13 +518,13 @@ Phidget.prototype._parseReport = function(line, self) {
 
   var type = infos[4];
 
-  if (type === 'Input' || type === 'Output' || type === 'Sensor') {
+  if (type === &#x27;Input&#x27; || type === &#x27;Output&#x27; || type === &#x27;Sensor&#x27;) {
 
-    var parts = infos[5].split(" ");
+    var parts = infos[5].split(&quot; &quot;);
     var index = parseInt(parts[0]);
-    var value = parseInt(parts[3].replace('"',""));
+    var value = parseInt(parts[3].replace(&#x27;&quot;&#x27;,&quot;&quot;));
 
-    if (type === "Input"){
+    if (type === &quot;Input&quot;){
 
       self.data.inputs[index] = (value === 1);
 
@@ -450,16 +534,16 @@ Phidget.prototype._parseReport = function(line, self) {
        * @event input
        * @param {Phidget} emitter The actual Phidget object that emitted the event.
        * @param {Object} data An object containing the input data and related information
-       * @param {int} data.index The input's index number
-       * @param {Boolean} data.value The input's received value
+       * @param {int} data.index The input&#x27;s index number
+       * @param {Boolean} data.value The input&#x27;s received value
        */
       self.emit(
-        "input",
+        &quot;input&quot;,
         self,
-        { "index": index, "value": value }
+        { &quot;index&quot;: index, &quot;value&quot;: value }
       );
 
-    } else if(type === "Sensor"){
+    } else if(type === &quot;Sensor&quot;){
 
       self.data.sensors[index] = value;
 
@@ -469,16 +553,16 @@ Phidget.prototype._parseReport = function(line, self) {
        * @event sensor
        * @param {Phidget} emitter The actual Phidget object that emitted the event.
        * @param {Object} data An object containing the sensor data and related information
-       * @param {int} data.index The sensor's index number
-       * @param {int} data.value The sensor's received value
+       * @param {int} data.index The sensor&#x27;s index number
+       * @param {int} data.value The sensor&#x27;s received value
        */
       self.emit(
-        "sensor",
+        &quot;sensor&quot;,
         self,
-        { "index": index, "value": value }
+        { &quot;index&quot;: index, &quot;value&quot;: value }
       );
 
-    } else if(type === "Output"){
+    } else if(type === &quot;Output&quot;){
 
       self.data.outputs[index] = value;
 
@@ -488,41 +572,41 @@ Phidget.prototype._parseReport = function(line, self) {
        * @event output
        * @param {Phidget} emitter The actual Phidget object that emitted the event.
        * @param {Object} data An object containing the output data and related information
-       * @param {int} data.index The sensor's index number
-       * @param {int} data.value The sensor's received value
+       * @param {int} data.index The sensor&#x27;s index number
+       * @param {int} data.value The sensor&#x27;s received value
        */
       self.emit(
-        "output",
+        &quot;output&quot;,
         self,
-        { "index": index, "value": value }
+        { &quot;index&quot;: index, &quot;value&quot;: value }
       );
 
     }
 
-  } else if (type && type === 'Status latest value "Detached" (removing)') {
+  } else if (type &amp;&amp; type === &#x27;Status latest value &quot;Detached&quot; (removing)&#x27;) {
 
     self._handleConnectionEnd(self);
 
   } else if (
-    type &&
-    type.indexOf('Name latest value "') === 0 &&
-    type.indexOf("(added)") > -1
+    type &amp;&amp;
+    type.indexOf(&#x27;Name latest value &quot;&#x27;) === 0 &amp;&amp;
+    type.indexOf(&quot;(added)&quot;) &gt; -1
   ) {
 
-    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value "Phidget InterfaceKit 8/8/8" (removing)
-    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value "Phidget InterfaceKit 8/8/8" (added)
-    self.name = line.split('"')[1];
+    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (removing)
+    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (added)
+    self.name = line.split(&#x27;&quot;&#x27;)[1];
 
   } else if (
-    type &&
-    type.indexOf('Label latest value "') === 0 &&
-    type.indexOf("(added)") > -1
+    type &amp;&amp;
+    type.indexOf(&#x27;Label latest value &quot;&#x27;) === 0 &amp;&amp;
+    type.indexOf(&quot;(added)&quot;) &gt; -1
   ) {
 
-    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Label latest value "mylabel" (added)
-    self.label = line.split('"')[1];
+    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Label latest value &quot;mylabel&quot; (added)
+    self.label = line.split(&#x27;&quot;&#x27;)[1];
 
-  } else if (line === 'report 200-periodic report follows:') {
+  } else if (line === &#x27;report 200-periodic report follows:&#x27;) {
 
     // report 200-periodic report follows:
 
@@ -538,7 +622,7 @@ Phidget.prototype._parseReport = function(line, self) {
        * @event opened
        * @param {Phidget} emitter The actual Phidget object that emitted the event.
        */
-      self.emit("opened", self);
+      self.emit(&quot;opened&quot;, self);
 
     }
 
@@ -552,7 +636,7 @@ Phidget.prototype._parseReport = function(line, self) {
  */
 Phidget.prototype._makeIndexedKey = function (keyword, index) {
   var self = this;
-  return '/PCK/' + self.type +'/'+self.serial+'/'+keyword+'/'+index;
+  return &#x27;/PCK/&#x27; + self.type +&#x27;/&#x27;+self.serial+&#x27;/&#x27;+keyword+&#x27;/&#x27;+index;
 };
 
 /**
@@ -561,10 +645,10 @@ Phidget.prototype._makeIndexedKey = function (keyword, index) {
  */
 Phidget.prototype._sendKey = function (key, value, persistent) {
   var self = this;
-  var request = "set " + key + "=\"" + value + "\"";
-  if(!persistent) { request += " for session"; }
+  var request = &quot;set &quot; + key + &quot;=\&quot;&quot; + value + &quot;\&quot;&quot;;
+  if(!persistent) { request += &quot; for session&quot;; }
   self._client.write(request + self._delimiter);
-  console.log('request: ' + request);
+  console.log(&#x27;request: &#x27; + request);
 };
 
 /**
@@ -580,14 +664,14 @@ Phidget.prototype._forceBetween = function(value, min, max) {
 //
 //  var esc = escBacks || false;
 //
-//  var newVal = "";
+//  var newVal = &quot;&quot;;
 //  if(val.length === 0) {
-//    newVal = (esc ? "\\\\x01" : "\\x01");
+//    newVal = (esc ? &quot;\\\\x01&quot; : &quot;\\x01&quot;);
 //  } else {
-//    for (var i = 0; i < val.length; i++) {
+//    for (var i = 0; i &lt; val.length; i++) {
 //      var charCode = val.charCodeAt(i);
 //      if (!_isGoodChar(charCode)) {
-//        newVal = newVal.concat((escBacks ? "\\\\x" : "\\x") + _hexChar(charCode / 16) + _hexChar(charCode % 16));
+//        newVal = newVal.concat((escBacks ? &quot;\\\\x&quot; : &quot;\\x&quot;) + _hexChar(charCode / 16) + _hexChar(charCode % 16));
 //      } else {
 //        newVal = newVal.concat(String.fromCharCode(charCode));
 //      }
@@ -597,10 +681,10 @@ Phidget.prototype._forceBetween = function(value, min, max) {
 //}
 //
 //function _isGoodChar(charCode) {
-//  var chars = "09azAZ ./";
-//  if(charCode <= chars.charCodeAt(1) && charCode >= chars.charCodeAt(0)) { return true; }
-//  if(charCode <= chars.charCodeAt(3) && charCode >= chars.charCodeAt(2)) { return true; }
-//  if(charCode <= chars.charCodeAt(5) && charCode >= chars.charCodeAt(4)) { return true; }
+//  var chars = &quot;09azAZ ./&quot;;
+//  if(charCode &lt;= chars.charCodeAt(1) &amp;&amp; charCode &gt;= chars.charCodeAt(0)) { return true; }
+//  if(charCode &lt;= chars.charCodeAt(3) &amp;&amp; charCode &gt;= chars.charCodeAt(2)) { return true; }
+//  if(charCode &lt;= chars.charCodeAt(5) &amp;&amp; charCode &gt;= chars.charCodeAt(4)) { return true; }
 //  if(
 //    charCode === chars.charCodeAt(6) ||
 //    charCode === chars.charCodeAt(7) ||
@@ -610,8 +694,8 @@ Phidget.prototype._forceBetween = function(value, min, max) {
 //}
 //
 //function _hexChar(num) {
-//  var chars = "0123456789abcdef";
-//  if(num > 0xF) { return "f"; }
+//  var chars = &quot;0123456789abcdef&quot;;
+//  if(num &gt; 0xF) { return &quot;f&quot;; }
 //  return chars.charAt(num);
 //}
 
@@ -643,7 +727,7 @@ Phidget.prototype._forceBetween = function(value, min, max) {
  * @extends Phidget
  */
 var PhidgetInterfaceKit = function() {
-  PhidgetInterfaceKit.super_.call(this, 'PhidgetInterfaceKit');
+  PhidgetInterfaceKit.super_.call(this, &#x27;PhidgetInterfaceKit&#x27;);
   this.data = { inputs: {}, sensors: {}, outputs: {} };
 };
 
@@ -668,12 +752,12 @@ PhidgetInterfaceKit.prototype.setOutput = function(output, value) {
   value = parseInt(value);
 
   if(value === 1 || value === 0){
-    var msg = 'set /PCK/' + this.type + '/' + this.serial;
-    msg += '/Output/' + output + '="' + value + '"' + this._delimiter;
+    var msg = &#x27;set /PCK/&#x27; + this.type + &#x27;/&#x27; + this.serial;
+    msg += &#x27;/Output/&#x27; + output + &#x27;=&quot;&#x27; + value + &#x27;&quot;&#x27; + this._delimiter;
     self._client.write(msg);
     self.data.outputs[output] = value;
   } else {
-    throw new Error('digital input must be true/false or 1/0');
+    throw new Error(&#x27;digital input must be true/false or 1/0&#x27;);
   }
 
   return self;
@@ -688,7 +772,7 @@ PhidgetInterfaceKit.prototype.setOutput = function(output, value) {
  * @extends Phidget
  */
 var PhidgetLED = function() {
-  PhidgetLED.super_.call(this, 'PhidgetLED');
+  PhidgetLED.super_.call(this, &#x27;PhidgetLED&#x27;);
   this.data = { outputs: {} };
 };
 
@@ -710,7 +794,7 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
   index = self._forceBetween(index, 0, 63);
   value = self._forceBetween(value, 0, 100);
 
-  self._sendKey(self._makeIndexedKey('Brightness', index, 63), value, true);
+  self._sendKey(self._makeIndexedKey(&#x27;Brightness&#x27;, index, 63), value, true);
   self.data.outputs[index] = value;
 
   return self;
@@ -726,3 +810,21 @@ phidgets.Phidget = Phidget;
 phidgets.PhidgetInterfaceKit = PhidgetInterfaceKit;
 phidgets.PhidgetLED = PhidgetLED;
 module.exports = phidgets;
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
