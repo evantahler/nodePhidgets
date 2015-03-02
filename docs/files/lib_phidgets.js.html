@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.1</em>
+            <em>API Docs for: 0.5.1-alpha.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -229,6 +229,18 @@ var Phidget = function(type) {
   this.label = undefined;
 
   /**
+   * The password to connect to the WebService. If specified, it will be used when opening
+   * a new connection. As soon as connected the password will be erased. THIS IS CURRENTLY
+   * SET TO PRIVATE BECAUSE IT&#x27;S NOT IMPLEMENTED YET!
+   *
+   * @property password
+   * @type {String}
+   * @default undefined
+   * @private
+   */
+  this.password = undefined;
+
+  /**
    * [read-only] Human-readable version of the board&#x27;s name (i.e. &quot;Phidget InterfaceKit
    * 8/8/8&quot;. This information is only available some time after the connection has been
    * successfully opened.
@@ -299,6 +311,8 @@ util.inherits(Phidget, EventEmitter);
  * @param {String} [options.host] Hostname or IP address to connect to
  * @param {int} [options.port] Port to connect to
  * @param {int} [options.serial] Serial number of the device to connect to
+ * @param {String} [options.label] Label of the device to connect to (can be set in the
+ *        Phidget control panel).
  * @returns {Phidget} Returns the Phidget to allow method chaining
  */
 Phidget.prototype.open = function(options) {
@@ -306,10 +320,11 @@ Phidget.prototype.open = function(options) {
   var self = this;
 
   options = options || {};
-  if (options.host)   { this.host = options.host; }
-  if (options.port)   { this.port = options.port; }
-  if (options.serial) { this.serial = options.serial; }
-  if (options.label)  { this.label = options.label; }
+  if (options.host)     { this.host = options.host; }
+  if (options.port)     { this.port = options.port; }
+  if (options.serial)   { this.serial = options.serial; }
+  if (options.label)    { this.label = options.label; }
+  if (options.password) { this.password = options.password; }
 
   /**
    * Event emitted when an attempt to open a Phidget has been initiated.
@@ -535,8 +550,8 @@ Phidget.prototype._parseLineInput = function(line, self) {
     self._parseReport(line, self);
 
   //} else if(status === &#x27;200&#x27;) {
-
-    // Positive response. Nothing to do.
+  //
+  //  // nothing to do!
 
   } else if(status === &#x27;994&#x27;) { // Version mismatch
 
@@ -555,8 +570,11 @@ Phidget.prototype._parseLineInput = function(line, self) {
     self.emit(&#x27;error&#x27;, self, err);
 
   //} else if(status === &#x27;999&#x27;) { // Authentication required
-
-    // to complete!
+  //
+  //  var ticket = line.split(&quot; &quot;)[1] + self.password;
+  //  self.password = undefined;
+  //  var hash = MD5.hex_md5(ticket); &lt;=== this is where it gets a bit more complicated!!!
+  //  self._sendLine(&quot;997 &quot; + hash);
 
   }
 
@@ -574,8 +592,19 @@ Phidget.prototype._parseReport = function(line, self) {
 
   var parts = line.split(&quot;/&quot;).slice(1);
 
-  if (!self.serial) {
+  // Grab the serial as soon as we see it. This is also our first chance to initialize the
+  // board with whatever desired settings
+  if (
+    line.indexOf(&#x27;report 200-lid0 is pending, key /PSK&#x27;) &gt; -1 &amp;&amp;
+    !self.serial &amp;&amp;
+    parseInt(parts[3]) &gt; 0
+  ) {
     self.serial = parseInt(parts[3]);
+
+    // We use this as an anchor point to give specific boards the chance to set initial
+    // board state.
+    self._setPhidgetSpecificInitialState();
+
   }
 
   //if (self.label === undefined) {
@@ -597,7 +626,6 @@ Phidget.prototype._parseReport = function(line, self) {
     // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (removing)
     // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (added)
     self._name = line.split(&#x27;&quot;&#x27;)[1];
-    console.log(&quot;NAME NAME: &quot; + self._name);
 
   } else if (
     type &amp;&amp;
@@ -661,33 +689,48 @@ Phidget.prototype._parseReport = function(line, self) {
 Phidget.prototype._parsePhidgetSpecificReport = function (line, parts) {};
 
 /**
- * Returns a /PCK string built from the parameters
+ * Sets phidget-specific state before the &#x27;opened&#x27; event is triggered. This is a good
+ * place for subclasses to assign initial values to the board. This is meant to be
+ * overridden by child classes.
  *
- * @method _makeIndexedKey
- * @param keyword {String} The operation keyword to use
- * @param index {int} The index of the output to use
+ * @method _parsePhidgetSpecificReport
  * @protected
  */
-Phidget.prototype._makeIndexedKey = function (keyword, index) {
+Phidget.prototype._setPhidgetSpecificInitialState = function () {};
+
+/**
+ * Returns a /PCK string built from the specified parameters.
+ *
+ * @method _makePckString
+ * @param keyword {String} The operation keyword to use
+ * @param [index] {int} The index of the output to use
+ * @protected
+ */
+Phidget.prototype._makePckString = function (keyword, index) {
   var self = this;
-  return &#x27;/PCK/&#x27; + self.type +&#x27;/&#x27;+self.serial+&#x27;/&#x27;+keyword+&#x27;/&#x27;+index;
+  var pck = &#x27;/PCK/&#x27; + self.type + &#x27;/&#x27; + self.serial + &#x27;/&#x27; + keyword;
+  if (index &gt; -1) { pck += &#x27;/&#x27; + index; }
+  return pck;
 };
 
 /**
  * Sends the /PCK string (with attached value) to the webservice.
  *
- * @method _sendKey
- * @param key {String} A /PCK string (typically form the _makeIndexedKey() method)
+ * @method _sendPck
+ * @param key {String} A /PCK string (typically form the _makePckString() method)
  * @param value {int|string} The value to set
  * @param persistent {Boolean} Whether the value should persist or whether its for the
  *        session only
  * @protected
  */
-Phidget.prototype._sendKey = function (key, value, persistent) {
+Phidget.prototype._sendPck = function (key, value, persistent) {
   var self = this;
   var request = &quot;set &quot; + key + &quot;=\&quot;&quot; + value + &quot;\&quot;&quot;;
   if(!persistent) { request += &quot; for session&quot;; }
   self._client.write(request + self._delimiter);
+
+  console.log(request);
+
 };
 
 /**
@@ -744,9 +787,11 @@ Phidget.prototype._forceBetween = function(value, min, max) {
 var PhidgetInterfaceKit = function() {
   PhidgetInterfaceKit.super_.call(this, &#x27;PhidgetInterfaceKit&#x27;);
 
+  var self = this;
+
   /**
-   * An object containing the current value for all board inputs. The values are boolean.
-   * To retrieve a value simply use the input number. For example:
+   * [read-only] An object containing the current value for all board inputs. The values
+   * are boolean. To retrieve a value simply use the input number. For example:
    * PhidgetInterfaceKit.inputs[5].
    *
    * @property inputs
@@ -755,8 +800,8 @@ var PhidgetInterfaceKit = function() {
   this.inputs = {};
 
   /**
-   * An object containing the current value for all board sensors. The values are
-   * integers. To retrieve a value simply use the sensor number. For example:
+   * [read-only] An object containing the current value for all board sensors. The values
+   * are integers. To retrieve a value simply use the sensor number. For example:
    * PhidgetInterfaceKit.sensors[5].
    *
    * @property sensors
@@ -765,14 +810,39 @@ var PhidgetInterfaceKit = function() {
   this.sensors = {};
 
   /**
-   * An object containing the current value for all board outputs. The values are
-   * boolean. To retrieve a value, simply use the output number. For example:
+   * [read-only] An object containing the current value for all board outputs. The values
+   * are boolean. To retrieve a value, simply use the output number. For example:
    * PhidgetInterfaceKit.outputs[5].
    *
    * @property outputs
    * @type {{}}
    */
   this.outputs = {};
+
+  /**
+   * Determines whether ratiometric values should be used or not for analog sensors. If
+   * this property is defined before the phidget is opened, it will be set as soon as
+   * possible after opening it. If it is defined after the board is opened and ready, it
+   * will be set right away.
+   *
+   * @property ratiometric
+   * @default undefined
+   */
+  Object.defineProperty(this, &#x27;ratiometric&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._ratiometric);
+    },
+    set: function (value) {
+      self._ratiometric = value;
+      if (self.ready) {
+        self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), value ? 1:0, true);
+      }
+    }
+  });
+
+  /** @private */
+  this._ratiometric = undefined;
 
 };
 
@@ -797,10 +867,18 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
   var vOut = (value === true) ? 1 : 0;
 
   self.outputs[index] = value;
-  self._sendKey(self._makeIndexedKey(&#x27;Output&#x27;, index), vOut, true);
+  self._sendPck(self._makePckString(&#x27;Output&#x27;, index), vOut, true);
 
   return self;
 
+};
+
+
+PhidgetInterfaceKit.prototype._setPhidgetSpecificInitialState = function () {
+  var self = this;
+  if (self.ratiometric !== undefined) {
+    self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), (self.ratiometric ? 1:0), true);
+  }
 };
 
 /**
@@ -810,7 +888,7 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
  *
  * @method _parsePhidgetSpecificReport
  * @param line {String} The raw line received from the webservice.
- * @param parts {Array} The raw line split on the &quot;/&quot; character.
+ * @param parts {Array} The /PCK data split on the &quot;/&quot; character.
  * @private
  */
 PhidgetInterfaceKit.prototype._parsePhidgetSpecificReport = function (line, parts) {
@@ -897,6 +975,11 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificReport = function (line, part
       );
 
     }
+
+  } else if (parts[4] &amp;&amp; parts[4].indexOf(&#x27;Ratiometric&#x27;) === 0) {
+
+    self._ratiometric = parts[4].split(&quot; &quot;)[3].replace(&#x27;&quot;&#x27;, &quot;&quot;);
+
   }
 
 };
@@ -918,9 +1001,9 @@ var PhidgetLED = function() {
   PhidgetLED.super_.call(this, &#x27;PhidgetLED&#x27;);
 
   /**
-   * An object containing the current value for all board outputs. The values are
-   * integers between 0 and 100. To retrieve the value simply use the output number. For
-   * example: PhidgetLED.outputs[5].
+   * [read-only] An object containing the current value for all board outputs. The values
+   * are integers between 0 and 100. To retrieve the value simply use the output number.
+   * For example: PhidgetLED.outputs[5].
    *
    * @property outputs
    * @type {{}}
@@ -948,9 +1031,8 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
   value = self._forceBetween(value, 0, 100);
 
   for (var i = 0; i &lt; index.length; i++) {
-    console.log(&quot;pos: &quot; + index[i]);
     var pos = self._forceBetween(index[i], 0, 63);
-    self._sendKey(self._makeIndexedKey(&#x27;Brightness&#x27;, pos), value, true);
+    self._sendPck(self._makePckString(&#x27;Brightness&#x27;, pos), value, true);
     self.outputs[pos] = value;
   }
 
