@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.1</em>
+            <em>API Docs for: 0.5.1-alpha.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_phidgets.js.html#l824"><code>lib&#x2F;phidgets.js:824</code></a>
+            Defined in: <a href="../files/lib_phidgets.js.html#l907"><code>lib&#x2F;phidgets.js:907</code></a>
         </div>
 
             Module: <a href="../modules/phidgets.html">phidgets</a>
@@ -117,7 +117,7 @@
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/lib_phidgets.js.html#l824"><code>lib&#x2F;phidgets.js:824</code></a>
+                <a href="../files/lib_phidgets.js.html#l907"><code>lib&#x2F;phidgets.js:907</code></a>
                 </p>
         
         
@@ -156,19 +156,19 @@
 
                             </li>
                             <li class="index-item method protected inherited">
-                                <a href="#method__makeIndexedKey">_makeIndexedKey</a>
+                                <a href="#method__makePckString">_makePckString</a>
 
                             </li>
-                            <li class="index-item method protected inherited">
+                            <li class="index-item method protected inherited inherited">
                                 <a href="#method__parsePhidgetSpecificReport">_parsePhidgetSpecificReport</a>
 
                             </li>
                             <li class="index-item method protected inherited">
-                                <a href="#method__sendKey">_sendKey</a>
+                                <a href="#method__sendLine">_sendLine</a>
 
                             </li>
                             <li class="index-item method protected inherited">
-                                <a href="#method__sendLine">_sendLine</a>
+                                <a href="#method__sendPck">_sendPck</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -204,6 +204,10 @@
                             </li>
                             <li class="index-item property">
                                 <a href="#property_outputs">outputs</a>
+
+                            </li>
+                            <li class="index-item property private inherited">
+                                <a href="#property_password">password</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -308,7 +312,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__forceBetween">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l621"><code>lib&#x2F;phidgets.js:621</code></a>
+        <a href="../files/lib_phidgets.js.html#l664"><code>lib&#x2F;phidgets.js:664</code></a>
         </p>
 
 
@@ -371,8 +375,8 @@
 
 
 </div>
-<div id="method__makeIndexedKey" class="method item protected inherited">
-    <h3 class="name"><code>_makeIndexedKey</code></h3>
+<div id="method__makePckString" class="method item protected inherited">
+    <h3 class="name"><code>_makePckString</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -380,7 +384,7 @@
                         <code>keyword</code>
                 </li>
                 <li class="arg">
-                        <code>index</code>
+                        <code class="optional">[index]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -395,8 +399,8 @@
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Phidget.html#method__makeIndexedKey">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l579"><code>lib&#x2F;phidgets.js:579</code></a>
+                <a href="../classes/Phidget.html#method__makePckString">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l617"><code>lib&#x2F;phidgets.js:617</code></a>
         </p>
 
 
@@ -404,7 +408,7 @@
     </div>
 
     <div class="description">
-        <p>Returns a /PCK string built from the parameters</p>
+        <p>Returns a /PCK string built from the specified parameters.</p>
 
     </div>
 
@@ -424,8 +428,9 @@
 
                 </li>
                 <li class="param">
-                        <code class="param-name">index</code>
+                        <code class="param-name optional">[index]</code>
                         <span class="type">Int</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
@@ -463,9 +468,12 @@
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Phidget.html#method__parsePhidgetSpecificReport">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l568"><code>lib&#x2F;phidgets.js:568</code></a>
+            <p>Inherited from
+            <a href="../classes/Phidget.html#method__parsePhidgetSpecificReport">
+                Phidget
+            </a>
+            but overwritten in
+        <a href="../files/lib_phidgets.js.html#l596"><code>lib&#x2F;phidgets.js:596</code></a>
         </p>
 
 
@@ -510,8 +518,63 @@ subclasses</p>
 
 
 </div>
-<div id="method__sendKey" class="method item protected inherited">
-    <h3 class="name"><code>_sendKey</code></h3>
+<div id="method__sendLine" class="method item protected inherited">
+    <h3 class="name"><code>_sendLine</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>line</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__sendLine">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l652"><code>lib&#x2F;phidgets.js:652</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sends a line of data to the webservice</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">line</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>A non-terminated line of data to send</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__sendPck" class="method item protected inherited">
+    <h3 class="name"><code>_sendPck</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -537,8 +600,8 @@ subclasses</p>
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Phidget.html#method__sendKey">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l592"><code>lib&#x2F;phidgets.js:592</code></a>
+                <a href="../classes/Phidget.html#method__sendPck">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l632"><code>lib&#x2F;phidgets.js:632</code></a>
         </p>
 
 
@@ -560,7 +623,7 @@ subclasses</p>
 
 
                     <div class="param-description">
-                        <p>A /PCK string (typically form the _makeIndexedKey() method)</p>
+                        <p>A /PCK string (typically form the _makePckString() method)</p>
 
                     </div>
 
@@ -594,61 +657,6 @@ subclasses</p>
 
 
 </div>
-<div id="method__sendLine" class="method item protected inherited">
-    <h3 class="name"><code>_sendLine</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>line</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Phidget.html#method__sendLine">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l609"><code>lib&#x2F;phidgets.js:609</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Sends a line of data to the webservice</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">line</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>A non-terminated line of data to send</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_close" class="method item inherited">
     <h3 class="name"><code>close</code></h3>
 
@@ -667,7 +675,7 @@ subclasses</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method_close">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l300"><code>lib&#x2F;phidgets.js:300</code></a>
+        <a href="../files/lib_phidgets.js.html#l315"><code>lib&#x2F;phidgets.js:315</code></a>
         </p>
 
 
@@ -716,7 +724,7 @@ subclasses</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method_open">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l210"><code>lib&#x2F;phidgets.js:210</code></a>
+        <a href="../files/lib_phidgets.js.html#l222"><code>lib&#x2F;phidgets.js:222</code></a>
         </p>
 
 
@@ -777,6 +785,18 @@ subclasses</p>
                                 </div>
 
                             </li>
+                            <li class="param">
+                                    <code class="param-name optional">[label]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Label of the device to connect to (can be set in the
+       Phidget control panel).</p>
+
+                                </div>
+
+                            </li>
                         </ul>
                 </li>
             </ul>
@@ -821,7 +841,7 @@ subclasses</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l850"><code>lib&#x2F;phidgets.js:850</code></a>
+        <a href="../files/lib_phidgets.js.html#l933"><code>lib&#x2F;phidgets.js:933</code></a>
         </p>
 
 
@@ -943,7 +963,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_name">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l147"><code>lib&#x2F;phidgets.js:147</code></a>
+                            <a href="../files/lib_phidgets.js.html#l159"><code>lib&#x2F;phidgets.js:159</code></a>
                             </p>
                     
                     
@@ -971,19 +991,48 @@ subclasses</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l836"><code>lib&#x2F;phidgets.js:836</code></a>
+                            <a href="../files/lib_phidgets.js.html#l919"><code>lib&#x2F;phidgets.js:919</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>An object containing the current value for all board outputs. The values are
-                    integers between 0 and 100. To retrieve the value simply use the output number. For
-                    example: PhidgetLED.outputs[5].</p>
+                            <p>[read-only] An object containing the current value for all board outputs. The values
+                    are integers between 0 and 100. To retrieve the value simply use the output number.
+                    For example: PhidgetLED.outputs[5].</p>
                     
                         </div>
                     
+                    
+                    
+                    </div>
+                    <div id="property_password" class="property item private inherited">
+                        <h3 class="name"><code>password</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_password">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l147"><code>lib&#x2F;phidgets.js:147</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The password to connect to the WebService. If specified, it will be used when opening
+                    a new connection. As soon as connected the password will be erased. THIS IS CURRENTLY
+                    SET TO PRIVATE BECAUSE IT&#39;S NOT IMPLEMENTED YET!</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
                     
                     
                     </div>
@@ -1156,7 +1205,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_version">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l163"><code>lib&#x2F;phidgets.js:163</code></a>
+                            <a href="../files/lib_phidgets.js.html#l175"><code>lib&#x2F;phidgets.js:175</code></a>
                             </p>
                     
                     
@@ -1190,7 +1239,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_closed">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l332"><code>lib&#x2F;phidgets.js:332</code></a>
+                            <a href="../files/lib_phidgets.js.html#l347"><code>lib&#x2F;phidgets.js:347</code></a>
                             </p>
                     
                     
@@ -1232,7 +1281,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_error">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l385"><code>lib&#x2F;phidgets.js:385</code></a>
+                            <a href="../files/lib_phidgets.js.html#l400"><code>lib&#x2F;phidgets.js:400</code></a>
                             </p>
                     
                     
@@ -1337,7 +1386,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_opened">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l546"><code>lib&#x2F;phidgets.js:546</code></a>
+                            <a href="../files/lib_phidgets.js.html#l574"><code>lib&#x2F;phidgets.js:574</code></a>
                             </p>
                     
                     
@@ -1379,7 +1428,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_opening">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l230"><code>lib&#x2F;phidgets.js:230</code></a>
+                            <a href="../files/lib_phidgets.js.html#l245"><code>lib&#x2F;phidgets.js:245</code></a>
                             </p>
                     
                     
@@ -1422,7 +1471,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_received">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l418"><code>lib&#x2F;phidgets.js:418</code></a>
+                            <a href="../files/lib_phidgets.js.html#l433"><code>lib&#x2F;phidgets.js:433</code></a>
                             </p>
                     
                     
@@ -1477,7 +1526,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_reopening">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l356"><code>lib&#x2F;phidgets.js:356</code></a>
+                            <a href="../files/lib_phidgets.js.html#l371"><code>lib&#x2F;phidgets.js:371</code></a>
                             </p>
                     
                     
@@ -1554,7 +1603,7 @@ subclasses</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_timeout">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l278"><code>lib&#x2F;phidgets.js:278</code></a>
+                            <a href="../files/lib_phidgets.js.html#l293"><code>lib&#x2F;phidgets.js:293</code></a>
                             </p>
                     
                     
