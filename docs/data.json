@@ -33,7 +33,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "lib/phidgets.js",
-            "line": 938,
+            "line": 939,
             "description": "The `Phidgets` library module makes it easy to connect to various sensor and controller\nboards made by [Phidgets Inc.](http://www.phidgets.com) This library works under\n[Node.js](http://www.nodejs.org) and other compatible frameworks such as\n[io.js](http://www.iojs.org)\n\nFor support, go to the GitHub [project page](https://github.com/evantahler/nodePhidgets).\n\nPlease note that this library is an open source project that is not affiliated with\nPhidgets Inc.",
             "todo": [
                 "Add support for authentication.",
@@ -75,7 +75,7 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 732,
+            "line": 733,
             "description": "The `PhidgetInterfaceKit` class allows you to control and receive data from all Phidget\ninterface boards :\n\n * PhidgetAnalog 4-Output\n * PhidgetInterfaceKit 8/8/8 normal and mini-format\n * PhidgetInterfaceKit 2/2/2\n * PhidgetInterfaceKit 0/16/16\n * PhidgetInterfaceKit 8/8/8 (with and without hub)\n * PhidgetFrequencyCounter\n * etc.\n\nNot all these boards have been tested. If you possess one and can verify its\ncompatibility, let us know.",
             "is_constructor": 1,
             "extends": "Phidget"
@@ -91,7 +91,7 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 938,
+            "line": 939,
             "description": "The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.\n\nWarning: as of now, only basic functionalities have been implemented. More to come...",
             "is_constructor": 1,
             "extends": "Phidget"
@@ -252,7 +252,7 @@
             "line": 197,
             "description": "The delay (in milliseconds) between report updates sent from the webservice. This is\nrequested of the server during the opening of a phidget. Therefore, if you want to\nuse it, you must assign it before calling `open()`.",
             "itemtype": "property",
-            "name": "serial",
+            "name": "interReportPeriod",
             "type": "{int}",
             "default": "8",
             "class": "Phidget",
@@ -724,7 +724,7 @@
             "line": 713,
             "description": "Returns the value after making sure it falls between min and max.",
             "itemtype": "method",
-            "name": "forceBetween",
+            "name": "_forceBetween",
             "params": [
                 {
                     "name": "value",
@@ -745,12 +745,8 @@
             "return": {
                 "description": "int"
             },
-            "class": "Phidget",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
-            "line": 728,
+            "access": "protected",
+            "tagname": "",
             "class": "Phidget",
             "module": "phidgets"
         },
@@ -768,7 +764,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 756,
+            "line": 731,
+            "class": "Phidget",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 757,
             "description": "[read-only] An object containing the current value for all board inputs. The values\nare boolean. To retrieve a value simply use the input number. For example:\nPhidgetInterfaceKit.inputs[5].",
             "itemtype": "property",
             "name": "inputs",
@@ -778,7 +780,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 766,
+            "line": 767,
             "description": "[read-only] An object containing the current value for all board sensors. The values\nare integers. To retrieve a value simply use the sensor number. For example:\nPhidgetInterfaceKit.sensors[5].",
             "itemtype": "property",
             "name": "sensors",
@@ -788,7 +790,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 776,
+            "line": 777,
             "description": "[read-only] An object containing the current value for all board outputs. The values\nare boolean. To retrieve a value, simply use the output number. For example:\nPhidgetInterfaceKit.outputs[5].",
             "itemtype": "property",
             "name": "outputs",
@@ -798,7 +800,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 786,
+            "line": 787,
             "description": "Determines whether ratiometric values should be used or not for analog sensors. If\nthis property is defined before the phidget is opened, it will be set as soon as\npossible after opening it. If it is defined after the board is opened and ready, it\nwill be set right away.",
             "itemtype": "property",
             "name": "ratiometric",
@@ -808,13 +810,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 808,
+            "line": 809,
             "class": "PhidgetInterfaceKit",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 815,
+            "line": 816,
             "description": "Sets the specified output to active (true) or inactive (false).",
             "itemtype": "method",
             "name": "setOutput",
@@ -839,13 +841,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 848,
+            "line": 849,
             "class": "PhidgetInterfaceKit",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 870,
+            "line": 871,
             "description": "Event emitted when binary input data is received.",
             "itemtype": "event",
             "name": "input",
@@ -878,7 +880,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 890,
+            "line": 891,
             "description": "Event emitted when analog sensor data is received",
             "itemtype": "event",
             "name": "sensor",
@@ -911,7 +913,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 910,
+            "line": 911,
             "description": "Event emitted when data is being outputted through one of the outputs",
             "itemtype": "event",
             "name": "output",
@@ -944,12 +946,6 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 934,
-            "class": "PhidgetInterfaceKit",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
             "line": 935,
             "class": "PhidgetInterfaceKit",
             "module": "phidgets"
@@ -962,7 +958,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 950,
+            "line": 937,
+            "class": "PhidgetInterfaceKit",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 951,
             "description": "[read-only] An object containing the current value for all board outputs. The values\nare integers between 0 and 100. To retrieve the value simply use the output number.\nFor example: PhidgetLED.outputs[5].",
             "itemtype": "property",
             "name": "outputs",
@@ -972,7 +974,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 964,
+            "line": 965,
             "description": "Adjusts the brightness of a LED.",
             "itemtype": "method",
             "name": "setBrightness",
@@ -1007,11 +1009,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:815"
+            "line": " lib/phidgets.js:816"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:964"
+            "line": " lib/phidgets.js:965"
         },
         {
             "message": "Missing item type",
@@ -1043,10 +1045,6 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:728"
-        },
-        {
-            "message": "Missing item type",
             "line": " lib/phidgets.js:729"
         },
         {
@@ -1055,15 +1053,15 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:808"
+            "line": " lib/phidgets.js:731"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:848"
+            "line": " lib/phidgets.js:809"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:934"
+            "line": " lib/phidgets.js:849"
         },
         {
             "message": "Missing item type",
@@ -1072,6 +1070,10 @@
         {
             "message": "Missing item type",
             "line": " lib/phidgets.js:936"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/phidgets.js:937"
         }
     ]
 }

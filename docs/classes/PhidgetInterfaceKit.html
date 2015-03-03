@@ -86,7 +86,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_phidgets.js.html#l732"><code>lib&#x2F;phidgets.js:732</code></a>
+            Defined in: <a href="../files/lib_phidgets.js.html#l733"><code>lib&#x2F;phidgets.js:733</code></a>
         </div>
 
             Module: <a href="../modules/phidgets.html">phidgets</a>
@@ -128,7 +128,7 @@ compatibility, let us know.</p>
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/lib_phidgets.js.html#l732"><code>lib&#x2F;phidgets.js:732</code></a>
+                <a href="../files/lib_phidgets.js.html#l733"><code>lib&#x2F;phidgets.js:733</code></a>
                 </p>
         
         
@@ -162,6 +162,10 @@ compatibility, let us know.</p>
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
+                            <li class="index-item method protected inherited">
+                                <a href="#method__forceBetween">_forceBetween</a>
+
+                            </li>
                             <li class="index-item method private inherited">
                                 <a href="#method__handleData">_handleData</a>
 
@@ -195,10 +199,6 @@ compatibility, let us know.</p>
 
                             </li>
                             <li class="index-item method inherited">
-                                <a href="#method_forceBetween">forceBetween</a>
-
-                            </li>
-                            <li class="index-item method inherited">
                                 <a href="#method_open">open</a>
 
                             </li>
@@ -219,6 +219,10 @@ compatibility, let us know.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_inputs">inputs</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_interReportPeriod">interReportPeriod</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -257,7 +261,7 @@ compatibility, let us know.</p>
                                 <a href="#property_sensors">sensors</a>
 
                             </li>
-                            <li class="index-item property inherited inherited">
+                            <li class="index-item property inherited">
                                 <a href="#property_serial">serial</a>
 
                             </li>
@@ -336,6 +340,100 @@ compatibility, let us know.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method__forceBetween" class="method item protected inherited">
+    <h3 class="name"><code>_forceBetween</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>value</code>
+                </li>
+                <li class="arg">
+                        <code>min</code>
+                </li>
+                <li class="arg">
+                        <code>max</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__forceBetween">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l713"><code>lib&#x2F;phidgets.js:713</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the value after making sure it falls between min and max.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Int | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+                    <div class="param-description">
+                        <p>The value to check</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">min</code>
+                        <span class="type">Int</span>
+
+
+                    <div class="param-description">
+                        <p>The minimum value desired</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">max</code>
+                        <span class="type">Int</span>
+
+
+                    <div class="param-description">
+                        <p>The maximum value desired</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>int</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method__handleData" class="method item private inherited">
     <h3 class="name"><code>_handleData</code></h3>
 
@@ -869,99 +967,6 @@ overridden by subclasses.</p>
 
 
 </div>
-<div id="method_forceBetween" class="method item inherited">
-    <h3 class="name"><code>forceBetween</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>value</code>
-                </li>
-                <li class="arg">
-                        <code>min</code>
-                </li>
-                <li class="arg">
-                        <code>max</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Phidget.html#method_forceBetween">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l713"><code>lib&#x2F;phidgets.js:713</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Returns the value after making sure it falls between min and max.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">value</code>
-                        <span class="type">Int | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>The value to check</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">min</code>
-                        <span class="type">Int</span>
-
-
-                    <div class="param-description">
-                        <p>The minimum value desired</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">max</code>
-                        <span class="type">Int</span>
-
-
-                    <div class="param-description">
-                        <p>The maximum value desired</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>int</p>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_open" class="method item inherited">
     <h3 class="name"><code>open</code></h3>
 
@@ -1103,7 +1108,7 @@ overridden by subclasses.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l815"><code>lib&#x2F;phidgets.js:815</code></a>
+        <a href="../files/lib_phidgets.js.html#l816"><code>lib&#x2F;phidgets.js:816</code></a>
         </p>
 
 
@@ -1199,7 +1204,7 @@ overridden by subclasses.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l756"><code>lib&#x2F;phidgets.js:756</code></a>
+                            <a href="../files/lib_phidgets.js.html#l757"><code>lib&#x2F;phidgets.js:757</code></a>
                             </p>
                     
                     
@@ -1212,6 +1217,34 @@ overridden by subclasses.</p>
                     
                         </div>
                     
+                    
+                    
+                    </div>
+                    <div id="property_interReportPeriod" class="property item inherited">
+                        <h3 class="name"><code>interReportPeriod</code></h3>
+                        <span class="type">Int</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_interReportPeriod">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l197"><code>lib&#x2F;phidgets.js:197</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The delay (in milliseconds) between report updates sent from the webservice. This is
+                    requested of the server during the opening of a phidget. Therefore, if you want to
+                    use it, you must assign it before calling <code>open()</code>.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> 8</p>
                     
                     
                     </div>
@@ -1281,7 +1314,7 @@ overridden by subclasses.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l776"><code>lib&#x2F;phidgets.js:776</code></a>
+                            <a href="../files/lib_phidgets.js.html#l777"><code>lib&#x2F;phidgets.js:777</code></a>
                             </p>
                     
                     
@@ -1363,7 +1396,7 @@ overridden by subclasses.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l786"><code>lib&#x2F;phidgets.js:786</code></a>
+                            <a href="../files/lib_phidgets.js.html#l787"><code>lib&#x2F;phidgets.js:787</code></a>
                             </p>
                     
                     
@@ -1444,7 +1477,7 @@ overridden by subclasses.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l766"><code>lib&#x2F;phidgets.js:766</code></a>
+                            <a href="../files/lib_phidgets.js.html#l767"><code>lib&#x2F;phidgets.js:767</code></a>
                             </p>
                     
                     
@@ -1469,11 +1502,8 @@ overridden by subclasses.</p>
                     
                     
                         <div class="meta">
-                                <p>Inherited from
-                                <a href="../classes/Phidget.html#property_serial">
-                                    Phidget
-                                </a>
-                                but overwritten in
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_serial">Phidget</a>:
                             <a href="../files/lib_phidgets.js.html#l124"><code>lib&#x2F;phidgets.js:124</code></a>
                             </p>
                     
@@ -1758,7 +1788,7 @@ overridden by subclasses.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l870"><code>lib&#x2F;phidgets.js:870</code></a>
+                            <a href="../files/lib_phidgets.js.html#l871"><code>lib&#x2F;phidgets.js:871</code></a>
                             </p>
                     
                     
@@ -1918,7 +1948,7 @@ overridden by subclasses.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l910"><code>lib&#x2F;phidgets.js:910</code></a>
+                            <a href="../files/lib_phidgets.js.html#l911"><code>lib&#x2F;phidgets.js:911</code></a>
                             </p>
                     
                     
@@ -2127,7 +2157,7 @@ overridden by subclasses.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l890"><code>lib&#x2F;phidgets.js:890</code></a>
+                            <a href="../files/lib_phidgets.js.html#l891"><code>lib&#x2F;phidgets.js:891</code></a>
                             </p>
                     
                     
