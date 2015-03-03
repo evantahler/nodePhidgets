@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.1-alpha.2</em>
+            <em>API Docs for: 0.5.0-alpha.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -154,16 +154,20 @@ etc.).</p>
                                 <a href="#method__forceBetween">_forceBetween</a>
 
                             </li>
+                            <li class="index-item method private">
+                                <a href="#method__handleData">_handleData</a>
+
+                            </li>
                             <li class="index-item method protected">
                                 <a href="#method__makePckString">_makePckString</a>
 
                             </li>
-                            <li class="index-item method protected">
-                                <a href="#method__parsePhidgetSpecificReport">_parsePhidgetSpecificReport</a>
+                            <li class="index-item method private">
+                                <a href="#method__parseLineInput">_parseLineInput</a>
 
                             </li>
                             <li class="index-item method protected">
-                                <a href="#method__parsePhidgetSpecificReport">_parsePhidgetSpecificReport</a>
+                                <a href="#method__parsePhidgetSpecificData">_parsePhidgetSpecificData</a>
 
                             </li>
                             <li class="index-item method protected">
@@ -172,6 +176,10 @@ etc.).</p>
                             </li>
                             <li class="index-item method protected">
                                 <a href="#method__sendPck">_sendPck</a>
+
+                            </li>
+                            <li class="index-item method protected">
+                                <a href="#method__setPhidgetSpecificInitialState">_setPhidgetSpecificInitialState</a>
 
                             </li>
                             <li class="index-item method">
@@ -223,6 +231,10 @@ etc.).</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_serial">serial</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_serverId">serverId</a>
 
                             </li>
                             <li class="index-item property">
@@ -311,7 +323,7 @@ etc.).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l664"><code>lib&#x2F;phidgets.js:664</code></a>
+        <a href="../files/lib_phidgets.js.html#l701"><code>lib&#x2F;phidgets.js:701</code></a>
         </p>
 
 
@@ -374,6 +386,64 @@ etc.).</p>
 
 
 </div>
+<div id="method__handleData" class="method item private">
+    <h3 class="name"><code>_handleData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>chunk</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_phidgets.js.html#l429"><code>lib&#x2F;phidgets.js:429</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>This function is called each time data is received from the Phidget WebSerice. It adds
+the data to the input buffer and checks if full lines (separated by &#39;\n&#39;) can be
+reconstructed. If full lines are found they are handed over to the <code>_parseLineInput()</code>
+method for processing.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">chunk</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>A chunk of utf8 encoded text to parse</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method__makePckString" class="method item protected">
     <h3 class="name"><code>_makePckString</code></h3>
 
@@ -399,7 +469,7 @@ etc.).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l617"><code>lib&#x2F;phidgets.js:617</code></a>
+        <a href="../files/lib_phidgets.js.html#l656"><code>lib&#x2F;phidgets.js:656</code></a>
         </p>
 
 
@@ -407,7 +477,8 @@ etc.).</p>
     </div>
 
     <div class="description">
-        <p>Returns a /PCK string built from the specified parameters.</p>
+        <p>Returns a /PCK string built from the specified parameters. PCK strings are the keys
+sent out to control the board.</p>
 
     </div>
 
@@ -444,16 +515,70 @@ etc.).</p>
 
 
 </div>
-<div id="method__parsePhidgetSpecificReport" class="method item protected">
-    <h3 class="name"><code>_parsePhidgetSpecificReport</code></h3>
+<div id="method__parseLineInput" class="method item private">
+    <h3 class="name"><code>_parseLineInput</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
                         <code>line</code>
                 </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_phidgets.js.html#l471"><code>lib&#x2F;phidgets.js:471</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Parses a single line of data typically received from the Phidget WebService. If the
+line is a <em>report</em> line, the function hands it off to the <code>_parsePskKey()</code> method.
+Otherwise, it deals with it locally.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">line</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>A non-terminated line of utf8 text</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__parsePhidgetSpecificData" class="method item protected">
+    <h3 class="name"><code>_parsePhidgetSpecificData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>parts</code>
+                        <code>data</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -469,7 +594,7 @@ etc.).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l596"><code>lib&#x2F;phidgets.js:596</code></a>
+        <a href="../files/lib_phidgets.js.html#l626"><code>lib&#x2F;phidgets.js:626</code></a>
         </p>
 
 
@@ -477,8 +602,8 @@ etc.).</p>
     </div>
 
     <div class="description">
-        <p>Parses &#39;report&#39; lines that are specific to one phidget model. Should be overridden by
-subclasses</p>
+        <p>Parses Phidget-specific data received from the Phidget WebService. This function is
+meant to be overridden by subclasses.</p>
 
     </div>
 
@@ -487,63 +612,93 @@ subclasses</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">line</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <code class="param-name">data</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
 
 
                     <div class="param-description">
-                        <p>The raw line received from the webservice.</p>
+                        <p>An object containing the received data</p>
 
                     </div>
 
-                </li>
-                <li class="param">
-                        <code class="param-name">parts</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">device</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
+                                <div class="param-description">
+                                    <p>The device identifier (e.g. PhidgetInterfaceKey,
+       PhidgetLED, etc.).</p>
 
-                    <div class="param-description">
-                        <p>The raw line split on the &quot;/&quot; character.</p>
+                                </div>
 
-                    </div>
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">label</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
 
+                                <div class="param-description">
+                                    <p>The custom label set for the device.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">serial</code>
+                                    <span class="type">Int</span>
+
+                                <div class="param-description">
+                                    <p>The serial number of the device.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">keyword</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>A keyword identifying the type of information conveyed. It
+       could be &#39;Input&#39;, &#39;Version&#39;, &#39;DataRate&#39;, etc.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">index</code>
+                                    <span class="type">Int</span>
+
+                                <div class="param-description">
+                                    <p>The numerical index (for indexed keys only)</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">value</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The actual value.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">status</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The status of the key. It could be: &#39;added&#39;, &#39;changed&#39;,
+       &#39;removing&#39;, etc.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
             </ul>
         </div>
-
-
-
-</div>
-<div id="method__parsePhidgetSpecificReport" class="method item protected">
-    <h3 class="name"><code>_parsePhidgetSpecificReport</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/lib_phidgets.js.html#l607"><code>lib&#x2F;phidgets.js:607</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Sets phidget-specific state before the &#39;opened&#39; event is triggered. This is a good
-place for subclasses to assign initial values to the board. This is meant to be
-overridden by child classes.</p>
-
-    </div>
-
 
 
 
@@ -570,7 +725,7 @@ overridden by child classes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l652"><code>lib&#x2F;phidgets.js:652</code></a>
+        <a href="../files/lib_phidgets.js.html#l689"><code>lib&#x2F;phidgets.js:689</code></a>
         </p>
 
 
@@ -631,7 +786,7 @@ overridden by child classes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l632"><code>lib&#x2F;phidgets.js:632</code></a>
+        <a href="../files/lib_phidgets.js.html#l672"><code>lib&#x2F;phidgets.js:672</code></a>
         </p>
 
 
@@ -687,6 +842,40 @@ overridden by child classes.</p>
 
 
 </div>
+<div id="method__setPhidgetSpecificInitialState" class="method item protected">
+    <h3 class="name"><code>_setPhidgetSpecificInitialState</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_phidgets.js.html#l646"><code>lib&#x2F;phidgets.js:646</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets phidget-specific state before the &#39;opened&#39; event is triggered. This is a good
+place for subclasses to assign initial values to the board. This is meant to be
+overridden by subclasses.</p>
+
+    </div>
+
+
+
+
+</div>
 <div id="method_close" class="method item">
     <h3 class="name"><code>close</code></h3>
 
@@ -705,7 +894,7 @@ overridden by child classes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l315"><code>lib&#x2F;phidgets.js:315</code></a>
+        <a href="../files/lib_phidgets.js.html#l326"><code>lib&#x2F;phidgets.js:326</code></a>
         </p>
 
 
@@ -754,7 +943,7 @@ overridden by child classes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l222"><code>lib&#x2F;phidgets.js:222</code></a>
+        <a href="../files/lib_phidgets.js.html#l231"><code>lib&#x2F;phidgets.js:231</code></a>
         </p>
 
 
@@ -913,7 +1102,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l159"><code>lib&#x2F;phidgets.js:159</code></a>
+                            <a href="../files/lib_phidgets.js.html#l168"><code>lib&#x2F;phidgets.js:168</code></a>
                             </p>
                     
                     
@@ -942,7 +1131,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l147"><code>lib&#x2F;phidgets.js:147</code></a>
+                            <a href="../files/lib_phidgets.js.html#l156"><code>lib&#x2F;phidgets.js:156</code></a>
                             </p>
                     
                     
@@ -1075,7 +1264,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l191"><code>lib&#x2F;phidgets.js:191</code></a>
+                            <a href="../files/lib_phidgets.js.html#l200"><code>lib&#x2F;phidgets.js:200</code></a>
                             </p>
                     
                     
@@ -1089,6 +1278,32 @@ overridden by child classes.</p>
                         </div>
                     
                             <p><strong>Default:</strong> 8</p>
+                    
+                    
+                    </div>
+                    <div id="property_serverId" class="property item">
+                        <h3 class="name"><code>serverId</code></h3>
+                        <span class="type">Int</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l147"><code>lib&#x2F;phidgets.js:147</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The unique ID of the Phidget WebService the device is currently connected to.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
                     
                     
                     </div>
@@ -1153,7 +1368,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l175"><code>lib&#x2F;phidgets.js:175</code></a>
+                            <a href="../files/lib_phidgets.js.html#l184"><code>lib&#x2F;phidgets.js:184</code></a>
                             </p>
                     
                     
@@ -1187,7 +1402,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l347"><code>lib&#x2F;phidgets.js:347</code></a>
+                            <a href="../files/lib_phidgets.js.html#l358"><code>lib&#x2F;phidgets.js:358</code></a>
                             </p>
                     
                     
@@ -1229,7 +1444,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l400"><code>lib&#x2F;phidgets.js:400</code></a>
+                            <a href="../files/lib_phidgets.js.html#l411"><code>lib&#x2F;phidgets.js:411</code></a>
                             </p>
                     
                     
@@ -1334,7 +1549,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l574"><code>lib&#x2F;phidgets.js:574</code></a>
+                            <a href="../files/lib_phidgets.js.html#l503"><code>lib&#x2F;phidgets.js:503</code></a>
                             </p>
                     
                     
@@ -1376,7 +1591,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l245"><code>lib&#x2F;phidgets.js:245</code></a>
+                            <a href="../files/lib_phidgets.js.html#l254"><code>lib&#x2F;phidgets.js:254</code></a>
                             </p>
                     
                     
@@ -1419,7 +1634,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l433"><code>lib&#x2F;phidgets.js:433</code></a>
+                            <a href="../files/lib_phidgets.js.html#l453"><code>lib&#x2F;phidgets.js:453</code></a>
                             </p>
                     
                     
@@ -1474,7 +1689,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l371"><code>lib&#x2F;phidgets.js:371</code></a>
+                            <a href="../files/lib_phidgets.js.html#l382"><code>lib&#x2F;phidgets.js:382</code></a>
                             </p>
                     
                     
@@ -1551,7 +1766,7 @@ overridden by child classes.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l293"><code>lib&#x2F;phidgets.js:293</code></a>
+                            <a href="../files/lib_phidgets.js.html#l304"><code>lib&#x2F;phidgets.js:304</code></a>
                             </p>
                     
                     

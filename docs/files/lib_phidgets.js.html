@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.1-alpha.2</em>
+            <em>API Docs for: 0.5.0-alpha.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -229,6 +229,15 @@ var Phidget = function(type) {
   this.label = undefined;
 
   /**
+   * The unique ID of the Phidget WebService the device is currently connected to.
+   *
+   * @property serverId
+   * @type {int}
+   * @default undefined
+   */
+  this.serverId = undefined;
+
+  /**
    * The password to connect to the WebService. If specified, it will be used when opening
    * a new connection. As soon as connected the password will be erased. THIS IS CURRENTLY
    * SET TO PRIVATE BECAUSE IT&#x27;S NOT IMPLEMENTED YET!
@@ -291,7 +300,7 @@ var Phidget = function(type) {
   this._inputBuffer = &#x27;&#x27;;
   this._protocol = &quot;1.0.10&quot;;
   this._delimiter = &#x27;\r\n&#x27;;
-  this._reopeningDelay = 1000;
+  this._reopeningDelay = 500;
   this._reopeningCount = 0;
   this._maxReopeningAttempts = 5;
   this._openingTimeoutDuration = 1000;
@@ -338,6 +347,7 @@ Phidget.prototype.open = function(options) {
   // received (only on success). That&#x27;s why the &#x27;error&#x27; handler needs to be below.
   self._client = net.createConnection(self.port, self.host, function() {
 
+    // Makes the data come in as a string instead of a Buffer object
     self._client.setEncoding(&#x27;utf8&#x27;);
     self._client.setKeepAlive(&quot;enable&quot;, 10000);
 
@@ -346,7 +356,7 @@ Phidget.prototype.open = function(options) {
     });
 
     self._client.on(&#x27;data&#x27;, function(d) {
-      self._handleData(d, self);
+      self._handleData(d);
     });
 
     // Open connection to web service
@@ -370,8 +380,9 @@ Phidget.prototype.open = function(options) {
 
     // Here we have a challenge: if we connect successfully to the web service but the
     // device is not plugged in, we do not know. That&#x27;s why the device is set as ready
-    // only when the following line is received: &#x27;report 200-periodic report follows:&#x27;. If
-    // that line is not received within a certain delay, we must issue a timeout.
+    // only when the first occurrence of the following line is received: &quot;report 200-that&#x27;s
+    // all for now&quot;. If that line is not received within a certain delay, we must issue a
+    // timeout.
     self._openingTimeoutId = setTimeout(
       function() {
         /**
@@ -499,12 +510,21 @@ Phidget.prototype._handleConnectionError = function(e) {
 
 };
 
-/** @private */
-Phidget.prototype._handleData = function(chunk, self) {
+/**
+ * This function is called each time data is received from the Phidget WebSerice. It adds
+ * the data to the input buffer and checks if full lines (separated by &#x27;\n&#x27;) can be
+ * reconstructed. If full lines are found they are handed over to the &#x60;_parseLineInput()&#x60;
+ * method for processing.
+ *
+ * @method _handleData
+ * @param chunk {String} A chunk of utf8 encoded text to parse
+ * @private
+ */
+Phidget.prototype._handleData = function(chunk) {
 
+  var self = this;
   var index, line;
 
-  chunk = chunk.toString(&#x27;utf8&#x27;);
   self._inputBuffer += chunk;
 
   while( (index = self._inputBuffer.indexOf(&#x27;\n&#x27;)) &gt; -1 ) {
@@ -526,131 +546,40 @@ Phidget.prototype._handleData = function(chunk, self) {
      */
     self.emit(&#x27;received&#x27;, self, line);
 
-    self._parseLineInput(line, self);
+    self._parseLineInput(line);
 
   }
 
 };
 
-/** @private */
-Phidget.prototype._parseLineInput = function(line, self) {
+/**
+ * Parses a single line of data typically received from the Phidget WebService. If the
+ * line is a *report* line, the function hands it off to the &#x60;_parsePskKey()&#x60; method.
+ * Otherwise, it deals with it locally.
+ *
+ * @method _parseLineInput
+ * @param line {String} A non-terminated line of utf8 text
+ * @private
+ */
+Phidget.prototype._parseLineInput = function(line) {
 
+  var self = this;
   var err;
 
-  //    200 set successful
-  //    200 inter-report period adjusted to 8ms.
-  //    200 listening, id lid0
-  //    996 No need to authenticate, version=1.0.10
+  // Is it a report line ?
+  if (line.indexOf(&#x27;report&#x27;) === 0 ) {
 
-  // Split on spaces
-  var status = line.split(&quot; &quot;)[0];
+    if (line.indexOf(&#x27; is pending, key &#x27;) &gt; -1 ) {
 
-  if (status === &#x27;report&#x27;) {
+      // It has a key: hand it over, we are done.
+      self._parsePskKey(line.split(&quot; is pending, key &quot;)[1], self);
 
-    self._parseReport(line, self);
+    } else if (
+      line.indexOf(&quot;report 200-that&#x27;s all for now&quot;) === 0 &amp;&amp;
+      self.ready === false
+    ) {
 
-  //} else if(status === &#x27;200&#x27;) {
-  //
-  //  // nothing to do!
-
-  } else if(status === &#x27;994&#x27;) { // Version mismatch
-
-    err = new Error(&#x27;Protocol version mismatch.&#x27;, &#x27;PROTOCOLMISMATCH&#x27;);
-    err.details = line;
-    self.emit(&#x27;error&#x27;, self, err);
-
-  //} else if(status === &#x27;996&#x27;) { // Authenticated or no authentication necessary
-
-    // Nothing to do.
-
-  } else if(status === &#x27;998&#x27;) { // Authentication failed
-
-    err = new Error(&#x27;Authentication failed&#x27;, &#x27;AUTHFAILED&#x27;);
-    err.details = line;
-    self.emit(&#x27;error&#x27;, self, err);
-
-  //} else if(status === &#x27;999&#x27;) { // Authentication required
-  //
-  //  var ticket = line.split(&quot; &quot;)[1] + self.password;
-  //  self.password = undefined;
-  //  var hash = MD5.hex_md5(ticket); &lt;=== this is where it gets a bit more complicated!!!
-  //  self._sendLine(&quot;997 &quot; + hash);
-
-  }
-
-};
-
-/** @private */
-Phidget.prototype._parseReport = function(line, self) {
-
-  // The following report lines are not currently being parsed by this library. It&#x27;s not
-  // clear whether there are actual use cases for them:
-  //
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InitKeys latest value &quot;61&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/ID latest value &quot;69&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Status latest value &quot;Attached&quot; (added)
-
-  var parts = line.split(&quot;/&quot;).slice(1);
-
-  // Grab the serial as soon as we see it. This is also our first chance to initialize the
-  // board with whatever desired settings
-  if (
-    line.indexOf(&#x27;report 200-lid0 is pending, key /PSK&#x27;) &gt; -1 &amp;&amp;
-    !self.serial &amp;&amp;
-    parseInt(parts[3]) &gt; 0
-  ) {
-    self.serial = parseInt(parts[3]);
-
-    // We use this as an anchor point to give specific boards the chance to set initial
-    // board state.
-    self._setPhidgetSpecificInitialState();
-
-  }
-
-  //if (self.label === undefined) {
-  //  self.label = infos[2];
-  //}
-
-  var type = parts[4];
-
-  if (type &amp;&amp; type === &#x27;Status latest value &quot;Detached&quot; (removing)&#x27;) {
-
-    self._handleConnectionEnd();
-
-  } else if (
-    type &amp;&amp;
-    type.indexOf(&#x27;Name latest value &quot;&#x27;) === 0 &amp;&amp;
-    line.indexOf(&quot;(added)&quot;) &gt; -1
-  ) {
-
-    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (removing)
-    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Name latest value &quot;Phidget InterfaceKit 8/8/8&quot; (added)
-    self._name = line.split(&#x27;&quot;&#x27;)[1];
-
-  } else if (
-    type &amp;&amp;
-    type.indexOf(&#x27;Version latest value &quot;&#x27;) === 0 &amp;&amp;
-    line.indexOf(&quot;(added)&quot;) &gt; -1
-  ) {
-
-    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Version latest value &quot;904&quot; (added)
-    self._version = parseInt(line.split(&#x27;&quot;&#x27;)[1]);
-
-  } else if (
-    type &amp;&amp;
-    type.indexOf(&#x27;Label latest value &quot;&#x27;) === 0 &amp;&amp;
-    type.indexOf(&quot;(added)&quot;) &gt; -1
-  ) {
-
-    // report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Label latest value &quot;mylabel&quot; (added)
-    self.label = line.split(&#x27;&quot;&#x27;)[1];
-
-  } else if (line === &#x27;report 200-periodic report follows:&#x27;) {
-
-    // report 200-periodic report follows:
-
-    if (self.ready === false) {
-
+      // The Phidget is attached
       self._ready = true;
       clearTimeout(self._openingTimeoutId);
       self._reopeningCount = 0;
@@ -665,41 +594,152 @@ Phidget.prototype._parseReport = function(line, self) {
 
     }
 
-  //} else if (line === &quot;report 200-that&#x27;s all for now&quot;) {
-  //
-  //  // nothing to do!
+    return;
 
-  } else {
+  }
 
-    self._parsePhidgetSpecificReport(line, parts);
+  var status = parseInt(line.split(&quot; &quot;)[0]);
+
+  if (status === 200) {             // Information
+
+    // Ignored: &quot;200 set successful&quot; and &quot;200 inter-report period adjusted to 8ms.&quot;
+
+  } else if (status === &#x27;994&#x27;) {    // Version mismatch
+
+    err = new Error(&#x27;Protocol version mismatch.&#x27;, &#x27;PROTOCOL_MISMATCH&#x27;);
+    err.details = line;
+    self.emit(&#x27;error&#x27;, self, err);
+
+  } else if (status === &#x27;996&#x27;) {   // Authenticated or no authentication necessary
+
+    // nothing to do.
+
+  } else if (status === &#x27;998&#x27;) {     // Authentication failed
+
+    err = new Error(&#x27;Authentication failed&#x27;, &#x27;AUTHENTICATION_FAILED&#x27;);
+    err.details = line;
+    self.emit(&#x27;error&#x27;, self, err);
+
+  } else if (status === &#x27;999&#x27;) {   // Authentication required
+
+    err = new Error(&#x27;Authentication is not yet supported&#x27;, &#x27;AUTHENTICATION_UNSUPPORTED&#x27;);
+    err.details = line;
+    self.emit(&#x27;error&#x27;, self, err);
+
+    var ticket = line.split(&quot; &quot;)[1] + self.password;
+    self.password = undefined;
+    //  var hash = MD5.hex_md5(ticket); &lt;=== this is where it gets a bit more complicated!!!
+    //  self._sendLine(&quot;997 &quot; + hash);
 
   }
 
 };
 
 /**
- * Parses &#x27;report&#x27; lines that are specific to one phidget model. Should be overridden by
- * subclasses
+ * Parses a /PSK string and performs appropriate action.
  *
- * @method _parsePhidgetSpecificReport
- * @param line {String} The raw line received from the webservice.
- * @param parts {Array} The raw line split on the &quot;/&quot; character.
+ * @param oPsk {String} Original /PSK string typically coming from the Phidget WebService
+ * @param self
+ * @private
+ */
+Phidget.prototype._parsePskKey = function(oPsk, self) {
+
+  // Remove front /PSK/ and retrieve necessary values
+  var psk     = oPsk.split(&quot;/PSK/&quot;)[1];
+  var parts   = psk.split(&#x27; &#x27;)[0].split(&#x27;/&#x27;);         // [PhidgetLED,label,123456,Input,4]
+
+  var device  = parts[0];
+  var label   = parts[1];
+  var serial  = parseInt(parts[2]);
+  var keyword = parts[3];                             // Sensor, Name, DataRate, etc.
+  var index   = parseInt(parts[4]);                   // not always present
+  var value   = psk.split(&#x27;&quot;&#x27;)[1];                    // 69, PhidgetLED, label, 904, etc.
+  var status  = psk.split(&#x27;&quot; (&#x27;)[1].replace(&quot;)&quot;, &#x27;&#x27;); // added, changed, etc.
+
+  // Grab the serial as soon as we see it. This is also our first chance to initialize
+  // the board with desired phidget-specific initial settings.
+  if ( !self.serial &amp;&amp; parseInt(parts[2]) &gt; 0 ) {
+    self.serial = parseInt(parts[2]);
+    self._setPhidgetSpecificInitialState();
+  }
+
+  if ( keyword === &#x27;Status&#x27; &amp;&amp; status === &#x27;removing&#x27;) {
+
+    self._handleConnectionEnd();
+
+  } else if ( keyword === &#x27;Name&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
+
+    self._name = value;
+
+  } else if ( keyword === &#x27;Version&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
+
+    self._version = value;
+
+  } else if ( keyword === &#x27;Label&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
+
+    self.label = label;
+
+  } else if ( keyword === &#x27;ID&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
+
+    self.serverId = value;
+
+  } else if ( keyword === &#x27;InitKeys&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
+
+    // ignored
+
+  } else if ( keyword === &#x27;Status&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
+
+    // ignored
+
+  } else {
+
+    self._parsePhidgetSpecificData({
+      device: device,
+      label: label,
+      serial: serial,
+      keyword: keyword,
+      index: index,
+      value: value,
+      status: status
+    });
+
+  }
+
+};
+
+/**
+ * Parses Phidget-specific data received from the Phidget WebService. This function is
+ * meant to be overridden by subclasses.
+ *
+ * @method _parsePhidgetSpecificData
+ * @param data {Object} An object containing the received data
+ * @param data.device {String} The device identifier (e.g. PhidgetInterfaceKey,
+ *        PhidgetLED, etc.).
+ * @param data.label {String} The custom label set for the device.
+ * @param data.serial {int} The serial number of the device.
+ * @param data.keyword {String} A keyword identifying the type of information conveyed. It
+ *        could be &#x27;Input&#x27;, &#x27;Version&#x27;, &#x27;DataRate&#x27;, etc.
+ * @param data.index {int} The numerical index (for indexed keys only)
+ * @param data.value {String} The actual value.
+ * @param data.status {String} The status of the key. It could be: &#x27;added&#x27;, &#x27;changed&#x27;,
+ *        &#x27;removing&#x27;, etc.
  * @protected
  */
-Phidget.prototype._parsePhidgetSpecificReport = function (line, parts) {};
+Phidget.prototype._parsePhidgetSpecificData = function (data) {};
 
 /**
  * Sets phidget-specific state before the &#x27;opened&#x27; event is triggered. This is a good
  * place for subclasses to assign initial values to the board. This is meant to be
- * overridden by child classes.
+ * overridden by subclasses.
  *
- * @method _parsePhidgetSpecificReport
+ * @method _setPhidgetSpecificInitialState
  * @protected
  */
 Phidget.prototype._setPhidgetSpecificInitialState = function () {};
 
 /**
- * Returns a /PCK string built from the specified parameters.
+ * Returns a /PCK string built from the specified parameters. PCK strings are the keys
+ * sent out to control the board.
  *
  * @method _makePckString
  * @param keyword {String} The operation keyword to use
@@ -728,9 +768,6 @@ Phidget.prototype._sendPck = function (key, value, persistent) {
   var request = &quot;set &quot; + key + &quot;=\&quot;&quot; + value + &quot;\&quot;&quot;;
   if(!persistent) { request += &quot; for session&quot;; }
   self._client.write(request + self._delimiter);
-
-  console.log(request);
-
 };
 
 /**
@@ -881,104 +918,87 @@ PhidgetInterfaceKit.prototype._setPhidgetSpecificInitialState = function () {
   }
 };
 
-/**
- * Parses &#x27;report&#x27; lines received from the webservice that are specific to the
- * PhidgetInterfaceKit line of boards. By design, this function overrides the one in the
- * super class.
- *
- * @method _parsePhidgetSpecificReport
- * @param line {String} The raw line received from the webservice.
- * @param parts {Array} The /PCK data split on the &quot;/&quot; character.
- * @private
- */
-PhidgetInterfaceKit.prototype._parsePhidgetSpecificReport = function (line, parts) {
-
-  // Several report lines are not currently being parsed:
-  //
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRate/5 latest value &quot;16&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMax latest value &quot;16&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMin latest value &quot;1000&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfOutputs latest value &quot;8&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfInputs latest value &quot;8&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfSensors latest value &quot;8&quot; (added)
-  //  report 200-lid0 is pending, key /PSK/PhidgetInterfaceKit/mylabel/48587/Ratiometric latest value &quot;1&quot; (added)
+/** @private See overridden method for details. */
+PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
   var self = this;
 
-  var type = parts[4];
+  // Several report lines are not currently being parsed:
+  //
+  //  Indexed:
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/DataRate/5 latest value &quot;16&quot; (added)
+  //
+  //  Non-indexed:
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMax latest value &quot;16&quot; (added)
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMin latest value &quot;1000&quot; (added)
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfOutputs latest value &quot;8&quot; (added)
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfInputs latest value &quot;8&quot; (added)
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfSensors latest value &quot;8&quot; (added)
 
-  if (type === &#x27;Input&#x27; || type === &#x27;Output&#x27; || type === &#x27;Sensor&#x27;) {
+  if (data.keyword === &quot;Input&quot;) {
 
-    var infos = parts[5].split(&quot; &quot;);
-    var index = parseInt(infos[0]);
-    var value = parseInt(infos[3].replace(&#x27;&quot;&#x27;, &quot;&quot;));
+    self.inputs[data.index] = (data.value === &#x27;1&#x27;);
 
-    if (type === &quot;Input&quot;) {
+    /**
+     * Event emitted when binary input data is received.
+     *
+     * @event input
+     * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+     *        emitted the event.
+     * @param {Object} data An object containing the input data and related information
+     * @param {int} data.index The input&#x27;s index number
+     * @param {Boolean} data.value The input&#x27;s received value
+     */
+    self.emit(
+      &quot;input&quot;,
+      self,
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.inputs[data.index] }
+    );
 
-      self.inputs[index] = (value === 1);
+  } else if (data.keyword === &quot;Sensor&quot;) {
 
-      /**
-       * Event emitted when binary input data is received.
-       *
-       * @event input
-       * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
-       *        emitted the event.
-       * @param {Object} data An object containing the input data and related information
-       * @param {int} data.index The input&#x27;s index number
-       * @param {Boolean} data.value The input&#x27;s received value
-       */
-      self.emit(
-        &quot;input&quot;,
-        self,
-        {&quot;index&quot;: index, &quot;value&quot;: value}
-      );
+    self.sensors[data.index] = parseInt(data.value);
 
-    } else if (type === &quot;Sensor&quot;) {
+    /**
+     * Event emitted when analog sensor data is received
+     *
+     * @event sensor
+     * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+     *        emitted the event.
+     * @param {Object} data An object containing the sensor data and related information
+     * @param {int} data.index The sensor&#x27;s index number
+     * @param {int} data.value The sensor&#x27;s received value
+     */
+    self.emit(
+      &quot;sensor&quot;,
+      self,
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.sensors[data.index] }
+    );
 
-      self.sensors[index] = value;
+  } else if (data.keyword === &quot;Output&quot;) {
 
-      /**
-       * Event emitted when analog sensor data is received
-       *
-       * @event sensor
-       * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
-       *        emitted the event.
-       * @param {Object} data An object containing the sensor data and related information
-       * @param {int} data.index The sensor&#x27;s index number
-       * @param {int} data.value The sensor&#x27;s received value
-       */
-      self.emit(
-        &quot;sensor&quot;,
-        self,
-        {&quot;index&quot;: index, &quot;value&quot;: value}
-      );
+    self.outputs[data.index] = (data.value === &#x27;1&#x27;);
 
-    } else if (type === &quot;Output&quot;) {
+    /**
+     * Event emitted when data is being outputted through one of the outputs
+     *
+     * @event output
+     * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+     *        emitted the event.
+     * @param {Object} data An object containing the output data and related information
+     * @param {int} data.index The sensor&#x27;s index number
+     * @param {int} data.value The sensor&#x27;s received value
+     */
+    self.emit(
+      &quot;output&quot;,
+      self,
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.outputs[data.index] }
+    );
 
-      self.outputs[index] = value;
+  } else if (data.keyword === &#x27;Ratiometric&#x27;) {
 
-      /**
-       * Event emitted when data is being outputted through one of the outputs
-       *
-       * @event output
-       * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
-       *        emitted the event.
-       * @param {Object} data An object containing the output data and related information
-       * @param {int} data.index The sensor&#x27;s index number
-       * @param {int} data.value The sensor&#x27;s received value
-       */
-      self.emit(
-        &quot;output&quot;,
-        self,
-        {&quot;index&quot;: index, &quot;value&quot;: value}
-      );
-
-    }
-
-  } else if (parts[4] &amp;&amp; parts[4].indexOf(&#x27;Ratiometric&#x27;) === 0) {
-
-    self._ratiometric = parts[4].split(&quot; &quot;)[3].replace(&#x27;&quot;&#x27;, &quot;&quot;);
+    self._ratiometric = (data.value === &#x27;1&#x27;);
 
   }
 
