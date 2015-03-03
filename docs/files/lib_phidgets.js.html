@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.3</em>
+            <em>API Docs for: 0.5.0-alpha.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -309,7 +309,9 @@ var Phidget = function(type) {
 util.inherits(Phidget, EventEmitter);
 
 /**
- * Opens a connection to a Phidget device (via the webservice).
+ * Opens a connection to a Phidget device. Opening a connection is a two-step process.
+ * First, a connection to the Phidget WebService (which must be running) is established.
+ * Then, a session to the specified device (which must be plugged in) is opened.
  *
  * @method open
  * @param {Object} [options] Options
@@ -317,8 +319,8 @@ util.inherits(Phidget, EventEmitter);
  * @param {int} [options.port] Port to connect to
  * @param {int} [options.serial] Serial number of the device to connect to
  * @param {String} [options.label] Label of the device to connect to (can be set in the
- *        Phidget control panel).
- * @returns {Phidget} Returns the Phidget to allow method chaining
+ *        Phidgets control panel).
+ * @returns {Phidget} Returns the Phidget to allow method chaining.
  */
 Phidget.prototype.open = function(options) {
 
@@ -405,10 +407,10 @@ Phidget.prototype.open = function(options) {
 };
 
 /**
- * Closes a previously opened connection to a Phidget device (via the webservice).
+ * Closes a previously opened connection to a Phidget device.
  *
  * @method close
- * @returns {Phidget} Returns the Phidget to allow method chaining
+ * @returns {Phidget} Returns the Phidget to allow method chaining.
  */
 Phidget.prototype.close = function() {
 
@@ -816,17 +818,15 @@ Phidget.prototype._forceBetween = function(value, min, max) {
 
 /**
  * The &#x60;PhidgetInterfaceKit&#x60; class allows you to control and receive data from all Phidget
- * interface boards :
+ * interface kit boards :
  *
- *  * PhidgetAnalog 4-Output
  *  * PhidgetInterfaceKit 8/8/8 normal and mini-format
  *  * PhidgetInterfaceKit 2/2/2
  *  * PhidgetInterfaceKit 0/16/16
  *  * PhidgetInterfaceKit 8/8/8 (with and without hub)
- *  * PhidgetFrequencyCounter
  *  * etc.
  *
- * Not all these boards have been tested. If you possess one and can verify its
+ * Not all of these boards have been tested. If you possess one and can verify its
  * compatibility, let us know.
  *
  * @class PhidgetInterfaceKit
@@ -901,8 +901,8 @@ util.inherits(PhidgetInterfaceKit, Phidget);
  * Sets the specified output to active (true) or inactive (false).
  *
  * @method setOutput
- * @param index {int} The output number to set
- * @param value {Boolean} The value you wish to set the output to
+ * @param index {int|Array} The output number to set (or array of output numbers)
+ * @param [value=false] {Boolean} The value you wish to set the output to.
  * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
  *          chaining.
  */
@@ -911,17 +911,19 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
   var self = this;
   if (self.ready !== true) { return self; }
 
+  index = [].concat(index);
   value = (value === true);
-  index = self._forceBetween(index, 0, 7);
   var vOut = (value === true) ? 1 : 0;
 
-  self.outputs[index] = value;
-  self._sendPck(self._makePckString(&#x27;Output&#x27;, index), vOut, true);
+  for (var i = 0; i &lt; index.length; i++) {
+    var pos = parseInt(index[i]);
+    self.outputs[pos] = value;
+    self._sendPck(self._makePckString(&#x27;Output&#x27;, pos), vOut, true);
+  }
 
   return self;
 
 };
-
 
 PhidgetInterfaceKit.prototype._setPhidgetSpecificInitialState = function () {
   var self = this;
