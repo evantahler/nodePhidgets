@@ -830,12 +830,12 @@ meant to be overridden by subclasses.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">persistent</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                        <span class="type">Boolean=false</span>
 
 
                     <div class="param-description">
-                        <p>Whether the value should persist or whether its for the
-       session only</p>
+                        <p>Whether the value should persist or whether its for
+       the session only.</p>
 
                     </div>
 
@@ -929,7 +929,7 @@ overridden by subclasses.</p>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code class="optional">[options]</code>
+                        <code class="optional">[options={}]</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -966,7 +966,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[options]</code>
+                        <code class="param-name optional">[options={}]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
 
@@ -978,7 +978,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
 
                         <ul class="params-list">
                             <li class="param">
-                                    <code class="param-name optional">[host]</code>
+                                    <code class="param-name optional">[host=&quot;127.0.0.1&quot;]</code>
                                     <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
 
@@ -989,7 +989,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
 
                             </li>
                             <li class="param">
-                                    <code class="param-name optional">[port]</code>
+                                    <code class="param-name optional">[port=5001]</code>
                                     <span class="type">Int</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
 

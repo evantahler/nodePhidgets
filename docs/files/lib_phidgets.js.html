@@ -314,9 +314,9 @@ util.inherits(Phidget, EventEmitter);
  * Then, a session to the specified device (which must be plugged in) is opened.
  *
  * @method open
- * @param {Object} [options] Options
- * @param {String} [options.host] Hostname or IP address to connect to
- * @param {int} [options.port] Port to connect to
+ * @param {Object} [options={}] Options
+ * @param {String} [options.host=&quot;127.0.0.1&quot;] Hostname or IP address to connect to
+ * @param {int} [options.port=5001] Port to connect to
  * @param {int} [options.serial] Serial number of the device to connect to
  * @param {String} [options.label] Label of the device to connect to (can be set in the
  *        Phidgets control panel).
@@ -761,8 +761,8 @@ Phidget.prototype._makePckString = function (keyword, index) {
  * @method _sendPck
  * @param key {String} A /PCK string (typically form the _makePckString() method)
  * @param value {int|string} The value to set
- * @param persistent {Boolean} Whether the value should persist or whether its for the
- *        session only
+ * @param persistent {Boolean=false} Whether the value should persist or whether its for
+ *        the session only.
  * @private
  */
 Phidget.prototype._sendPck = function (key, value, persistent) {
@@ -1052,7 +1052,8 @@ util.inherits(PhidgetLED, Phidget);
  * Adjusts the brightness of a LED.
  *
  * @method setBrightness
- * @param {int|int[]} index The LED to for which to adjust the brightness
+ * @param index {int|Array} The LED output number for which to adjust the brightness (or
+ *        array of LED output numbers)
  * @param {int} value The value (0-100) you wish to adjust the brightness to
  * @returns {Phidget} Returns the Phidget to allow method chaining
  */

@@ -270,18 +270,21 @@
                     "description": "Options",
                     "type": "Object",
                     "optional": true,
+                    "optdefault": "{}",
                     "props": [
                         {
                             "name": "host",
                             "description": "Hostname or IP address to connect to",
                             "type": "String",
-                            "optional": true
+                            "optional": true,
+                            "optdefault": "\"127.0.0.1\""
                         },
                         {
                             "name": "port",
                             "description": "Port to connect to",
                             "type": "Int",
-                            "optional": true
+                            "optional": true,
+                            "optdefault": "5001"
                         },
                         {
                             "name": "serial",
@@ -669,8 +672,8 @@
                 },
                 {
                     "name": "persistent",
-                    "description": "Whether the value should persist or whether its for the\n       session only",
-                    "type": "Boolean"
+                    "description": "Whether the value should persist or whether its for\n       the session only.",
+                    "type": "Boolean=false"
                 }
             ],
             "access": "private",
@@ -983,8 +986,8 @@
             "params": [
                 {
                     "name": "index",
-                    "description": "The LED to for which to adjust the brightness",
-                    "type": "Int|int[]"
+                    "description": "The LED output number for which to adjust the brightness (or\n       array of LED output numbers)",
+                    "type": "Int|Array"
                 },
                 {
                     "name": "value",
