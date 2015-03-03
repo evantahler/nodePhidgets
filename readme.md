@@ -118,13 +118,10 @@ use the `setOutput()` method. To do the same on a `PhidgetLED`, you would use
 Currently, all *interface kit* boards are supported through the `PhidgetInterfaceKit`
 object. This includes boards such as:
 
- * PhidgetAnalog 4-Output
  * PhidgetInterfaceKit 8/8/8 normal and mini-format
  * PhidgetInterfaceKit 2/2/2
  * PhidgetInterfaceKit 0/16/16
  * PhidgetInterfaceKit 8/8/8 (with and without hub)
- * PhidgetFrequencyCounter
- * etc.
 
 Also included in the library (via the `PhidgetLED` object) is basic support for the
 following:
