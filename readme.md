@@ -137,10 +137,8 @@ you are in a hurry, and can support the development effort, please contact one o
 
 ### Documentation
 
-The full **[API documentation]
-(http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)** is available for download
-in the *docs* folder. You can also **[view it online]
-(http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)**.
+The full **API documentation** is available for download in the *docs* folder. You can 
+also **[view it online](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)**.
 
 ### ToDo:
 * Support for phidget authentication
