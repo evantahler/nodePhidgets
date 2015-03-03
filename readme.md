@@ -80,7 +80,7 @@ panel):
 ```javascript
 pik.open({
     serial: 123456,
-    label: mydevice
+    label: "mydevice"
 });
 ```
 
@@ -88,7 +88,7 @@ You can also connect to devices on another machine:
 
 ```javascript
 pik.open({
-    host: 123.123.123.123,
+    host: "123.123.123.123",
     port: 5001
 });
 ```
