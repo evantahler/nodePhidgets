@@ -100,10 +100,10 @@ of outputs by looking at the `PhidgetLED.outputs` object. This object will look 
 
 ```javascript
 {
-    '0': 0,
-    '1': 67,
-    '2': 0,
-    '3': 13,
+    0: 0,
+    1: 67,
+    2: 0,
+    3: 13,
     // etc.
 }
 ```
