@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.4</em>
+            <em>API Docs for: 0.5.0-alpha.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -107,13 +107,12 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  *
  * @todo Add support for authentication.
  * @todo Complete the close() function (see AS3 source for example).
- * @todo Understand what lid0 does. I do not see it used anywhere ?!
+ * @todo Understand what lid0 and random id do. I do not see them used anywhere ?!
  * @todo Implement a decent toString() method for completeness.
  * @todo There seems to be an issue in nw.js when the app is reloaded.
  * @todo Create getter and setter for label because it must match certain requirements.
  * @todo Parse missing report lines for PhidgetInterfaceKit and PhidgetLED.
  * @todo Create getter/setter for interReportPeriod. It cannot be set after connection.
- * @todo There are issues with the reconnection procedures when it times out.
  */
 var phidgets = {};
 
@@ -844,7 +843,7 @@ var PhidgetInterfaceKit = function() {
    * PhidgetInterfaceKit.inputs[5].
    *
    * @property inputs
-   * @type {{}}
+   * @type {Object}
    */
   this.inputs = {};
 
@@ -854,7 +853,7 @@ var PhidgetInterfaceKit = function() {
    * PhidgetInterfaceKit.sensors[5].
    *
    * @property sensors
-   * @type {{}}
+   * @type {Object}
    */
   this.sensors = {};
 
@@ -864,7 +863,7 @@ var PhidgetInterfaceKit = function() {
    * PhidgetInterfaceKit.outputs[5].
    *
    * @property outputs
-   * @type {{}}
+   * @type {Object}
    */
   this.outputs = {};
 
@@ -889,6 +888,30 @@ var PhidgetInterfaceKit = function() {
       }
     }
   });
+
+  /**
+   * [read-only] The number of outputs supported on this device.
+   *
+   * @property numberOfOutputs
+   * @type {int}
+   */
+  this.numberOfOutputs = undefined;
+
+  /**
+   * [read-only] The number of analog sensor inputs supported by this device.
+   *
+   * @property numberOfSensors
+   * @type {int}
+   */
+  this.numberOfSensors = undefined;
+
+  /**
+   * [read-only] The number of digital inputs supported by this device.
+   *
+   * @property numberOfInputs
+   * @type {int}
+   */
+  this.numberOfInputs = undefined;
 
   /** @private */
   this._ratiometric = undefined;
@@ -1011,9 +1034,13 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
     );
 
   } else if (data.keyword === &#x27;Ratiometric&#x27;) {
-
     self._ratiometric = (data.value === &#x27;1&#x27;);
-
+  } else if (data.keyword === &#x27;NumberOfInputs&#x27;) {
+    self.numberOfInputs = parseInt(data.value);
+  } else if (data.keyword === &#x27;NumberOfOutputs&#x27;) {
+    self.numberOfOutputs = parseInt(data.value);
+  } else if (data.keyword === &#x27;NumberOfSensors&#x27;) {
+    self.numberOfSensors = parseInt(data.value);
   }
 
 };
