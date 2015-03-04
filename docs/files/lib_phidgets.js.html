@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.5</em>
+            <em>API Docs for: 0.5.0-alpha.7</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -840,7 +840,7 @@ var PhidgetInterfaceKit = function() {
   /**
    * [read-only] An object containing the current value for all board inputs. The values
    * are boolean. To retrieve a value simply use the input number. For example:
-   * PhidgetInterfaceKit.inputs[5].
+   * &#x60;PhidgetInterfaceKit.inputs[5]&#x60;.
    *
    * @property inputs
    * @type {Object}
@@ -849,13 +849,35 @@ var PhidgetInterfaceKit = function() {
 
   /**
    * [read-only] An object containing the current value for all board sensors. The values
-   * are integers. To retrieve a value simply use the sensor number. For example:
-   * PhidgetInterfaceKit.sensors[5].
+   * are integers between 0 and 1000. To retrieve a value simply use the sensor number.
+   * For example: &#x60;PhidgetInterfaceKit.sensors[5]&#x60;.
    *
    * @property sensors
    * @type {Object}
    */
   this.sensors = {};
+
+  /**
+   * [read-only] An object containing the current raw and unadjusted value for all board
+   * sensors. The values are integers between 0 and 4096. To retrieve a value simply use
+   * the sensor number. For example: &#x60;PhidgetInterfaceKit.rawSensors[5]&#x60;.
+   *
+   * @property rawSensors
+   * @type {Object}
+   */
+  this.rawSensors = {};
+
+  /**
+   * [read-only] An object containing the current update intervals (in milliseconds) for
+   * all sensors. To retrieve a value simply use the sensor number. For example:
+   * &#x60;PhidgetInterfaceKit.sensorsUpdateIntervals[5]&#x60;. You cannot change the update
+   * interval by changing values in this array. To change a sensor&#x27;s update interval, use
+   * &#x60;PhidgetInterfaceKit.setUpdateInterval()&#x60;.
+   *
+   * @property sensorsUpdateIntervals
+   * @type {Object}
+   */
+  this.sensorsUpdateIntervals = {};
 
   /**
    * [read-only] An object containing the current value for all board outputs. The values
@@ -915,6 +937,8 @@ var PhidgetInterfaceKit = function() {
 
   /** @private */
   this._ratiometric = undefined;
+  this._shortestUpdateInterval = undefined;
+  this._longestUpdateInterval = undefined;
 
 };
 
@@ -948,6 +972,37 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
 
 };
 
+/**
+ * Sets the the update interval of a sensor. The update interval is the number of
+ * milliseconds between update notifications. The shorter the interval is and the more
+ * frequent the updates will be. However, shorter intervals are more demanding on the cpu.
+ * This function accepts a single sensor number or an array of sensor numbers to set. This
+ * can only be called once the board is &#x27;opened&#x27;.
+ *
+ * @method setUpdateInterval
+ * @param index {int|Array} The sensor&#x27;s number (or an array of sensor numbers)
+ * @param [value] {int} The number of milliseconds you wish to set the interval to.
+ * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
+ *          chaining.
+ */
+PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  index = [].concat(index);
+  value = self._forceBetween(value, self._shortestUpdateInterval, self._longestUpdateInterval);
+
+  for (var i = 0; i &lt; index.length; i++) {
+    var pos = parseInt(index[i]);
+    self.sensorsUpdateIntervals[pos] = value;
+    self._sendPck(self._makePckString(&#x27;DataRate&#x27;, pos), value, true);
+  }
+
+  return self;
+
+};
+
 PhidgetInterfaceKit.prototype._setPhidgetSpecificInitialState = function () {
   var self = this;
   if (self.ratiometric !== undefined) {
@@ -959,19 +1014,6 @@ PhidgetInterfaceKit.prototype._setPhidgetSpecificInitialState = function () {
 PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
   var self = this;
-
-  // Several report lines are not currently being parsed:
-  //
-  //  Indexed:
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/DataRate/5 latest value &quot;16&quot; (added)
-  //
-  //  Non-indexed:
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMax latest value &quot;16&quot; (added)
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/DataRateMin latest value &quot;1000&quot; (added)
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfOutputs latest value &quot;8&quot; (added)
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfInputs latest value &quot;8&quot; (added)
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/NumberOfSensors latest value &quot;8&quot; (added)
 
   if (data.keyword === &quot;Input&quot;) {
 
@@ -995,7 +1037,11 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
   } else if (data.keyword === &quot;Sensor&quot;) {
 
+    // The event is emitted after RawSensor is received to make sure both have been
+    // received (it&#x27;s always right after).
     self.sensors[data.index] = parseInt(data.value);
+
+  } else if (data.keyword === &#x27;RawSensor&#x27;) {
 
     /**
      * Event emitted when analog sensor data is received
@@ -1007,6 +1053,7 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
      * @param {int} data.index The sensor&#x27;s index number
      * @param {int} data.value The sensor&#x27;s received value
      */
+    self.rawSensors[data.index] = parseInt(data.value);
     self.emit(
       &quot;sensor&quot;,
       self,
@@ -1041,6 +1088,14 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
     self.numberOfOutputs = parseInt(data.value);
   } else if (data.keyword === &#x27;NumberOfSensors&#x27;) {
     self.numberOfSensors = parseInt(data.value);
+  } else if (data.keyword === &#x27;DataRate&#x27;) {
+    self.sensorsUpdateIntervals[data.index] = parseInt(data.value);
+  } else if (data.keyword === &#x27;DataRateMax&#x27;) {
+    self._shortestUpdateInterval = parseInt(data.value);
+  } else if (data.keyword === &#x27;DataRateMin&#x27;) {
+    self._longestUpdateInterval = parseInt(data.value);
+  } else if (data.keyword === &#x27;InterruptRate&#x27;) {
+  //  /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
   }
 
 };

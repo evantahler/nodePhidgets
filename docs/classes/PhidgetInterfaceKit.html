@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.5</em>
+            <em>API Docs for: 0.5.0-alpha.7</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -204,6 +204,10 @@ compatibility, let us know.</p>
                                 <a href="#method_setOutput">setOutput</a>
 
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_setUpdateInterval">setUpdateInterval</a>
+
+                            </li>
                     </ul>
                 </div>
 
@@ -259,6 +263,10 @@ compatibility, let us know.</p>
                                 <a href="#property_ratiometric">ratiometric</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_rawSensors">rawSensors</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_ready">ready</a>
 
@@ -269,6 +277,10 @@ compatibility, let us know.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_sensors">sensors</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_sensorsUpdateIntervals">sensorsUpdateIntervals</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1120,7 +1132,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l839"><code>lib&#x2F;phidgets.js:839</code></a>
+        <a href="../files/lib_phidgets.js.html#l863"><code>lib&#x2F;phidgets.js:863</code></a>
         </p>
 
 
@@ -1155,6 +1167,92 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
 
                     <div class="param-description">
                         <p>The value you wish to set the output to.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/PhidgetInterfaceKit.html" class="crosslink">PhidgetInterfaceKit</a></span>:
+                    <p>Returns the PhidgetInterfaceKit to allow method
+         chaining.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setUpdateInterval" class="method item">
+    <h3 class="name"><code>setUpdateInterval</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>index</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[value]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/PhidgetInterfaceKit.html" class="crosslink">PhidgetInterfaceKit</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_phidgets.js.html#l891"><code>lib&#x2F;phidgets.js:891</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the the update interval of a sensor. The update interval is the number of
+milliseconds between update notifications. The shorter the interval is and the more
+frequent the updates will be. However, shorter intervals are more demanding on the cpu.
+This function accepts a single sensor number or an array of sensor numbers to set. This
+can only be called once the board is &#39;opened&#39;.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">index</code>
+                        <span class="type">Int | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The sensor&#39;s number (or an array of sensor numbers)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[value]</code>
+                        <span class="type">Int</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The number of milliseconds you wish to set the interval to.</p>
 
                     </div>
 
@@ -1226,7 +1324,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="description">
                             <p>[read-only] An object containing the current value for all board inputs. The values
                     are boolean. To retrieve a value simply use the input number. For example:
-                    PhidgetInterfaceKit.inputs[5].</p>
+                    <code>PhidgetInterfaceKit.inputs[5]</code>.</p>
                     
                         </div>
                     
@@ -1327,7 +1425,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l824"><code>lib&#x2F;phidgets.js:824</code></a>
+                            <a href="../files/lib_phidgets.js.html#l846"><code>lib&#x2F;phidgets.js:846</code></a>
                             </p>
                     
                     
@@ -1352,7 +1450,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l808"><code>lib&#x2F;phidgets.js:808</code></a>
+                            <a href="../files/lib_phidgets.js.html#l830"><code>lib&#x2F;phidgets.js:830</code></a>
                             </p>
                     
                     
@@ -1377,7 +1475,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l816"><code>lib&#x2F;phidgets.js:816</code></a>
+                            <a href="../files/lib_phidgets.js.html#l838"><code>lib&#x2F;phidgets.js:838</code></a>
                             </p>
                     
                     
@@ -1402,7 +1500,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l776"><code>lib&#x2F;phidgets.js:776</code></a>
+                            <a href="../files/lib_phidgets.js.html#l798"><code>lib&#x2F;phidgets.js:798</code></a>
                             </p>
                     
                     
@@ -1484,7 +1582,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l786"><code>lib&#x2F;phidgets.js:786</code></a>
+                            <a href="../files/lib_phidgets.js.html#l808"><code>lib&#x2F;phidgets.js:808</code></a>
                             </p>
                     
                     
@@ -1499,6 +1597,33 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         </div>
                     
                             <p><strong>Default:</strong> undefined</p>
+                    
+                    
+                    </div>
+                    <div id="property_rawSensors" class="property item">
+                        <h3 class="name"><code>rawSensors</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l776"><code>lib&#x2F;phidgets.js:776</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] An object containing the current raw and unadjusted value for all board
+                    sensors. The values are integers between 0 and 4096. To retrieve a value simply use
+                    the sensor number. For example: <code>PhidgetInterfaceKit.rawSensors[5]</code>.</p>
+                    
+                        </div>
+                    
                     
                     
                     </div>
@@ -1573,8 +1698,37 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                     
                         <div class="description">
                             <p>[read-only] An object containing the current value for all board sensors. The values
-                    are integers. To retrieve a value simply use the sensor number. For example:
-                    PhidgetInterfaceKit.sensors[5].</p>
+                    are integers between 0 and 1000. To retrieve a value simply use the sensor number.
+                    For example: <code>PhidgetInterfaceKit.sensors[5]</code>.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_sensorsUpdateIntervals" class="property item">
+                        <h3 class="name"><code>sensorsUpdateIntervals</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l786"><code>lib&#x2F;phidgets.js:786</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] An object containing the current update intervals (in milliseconds) for
+                    all sensors. To retrieve a value simply use the sensor number. For example:
+                    <code>PhidgetInterfaceKit.sensorsUpdateIntervals[5]</code>. You cannot change the update
+                    interval by changing values in this array. To change a sensor&#39;s update interval, use
+                    <code>PhidgetInterfaceKit.setUpdateInterval()</code>.</p>
                     
                         </div>
                     
@@ -1876,7 +2030,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l896"><code>lib&#x2F;phidgets.js:896</code></a>
+                            <a href="../files/lib_phidgets.js.html#l938"><code>lib&#x2F;phidgets.js:938</code></a>
                             </p>
                     
                     
@@ -2036,7 +2190,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l936"><code>lib&#x2F;phidgets.js:936</code></a>
+                            <a href="../files/lib_phidgets.js.html#l983"><code>lib&#x2F;phidgets.js:983</code></a>
                             </p>
                     
                     
@@ -2245,7 +2399,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l916"><code>lib&#x2F;phidgets.js:916</code></a>
+                            <a href="../files/lib_phidgets.js.html#l962"><code>lib&#x2F;phidgets.js:962</code></a>
                             </p>
                     
                     
