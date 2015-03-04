@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.8</em>
+            <em>API Docs for: 0.5.0-alpha.9</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -838,71 +838,47 @@ var PhidgetInterfaceKit = function() {
   var self = this;
 
   /**
-   * [read-only] An object containing the current value for all board inputs. The values
-   * are boolean. To retrieve a value simply use the input number. For example:
-   * &#x60;PhidgetInterfaceKit.inputs[5]&#x60;.
+   * [read-only] An object containing information about the digital inputs of the device.
+   * Here are a few examples of how to retrieve information in that object:
    *
-   * @property inputs
-   * @type {Object}
+   *     PhidgetInterfaceKit.inputs[5].value         // Input 5 current value
+   *     PhidgetInterfaceKit.inputs.count            // Total number of inputs on the device
+   *
+   * @property inputs {Object}
+   * @property inputs.count {int} The total number of inputs on the device.
+   * @property inputs[int].value {int} The current value of the specified input.
    */
   this.inputs = {};
 
   /**
-   * [read-only] An object containing the current value for all board sensors. The values
-   * are integers between 0 and 1000. To retrieve a value simply use the sensor number.
-   * For example: &#x60;PhidgetInterfaceKit.sensors[5]&#x60;.
+   * [read-only] An object containing information about the analog sensor inputs of the
+   * device. Here are a few examples of how to retrieve information in that object:
    *
-   * @property sensors
-   * @type {Object}
+   *     PhidgetInterfaceKit.sensors[5].value         // Sensor 5 current value
+   *     PhidgetInterfaceKit.sensors.count            // Total number of sensors on the device
+   *     PhidgetInterfaceKit.sensors[3].sensitivity   // Sensor 3 sensitivity level
+   *
+   * @property sensors {Object}
+   * @property sensors.count {int} The total number of sensors on the device.
+   * @property sensors[int].value {int} The current value of the specified sensor.
+   * @property sensors[int].rawValue {int} The current raw value of the specified sensor.
+   * @property sensors[int].sensitivity {int} The sensitivity threshold of the specified
+   *           sensor.
+   * @property sensors[int].updateInterval {int} The update interval of the specified
+   *           sensor.
    */
   this.sensors = {};
 
   /**
-   * [read-only] An object containing the current raw and unadjusted value for all board
-   * sensors. The values are integers between 0 and 4096. To retrieve a value simply use
-   * the sensor number. For example: &#x60;PhidgetInterfaceKit.sensorsRaw[5]&#x60;.
+   * [read-only] An object containing information about the digital outputs of the device.
+   * Here are a few examples of how to retrieve information in that object:
    *
-   * @property sensorsRaw
-   * @type {Object}
-   */
-  this.sensorsRaw = {};
-
-  /**
-   * [read-only] An object containing the current update intervals (in milliseconds) for
-   * all sensors. To retrieve a value simply use the sensor number. For example:
-   * &#x60;PhidgetInterfaceKit.sensorsUpdateIntervals[5]&#x60;. You cannot change the update
-   * interval by changing values in this array. To change a sensor&#x27;s update interval, use
-   * &#x60;PhidgetInterfaceKit.setUpdateInterval()&#x60;.
+   *     PhidgetInterfaceKit.outputs[5].value     // Output 5 current value
+   *     PhidgetInterfaceKit.outputs.count        // Total number of outputs on the device
    *
-   * @property sensorsUpdateIntervals
-   * @type {Object}
-   */
-  this.sensorsUpdateIntervals = {};
-
-  /**
-   * [read-only] An object containing the current sensitivity threshold for all sensors.
-   * The threshold is measured in &#x60;sensorvalue&#x60; (0-1000). It is the smallest change that
-   * will trigger an update notification from the sensor. Sensitivity threshold and update
-   * intervals are mutually exclusive. If you set the sensitivity of a sensor, the update
-   * interval will be ignored and vice versa.
-   *
-   * To retrieve a value simply use the sensor number. For example:
-   * &#x60;PhidgetInterfaceKit.sensorsSensitivities[5]&#x60;. You cannot change the sensitivity by
-   * changing values in this array. To change a sensor&#x27;s sensitivity, use
-   * &#x60;PhidgetInterfaceKit.setSensitivity()&#x60;.
-   *
-   * @property sensorsSensitivities
-   * @type {Object}
-   */
-  this.sensorsSensitivities = {};
-
-  /**
-   * [read-only] An object containing the current value for all board outputs. The values
-   * are boolean. To retrieve a value, simply use the output number. For example:
-   * PhidgetInterfaceKit.outputs[5].
-   *
-   * @property outputs
-   * @type {Object}
+   * @property outputs {Object}
+   * @property outputs.count {int} The total number of outputs on the device.
+   * @property outputs[int].value {int} The current value of the specified output.
    */
   this.outputs = {};
 
@@ -927,30 +903,6 @@ var PhidgetInterfaceKit = function() {
       }
     }
   });
-
-  /**
-   * [read-only] The number of outputs supported on this device.
-   *
-   * @property numberOfOutputs
-   * @type {int}
-   */
-  this.numberOfOutputs = undefined;
-
-  /**
-   * [read-only] The number of analog sensor inputs supported by this device.
-   *
-   * @property numberOfSensors
-   * @type {int}
-   */
-  this.numberOfSensors = undefined;
-
-  /**
-   * [read-only] The number of digital inputs supported by this device.
-   *
-   * @property numberOfInputs
-   * @type {int}
-   */
-  this.numberOfInputs = undefined;
 
   /** @private */
   this._ratiometric = undefined;
@@ -981,7 +933,8 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
 
   for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
-    self.outputs[pos] = value;
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[pos].value = value;
     self._sendPck(self._makePckString(&#x27;Output&#x27;, pos), vOut, true);
   }
 
@@ -1012,7 +965,8 @@ PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
 
   for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
-    self.sensorsUpdateIntervals[pos] = value;
+    if (!self.sensors[pos]) { self.sensors[pos] = {}; };
+    self.sensors[pos].updateInterval = value;
     self._sendPck(self._makePckString(&#x27;DataRate&#x27;, pos), value, true);
   }
 
@@ -1047,7 +1001,8 @@ PhidgetInterfaceKit.prototype.setSensitivity = function(index, value) {
 
   for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
-    self.sensorsSensitivities[pos] = value;
+    if (!self.sensors[pos]) { self.sensors[pos] = {}; };
+    self.sensors[pos].sensitivity = value;
     self._sendPck(self._makePckString(&#x27;Trigger&#x27;, pos), value, true);
   }
 
@@ -1069,7 +1024,8 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
   if (data.keyword === &quot;Input&quot;) {
 
-    self.inputs[data.index] = (data.value === &#x27;1&#x27;);
+    if (!self.inputs[data.index]) { self.inputs[data.index] = {}; }
+    self.inputs[data.index].value = (data.value === &#x27;1&#x27;);
 
     /**
      * Event emitted when binary input data is received.
@@ -1084,14 +1040,15 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
     self.emit(
       &quot;input&quot;,
       self,
-      { &quot;index&quot;: data.index, &quot;value&quot;: self.inputs[data.index] }
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.inputs[data.index].value }
     );
 
   } else if (data.keyword === &quot;Sensor&quot;) {
 
     // The event is emitted after RawSensor is received to make sure both have been
     // received (it&#x27;s always right after).
-    self.sensors[data.index] = parseInt(data.value);
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    self.sensors[data.index].value = parseInt(data.value);
 
   } else if (data.keyword === &#x27;RawSensor&#x27;) {
 
@@ -1105,16 +1062,18 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
      * @param {int} data.index The sensor&#x27;s index number
      * @param {int} data.value The sensor&#x27;s received value
      */
-    self.sensorsRaw[data.index] = parseInt(data.value);
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    self.sensors[data.index].rawValue = parseInt(data.value);
     self.emit(
       &quot;sensor&quot;,
       self,
-      { &quot;index&quot;: data.index, &quot;value&quot;: self.sensors[data.index] }
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.sensors[data.index].value }
     );
 
   } else if (data.keyword === &quot;Output&quot;) {
 
-    self.outputs[data.index] = (data.value === &#x27;1&#x27;);
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[data.index].value = (data.value === &#x27;1&#x27;);
 
     /**
      * Event emitted when data is being outputted through one of the outputs
@@ -1129,25 +1088,27 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
     self.emit(
       &quot;output&quot;,
       self,
-      { &quot;index&quot;: data.index, &quot;value&quot;: self.outputs[data.index] }
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.outputs[data.index].value }
     );
 
   } else if (data.keyword === &#x27;Ratiometric&#x27;) {
     self._ratiometric = (data.value === &#x27;1&#x27;);
   } else if (data.keyword === &#x27;NumberOfInputs&#x27;) {
-    self.numberOfInputs = parseInt(data.value);
+    self.inputs.count = parseInt(data.value);
   } else if (data.keyword === &#x27;NumberOfOutputs&#x27;) {
-    self.numberOfOutputs = parseInt(data.value);
+    self.outputs.count = parseInt(data.value);
   } else if (data.keyword === &#x27;NumberOfSensors&#x27;) {
-    self.numberOfSensors = parseInt(data.value);
+    self.sensors.count = parseInt(data.value);
   } else if (data.keyword === &#x27;DataRate&#x27;) {
-    self.sensorsUpdateIntervals[data.index] = parseInt(data.value);
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    self.sensors[data.index].updateInterval = parseInt(data.value);
   } else if (data.keyword === &#x27;DataRateMax&#x27;) {
     self._shortestUpdateInterval = parseInt(data.value);
   } else if (data.keyword === &#x27;DataRateMin&#x27;) {
     self._longestUpdateInterval = parseInt(data.value);
   } else if (data.keyword === &#x27;Trigger&#x27;) {
-    self.sensorsSensitivities[data.index] = parseInt(data.value);
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    self.sensors[data.index].sensitivity = parseInt(data.value);
   } else if (data.keyword === &#x27;InterruptRate&#x27;) {
   //  /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
   }

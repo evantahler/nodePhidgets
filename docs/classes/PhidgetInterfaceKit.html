@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.8</em>
+            <em>API Docs for: 0.5.0-alpha.9</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -240,18 +240,6 @@ compatibility, let us know.</p>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_numberOfInputs">numberOfInputs</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_numberOfOutputs">numberOfOutputs</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_numberOfSensors">numberOfSensors</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_outputs">outputs</a>
 
                             </li>
@@ -277,18 +265,6 @@ compatibility, let us know.</p>
                             </li>
                             <li class="index-item property">
                                 <a href="#property_sensors">sensors</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_sensorsRaw">sensorsRaw</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_sensorsSensitivities">sensorsSensitivities</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_sensorsUpdateIntervals">sensorsUpdateIntervals</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -1140,7 +1116,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l880"><code>lib&#x2F;phidgets.js:880</code></a>
+        <a href="../files/lib_phidgets.js.html#l832"><code>lib&#x2F;phidgets.js:832</code></a>
         </p>
 
 
@@ -1222,7 +1198,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l939"><code>lib&#x2F;phidgets.js:939</code></a>
+        <a href="../files/lib_phidgets.js.html#l893"><code>lib&#x2F;phidgets.js:893</code></a>
         </p>
 
 
@@ -1310,7 +1286,7 @@ set the sensitivity.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l908"><code>lib&#x2F;phidgets.js:908</code></a>
+        <a href="../files/lib_phidgets.js.html#l861"><code>lib&#x2F;phidgets.js:861</code></a>
         </p>
 
 
@@ -1418,14 +1394,39 @@ can only be called once the board is &#39;opened&#39;.</p>
                         </div>
                     
                         <div class="description">
-                            <p>[read-only] An object containing the current value for all board inputs. The values
-                    are boolean. To retrieve a value simply use the input number. For example:
-                    <code>PhidgetInterfaceKit.inputs[5]</code>.</p>
-                    
+                            <p>[read-only] An object containing information about the digital inputs of the device.
+                    Here are a few examples of how to retrieve information in that object:</p>
+                    <pre class="code prettyprint"><code>PhidgetInterfaceKit.inputs[5].value         // Input 5 current value
+                    PhidgetInterfaceKit.inputs.count            // Total number of inputs on the device
+                    </code></pre>
                         </div>
                     
                     
                     
+                            <h4>Sub-properties:</h4>
+                    
+                            <ul class="params-list">
+                                <li class="param">
+                                        <code class="param-name">count</code>
+                                        <span class="type">Int</span>
+                    
+                                    <div class="param-description">
+                                        <p>The total number of inputs on the device.</p>
+                    
+                                    </div>
+                    
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">inputs[int].value</code>
+                                        <span class="type">Int</span>
+                    
+                                    <div class="param-description">
+                                        <p>The current value of the specified input.</p>
+                    
+                                    </div>
+                    
+                                </li>
+                            </ul>
                     </div>
                     <div id="property_interReportPeriod" class="property item inherited">
                         <h3 class="name"><code>interReportPeriod</code></h3>
@@ -1510,81 +1511,6 @@ can only be called once the board is &#39;opened&#39;.</p>
                     
                     
                     </div>
-                    <div id="property_numberOfInputs" class="property item">
-                        <h3 class="name"><code>numberOfInputs</code></h3>
-                        <span class="type">Int</span>
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/lib_phidgets.js.html#l863"><code>lib&#x2F;phidgets.js:863</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>[read-only] The number of digital inputs supported by this device.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_numberOfOutputs" class="property item">
-                        <h3 class="name"><code>numberOfOutputs</code></h3>
-                        <span class="type">Int</span>
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/lib_phidgets.js.html#l847"><code>lib&#x2F;phidgets.js:847</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>[read-only] The number of outputs supported on this device.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_numberOfSensors" class="property item">
-                        <h3 class="name"><code>numberOfSensors</code></h3>
-                        <span class="type">Int</span>
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/lib_phidgets.js.html#l855"><code>lib&#x2F;phidgets.js:855</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>[read-only] The number of analog sensor inputs supported by this device.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
                     <div id="property_outputs" class="property item">
                         <h3 class="name"><code>outputs</code></h3>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
@@ -1596,21 +1522,46 @@ can only be called once the board is &#39;opened&#39;.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l815"><code>lib&#x2F;phidgets.js:815</code></a>
+                            <a href="../files/lib_phidgets.js.html#l788"><code>lib&#x2F;phidgets.js:788</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>[read-only] An object containing the current value for all board outputs. The values
-                    are boolean. To retrieve a value, simply use the output number. For example:
-                    PhidgetInterfaceKit.outputs[5].</p>
-                    
+                            <p>[read-only] An object containing information about the digital outputs of the device.
+                    Here are a few examples of how to retrieve information in that object:</p>
+                    <pre class="code prettyprint"><code>PhidgetInterfaceKit.outputs[5].value     // Output 5 current value
+                    PhidgetInterfaceKit.outputs.count        // Total number of outputs on the device
+                    </code></pre>
                         </div>
                     
                     
                     
+                            <h4>Sub-properties:</h4>
+                    
+                            <ul class="params-list">
+                                <li class="param">
+                                        <code class="param-name">count</code>
+                                        <span class="type">Int</span>
+                    
+                                    <div class="param-description">
+                                        <p>The total number of outputs on the device.</p>
+                    
+                                    </div>
+                    
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">outputs[int].value</code>
+                                        <span class="type">Int</span>
+                    
+                                    <div class="param-description">
+                                        <p>The current value of the specified output.</p>
+                    
+                                    </div>
+                    
+                                </li>
+                            </ul>
                     </div>
                     <div id="property_password" class="property item private inherited">
                         <h3 class="name"><code>password</code></h3>
@@ -1678,7 +1629,7 @@ can only be called once the board is &#39;opened&#39;.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l825"><code>lib&#x2F;phidgets.js:825</code></a>
+                            <a href="../files/lib_phidgets.js.html#l801"><code>lib&#x2F;phidgets.js:801</code></a>
                             </p>
                     
                     
@@ -1759,110 +1710,79 @@ can only be called once the board is &#39;opened&#39;.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l766"><code>lib&#x2F;phidgets.js:766</code></a>
+                            <a href="../files/lib_phidgets.js.html#l769"><code>lib&#x2F;phidgets.js:769</code></a>
                             </p>
                     
                     
                         </div>
                     
                         <div class="description">
-                            <p>[read-only] An object containing the current value for all board sensors. The values
-                    are integers between 0 and 1000. To retrieve a value simply use the sensor number.
-                    For example: <code>PhidgetInterfaceKit.sensors[5]</code>.</p>
-                    
+                            <p>[read-only] An object containing information about the analog sensor inputs of the
+                    device. Here are a few examples of how to retrieve information in that object:</p>
+                    <pre class="code prettyprint"><code>PhidgetInterfaceKit.sensors[5].value         // Sensor 5 current value
+                    PhidgetInterfaceKit.sensors.count            // Total number of sensors on the device
+                    PhidgetInterfaceKit.sensors[3].sensitivity   // Sensor 3 sensitivity level
+                    </code></pre>
                         </div>
                     
                     
                     
-                    </div>
-                    <div id="property_sensorsRaw" class="property item">
-                        <h3 class="name"><code>sensorsRaw</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                            <h4>Sub-properties:</h4>
                     
+                            <ul class="params-list">
+                                <li class="param">
+                                        <code class="param-name">count</code>
+                                        <span class="type">Int</span>
                     
+                                    <div class="param-description">
+                                        <p>The total number of sensors on the device.</p>
                     
+                                    </div>
                     
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">sensors[int].value</code>
+                                        <span class="type">Int</span>
                     
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/lib_phidgets.js.html#l776"><code>lib&#x2F;phidgets.js:776</code></a>
-                            </p>
+                                    <div class="param-description">
+                                        <p>The current value of the specified sensor.</p>
                     
+                                    </div>
                     
-                        </div>
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">sensors[int].rawValue</code>
+                                        <span class="type">Int</span>
                     
-                        <div class="description">
-                            <p>[read-only] An object containing the current raw and unadjusted value for all board
-                    sensors. The values are integers between 0 and 4096. To retrieve a value simply use
-                    the sensor number. For example: <code>PhidgetInterfaceKit.sensorsRaw[5]</code>.</p>
+                                    <div class="param-description">
+                                        <p>The current raw value of the specified sensor.</p>
                     
-                        </div>
+                                    </div>
                     
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">sensors[int].sensitivity</code>
+                                        <span class="type">Int</span>
                     
+                                    <div class="param-description">
+                                        <p>The sensitivity threshold of the specified
+                              sensor.</p>
                     
-                    </div>
-                    <div id="property_sensorsSensitivities" class="property item">
-                        <h3 class="name"><code>sensorsSensitivities</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                                    </div>
                     
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">sensors[int].updateInterval</code>
+                                        <span class="type">Int</span>
                     
+                                    <div class="param-description">
+                                        <p>The update interval of the specified
+                              sensor.</p>
                     
+                                    </div>
                     
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/lib_phidgets.js.html#l798"><code>lib&#x2F;phidgets.js:798</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>[read-only] An object containing the current sensitivity threshold for all sensors.
-                    The threshold is measured in <code>sensorvalue</code> (0-1000). It is the smallest change that
-                    will trigger an update notification from the sensor. Sensitivity threshold and update
-                    intervals are mutually exclusive. If you set the sensitivity of a sensor, the update
-                    interval will be ignored and vice versa.</p>
-                    <p>To retrieve a value simply use the sensor number. For example:
-                    <code>PhidgetInterfaceKit.sensorsSensitivities[5]</code>. You cannot change the sensitivity by
-                    changing values in this array. To change a sensor&#39;s sensitivity, use
-                    <code>PhidgetInterfaceKit.setSensitivity()</code>.</p>
-                    
-                        </div>
-                    
-                    
-                    
-                    </div>
-                    <div id="property_sensorsUpdateIntervals" class="property item">
-                        <h3 class="name"><code>sensorsUpdateIntervals</code></h3>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                    
-                    
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/lib_phidgets.js.html#l786"><code>lib&#x2F;phidgets.js:786</code></a>
-                            </p>
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>[read-only] An object containing the current update intervals (in milliseconds) for
-                    all sensors. To retrieve a value simply use the sensor number. For example:
-                    <code>PhidgetInterfaceKit.sensorsUpdateIntervals[5]</code>. You cannot change the update
-                    interval by changing values in this array. To change a sensor&#39;s update interval, use
-                    <code>PhidgetInterfaceKit.setUpdateInterval()</code>.</p>
-                    
-                        </div>
-                    
-                    
-                    
+                                </li>
+                            </ul>
                     </div>
                     <div id="property_serial" class="property item inherited">
                         <h3 class="name"><code>serial</code></h3>
@@ -2159,7 +2079,7 @@ can only be called once the board is &#39;opened&#39;.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l990"><code>lib&#x2F;phidgets.js:990</code></a>
+                            <a href="../files/lib_phidgets.js.html#l946"><code>lib&#x2F;phidgets.js:946</code></a>
                             </p>
                     
                     
@@ -2319,7 +2239,7 @@ can only be called once the board is &#39;opened&#39;.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l1035"><code>lib&#x2F;phidgets.js:1035</code></a>
+                            <a href="../files/lib_phidgets.js.html#l994"><code>lib&#x2F;phidgets.js:994</code></a>
                             </p>
                     
                     
@@ -2528,7 +2448,7 @@ can only be called once the board is &#39;opened&#39;.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l1014"><code>lib&#x2F;phidgets.js:1014</code></a>
+                            <a href="../files/lib_phidgets.js.html#l971"><code>lib&#x2F;phidgets.js:971</code></a>
                             </p>
                     
                     
