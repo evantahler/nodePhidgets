@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.9</em>
+            <em>API Docs for: 0.5.0-alpha.10</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -118,11 +118,15 @@ var phidgets = {};
 /**
  * The &#x60;Phidget&#x60; class is an abstract class providing common properties and methods to all
  * the board-specific child classes. This class cannot be instantiated directly. Please
- * instantiate one of the child classes instead (&#x60;PhidgetInterfaceKit&#x60;, &#x60;PhidgetLED&#x60;,
- * etc.).
+ * instantiate one of the child classes instead:
+ *
+ *    * {{#crossLink &quot;PhidgetInterfaceKit&quot;}}{{/crossLink}}
+ *    * {{#crossLink &quot;PhidgetLED&quot;}}{{/crossLink}}
  *
  * @class Phidget
  * @constructor
+ * @throws {Error} This class is abstract, you cannot instantiate it directly.
+ * @throws {Error} Unsupported device type.
  */
 var Phidget = function(type) {
 
@@ -148,7 +152,7 @@ var Phidget = function(type) {
   });
 
   if (this.supportedDevices.indexOf(type) &lt; 0) {
-    throw new Error(&quot;Unsupported device type&quot;);
+    throw new Error(&quot;Unsupported device type.&quot;);
   }
 
   /**
@@ -319,6 +323,7 @@ util.inherits(Phidget, EventEmitter);
  * @param {String} [options.label] Label of the device to connect to (can be set in the
  *        Phidgets control panel).
  * @returns {Phidget} Returns the Phidget to allow method chaining.
+ * @chainable
  */
 Phidget.prototype.open = function(options) {
 
@@ -362,7 +367,8 @@ Phidget.prototype.open = function(options) {
 
     // Open session to a specific device. The factors deciding which device to connect to
     // are: type, label (optional) and serial (optional).
-    var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + Math.floor(Math.random() * 99999) + &quot;/&quot;;
+    self._randomId = Math.floor(Math.random() * 99999);
+    var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot;;
     message += self.type;
     if (self.label) {
       message += &quot;/-1/&quot; + self.label;
@@ -409,19 +415,30 @@ Phidget.prototype.open = function(options) {
  *
  * @method close
  * @returns {Phidget} Returns the Phidget to allow method chaining.
+ * @chainable
  */
 Phidget.prototype.close = function() {
 
   var self = this;
 
   // Only close if open
-  if (self.ready) {
-    self.reopen = false;
-    // In case close() is called before the initial check timeout has had time to expire
-    clearTimeout(self._openTimeOutId);
-    self._sendLine(&quot;quit&quot;);
-    self._terminateConnection();
+  if (!self.ready) { return self; }
+
+  self.reopen = false;
+  clearTimeout(self._openTimeOutId);
+
+  var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
+  if (self.label) {
+    message += &quot;/-1/&quot; + self.label;
+  } else if (self.serial &amp;&amp; self.serial &gt; 0) {
+    message += &quot;/&quot; + self.serial;
   }
+  message += &#x27;=&quot;Close&quot; for session&#x27;;
+  self._sendLine(message);
+  self._sendLine(&quot;quit&quot;);
+
+  self._terminateConnection();
+  return self;
 
 };
 
@@ -921,6 +938,7 @@ util.inherits(PhidgetInterfaceKit, Phidget);
  * @param [value=false] {Boolean} The value you wish to set the output to.
  * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
  *          chaining.
+ * @chainable
  */
 PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
 
@@ -954,6 +972,7 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
  * @param [value] {int} The number of milliseconds you wish to set the interval to.
  * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
  *          chaining.
+ * @chainable
  */
 PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
 
@@ -987,9 +1006,10 @@ PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
  *
  * @method setSensitivity
  * @param index {int|Array} The sensor&#x27;s number (or an array of sensor numbers)
- * @param [value] {int} The number sensitivity threshold to assign (0-1000)
+ * @param [value=10] {int} The number sensitivity threshold to assign (0-1000)
  * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
  *          chaining.
+ * @chainable
  */
 PhidgetInterfaceKit.prototype.setSensitivity = function(index, value) {
 
@@ -997,6 +1017,7 @@ PhidgetInterfaceKit.prototype.setSensitivity = function(index, value) {
   if (self.ready !== true) { return self; }
 
   index = [].concat(index);
+  value = value || 10;
   value = self._forceBetween(value, 0, 1000);
 
   for (var i = 0; i &lt; index.length; i++) {
@@ -1153,6 +1174,7 @@ util.inherits(PhidgetLED, Phidget);
  *        array of LED output numbers)
  * @param {int} value The value (0-100) you wish to adjust the brightness to
  * @returns {Phidget} Returns the Phidget to allow method chaining
+ * @chainable
  */
 PhidgetLED.prototype.setBrightness = function(index, value) {
 
