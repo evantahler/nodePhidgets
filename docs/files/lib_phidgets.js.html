@@ -109,9 +109,8 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  * @todo Complete the close() function (see AS3 source for example).
  * @todo Understand what lid0 and random id do. I do not see them used anywhere ?!
  * @todo Implement a decent toString() method for completeness.
- * @todo There seems to be an issue in nw.js when the app is reloaded.
  * @todo Create getter and setter for label because it must match certain requirements.
- * @todo Parse missing report lines for PhidgetInterfaceKit and PhidgetLED.
+ * @todo Parse missing report lines for PhidgetLED.
  * @todo Create getter/setter for interReportPeriod. It cannot be set after connection.
  */
 var phidgets = {};
@@ -860,12 +859,12 @@ var PhidgetInterfaceKit = function() {
    *
    * @property sensors {Object}
    * @property sensors.count {int} The total number of sensors on the device.
-   * @property sensors[int].value {int} The current value of the specified sensor.
    * @property sensors[int].rawValue {int} The current raw value of the specified sensor.
    * @property sensors[int].sensitivity {int} The sensitivity threshold of the specified
    *           sensor.
    * @property sensors[int].updateInterval {int} The update interval of the specified
    *           sensor.
+   * @property sensors[int].value {int} The current value of the specified sensor.
    */
   this.sensors = {};
 
@@ -888,7 +887,7 @@ var PhidgetInterfaceKit = function() {
    * possible after opening it. If it is defined after the board is opened and ready, it
    * will be set right away.
    *
-   * @property ratiometric
+   * @property ratiometric {Boolean}
    * @default undefined
    */
   Object.defineProperty(this, &#x27;ratiometric&#x27;, {
@@ -908,6 +907,7 @@ var PhidgetInterfaceKit = function() {
   this._ratiometric = undefined;
   this._shortestUpdateInterval = undefined;
   this._longestUpdateInterval = undefined;
+  this._interruptRate = undefined;
 
 };
 
@@ -965,7 +965,7 @@ PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
 
   for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
-    if (!self.sensors[pos]) { self.sensors[pos] = {}; };
+    if (!self.sensors[pos]) { self.sensors[pos] = {}; }
     self.sensors[pos].updateInterval = value;
     self._sendPck(self._makePckString(&#x27;DataRate&#x27;, pos), value, true);
   }
@@ -1001,7 +1001,7 @@ PhidgetInterfaceKit.prototype.setSensitivity = function(index, value) {
 
   for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
-    if (!self.sensors[pos]) { self.sensors[pos] = {}; };
+    if (!self.sensors[pos]) { self.sensors[pos] = {}; }
     self.sensors[pos].sensitivity = value;
     self._sendPck(self._makePckString(&#x27;Trigger&#x27;, pos), value, true);
   }
@@ -1047,7 +1047,7 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
     // The event is emitted after RawSensor is received to make sure both have been
     // received (it&#x27;s always right after).
-    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].value = parseInt(data.value);
 
   } else if (data.keyword === &#x27;RawSensor&#x27;) {
@@ -1062,7 +1062,7 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
      * @param {int} data.index The sensor&#x27;s index number
      * @param {int} data.value The sensor&#x27;s received value
      */
-    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].rawValue = parseInt(data.value);
     self.emit(
       &quot;sensor&quot;,
@@ -1072,7 +1072,7 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
   } else if (data.keyword === &quot;Output&quot;) {
 
-    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
     self.outputs[data.index].value = (data.value === &#x27;1&#x27;);
 
     /**
@@ -1100,17 +1100,17 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
   } else if (data.keyword === &#x27;NumberOfSensors&#x27;) {
     self.sensors.count = parseInt(data.value);
   } else if (data.keyword === &#x27;DataRate&#x27;) {
-    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].updateInterval = parseInt(data.value);
   } else if (data.keyword === &#x27;DataRateMax&#x27;) {
     self._shortestUpdateInterval = parseInt(data.value);
   } else if (data.keyword === &#x27;DataRateMin&#x27;) {
     self._longestUpdateInterval = parseInt(data.value);
   } else if (data.keyword === &#x27;Trigger&#x27;) {
-    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; };
+    if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].sensitivity = parseInt(data.value);
   } else if (data.keyword === &#x27;InterruptRate&#x27;) {
-  //  /PSK/PhidgetInterfaceKit/mylabel/48587/InterruptRate latest value &quot;8&quot; (added)
+    self._interruptRate = parseInt(data.value);
   }
 
 };
