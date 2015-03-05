@@ -33,7 +33,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "lib/phidgets.js",
-            "line": 1059,
+            "line": 1060,
             "description": "The `Phidgets` library module makes it easy to connect to various sensor and controller\nboards made by [Phidgets Inc.](http://www.phidgets.com) This library works under\n[Node.js](http://www.nodejs.org) and other compatible frameworks such as\n[io.js](http://www.iojs.org)\n\nFor support, go to the GitHub [project page](https://github.com/evantahler/nodePhidgets).\n\nPlease note that this library is an open source project that is not affiliated with\nPhidgets Inc.",
             "todo": [
                 "Add support for authentication.",
@@ -93,7 +93,7 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 1059,
+            "line": 1060,
             "description": "The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.\n\nWarning: as of now, only basic functionalities have been implemented. More to come...",
             "is_constructor": 1,
             "extends": "Phidget"
@@ -917,7 +917,8 @@
                     "name": "value",
                     "description": "The number of milliseconds you wish to set the interval to.",
                     "type": "Int",
-                    "optional": true
+                    "optional": true,
+                    "optdefault": "16"
                 }
             ],
             "return": {
@@ -930,7 +931,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 912,
+            "line": 913,
             "description": "Sets the sensitivity threshold of a sensor. The threshold is measured in `sensorvalue`\n(0-1000). It is the smallest change that will trigger an update notification from the\nsensor. Sensitivity threshold and update intervals are mutually exclusive. If you set\nthe sensitivity of a sensor, the update interval will be ignored and vice versa.\n\nThis function accepts a single sensor number or an array of sensor numbers for which to\nset the sensitivity.\n\nNote that this function can only be called once the board is 'opened'.",
             "itemtype": "method",
             "name": "setSensitivity",
@@ -958,13 +959,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 957,
+            "line": 958,
             "class": "PhidgetInterfaceKit",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 967,
+            "line": 968,
             "description": "Event emitted when binary input data is received.",
             "itemtype": "event",
             "name": "input",
@@ -997,7 +998,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 992,
+            "line": 993,
             "description": "Event emitted when analog sensor data is received",
             "itemtype": "event",
             "name": "sensor",
@@ -1030,7 +1031,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1015,
+            "line": 1016,
             "description": "Event emitted when data is being outputted through one of the outputs",
             "itemtype": "event",
             "name": "output",
@@ -1063,12 +1064,6 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1055,
-            "class": "PhidgetInterfaceKit",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
             "line": 1056,
             "class": "PhidgetInterfaceKit",
             "module": "phidgets"
@@ -1081,7 +1076,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1071,
+            "line": 1058,
+            "class": "PhidgetInterfaceKit",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1072,
             "description": "[read-only] An object containing the current value for all board outputs. The values\nare integers between 0 and 100. To retrieve the value simply use the output number.\nFor example: PhidgetLED.outputs[5].",
             "itemtype": "property",
             "name": "outputs",
@@ -1091,7 +1092,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1085,
+            "line": 1086,
             "description": "Adjusts the brightness of a LED.",
             "itemtype": "method",
             "name": "setBrightness",
@@ -1135,11 +1136,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:912"
+            "line": " lib/phidgets.js:913"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1085"
+            "line": " lib/phidgets.js:1086"
         },
         {
             "message": "Missing item type",
@@ -1187,11 +1188,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:957"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/phidgets.js:1055"
+            "line": " lib/phidgets.js:958"
         },
         {
             "message": "Missing item type",
@@ -1200,6 +1197,10 @@
         {
             "message": "Missing item type",
             "line": " lib/phidgets.js:1057"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/phidgets.js:1058"
         }
     ]
 }
