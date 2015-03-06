@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.10</em>
+            <em>API Docs for: 0.5.0-alpha.11</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -106,12 +106,10 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  * @module phidgets
  *
  * @todo Add support for authentication.
- * @todo Complete the close() function (see AS3 source for example).
- * @todo Understand what lid0 and random id do. I do not see them used anywhere ?!
+ * @todo Understand what lid0 does. I do not see it used anywhere ?!
  * @todo Implement a decent toString() method for completeness.
  * @todo Create getter and setter for label because it must match certain requirements.
  * @todo Parse missing report lines for PhidgetLED.
- * @todo Create getter/setter for interReportPeriod. It cannot be set after connection.
  */
 var phidgets = {};
 
@@ -192,7 +190,7 @@ var Phidget = function(type) {
   this.reopen = true;
 
   /**
-   * The host name or address of the Phidgets webservice to connect to.
+   * The host name or address of the Phidgets WebService to connect to.
    * @property host
    * @type {String}
    * @default 127.0.0.1
@@ -281,15 +279,23 @@ var Phidget = function(type) {
   });
 
   /**
-   * The delay (in milliseconds) between report updates sent from the webservice. This is
-   * requested of the server during the opening of a phidget. Therefore, if you want to
-   * use it, you must assign it before calling &#x60;open()&#x60;.
+   * The delay (in milliseconds) between report updates sent from the webservice.
    *
    * @property interReportPeriod
    * @type {int}
    * @default 8
    */
-  this.interReportPeriod = 8;
+  Object.defineProperty(this, &#x27;interReportPeriod&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._interReportPeriod);
+    },
+    set: function(value) {
+      self._interReportPeriod = parseInt(value);
+      self._sendLine(&quot;report &quot; + self._interReportPeriod + &quot; report&quot;);
+    }
+  });
+  this._interReportPeriod = 8;
 
   this._ready = false;
   this._client = null;
@@ -363,7 +369,10 @@ Phidget.prototype.open = function(options) {
     // Open connection to Phidget WebService and set reporting delay (the delay between
     // automatic status reports sent out by the server).
     self._sendLine(&quot;995 authenticate, version=&quot; + self._protocol);
-    self._sendLine(&quot;report &quot; + self.interReportPeriod + &quot; report&quot;);
+
+    // Adjust inter-report period (triggering the setter will send the request to the
+    // Phidget WebService.
+    self.interReportPeriod = self._interReportPeriod;
 
     // Open session to a specific device. The factors deciding which device to connect to
     // are: type, label (optional) and serial (optional).
@@ -931,7 +940,8 @@ var PhidgetInterfaceKit = function() {
 util.inherits(PhidgetInterfaceKit, Phidget);
 
 /**
- * Sets the specified output to active (true) or inactive (false).
+ * Sets the specified output to active (true) or inactive (false). This method should only
+ * be used after the board is &#x27;opened&#x27;. Calling it before will fail silently.
  *
  * @method setOutput
  * @param index {int|Array} The output number to set (or array of output numbers)
@@ -965,7 +975,8 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
  * milliseconds between update notifications. The shorter the interval is and the more
  * frequent the updates will be. However, shorter intervals are more demanding on the cpu.
  * This function accepts a single sensor number or an array of sensor numbers to set. This
- * can only be called once the board is &#x27;opened&#x27;.
+ * method should only be used after the board is &#x27;opened&#x27;. Calling it before will fail
+ * silently.
  *
  * @method setUpdateInterval
  * @param index {int|Array} The sensor&#x27;s number (or an array of sensor numbers)
@@ -1003,7 +1014,8 @@ PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
  * This function accepts a single sensor number or an array of sensor numbers for which to
  * set the sensitivity.
  *
- * Note that this function can only be called once the board is &#x27;opened&#x27;.
+ * This method should only be used after the board is &#x27;opened&#x27;. Calling it before will
+ * fail silently.
  *
  * @method setSensitivity
  * @param index {int|Array} The sensor&#x27;s number (or an array of sensor numbers)
