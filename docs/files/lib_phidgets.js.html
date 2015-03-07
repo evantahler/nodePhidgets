@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.11</em>
+            <em>API Docs for: 0.5.0-alpha.12</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -106,9 +106,7 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  * @module phidgets
  *
  * @todo Add support for authentication.
- * @todo Understand what lid0 does. I do not see it used anywhere ?!
  * @todo Implement a decent toString() method for completeness.
- * @todo Create getter and setter for label because it must match certain requirements.
  * @todo Parse missing report lines for PhidgetLED.
  */
 var phidgets = {};
@@ -216,14 +214,28 @@ var Phidget = function(type) {
   this.serial = undefined;
 
   /**
-   * The unique label of the device. If specified, it will be used to connect to the
-   * matching device.
+   * The unique label of the device. The label must have a maximum length of 10
+   * characters. If you try to set a longer label, the remainder will be truncated. Labels
+   * are supported only on newer devices and are remembered even when the device is
+   * unplugged. A label can only be set after a Phidget has been &#x27;opened&#x27;. Trying to set
+   * the label before that will fail silently.
    *
    * @property label
    * @type {String}
    * @default undefined
    */
-  this.label = undefined;
+  Object.defineProperty(this, &#x27;label&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._label);
+    },
+    set: function(value) {
+      if (self.ready) {
+        self._label = value.substr(0, 10);
+        self._sendPck(self._makePckString(&#x27;Label&#x27;), self._label, true);
+      }
+    }
+  });
 
   /**
    * The unique ID of the Phidget WebService the device is currently connected to.
@@ -295,8 +307,9 @@ var Phidget = function(type) {
       self._sendLine(&quot;report &quot; + self._interReportPeriod + &quot; report&quot;);
     }
   });
-  this._interReportPeriod = 8;
 
+  this._label = undefined;
+  this._interReportPeriod = 8;
   this._ready = false;
   this._client = null;
   this._name = undefined;
@@ -339,7 +352,7 @@ Phidget.prototype.open = function(options) {
   if (options.host)     { this.host = options.host; }
   if (options.port)     { this.port = options.port; }
   if (options.serial)   { this.serial = options.serial; }
-  if (options.label)    { this.label = options.label; }
+  if (options.label)    { this._label = options.label; }
   if (options.password) { this.password = options.password; }
 
   /**
@@ -379,8 +392,8 @@ Phidget.prototype.open = function(options) {
     self._randomId = Math.floor(Math.random() * 99999);
     var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot;;
     message += self.type;
-    if (self.label) {
-      message += &quot;/-1/&quot; + self.label;
+    if (self._label) {
+      message += &quot;/-1/&quot; + self._label;
     } else if (self.serial &amp;&amp; self.serial &gt; 0) {
       message += &quot;/&quot; + self.serial;
     }
@@ -703,7 +716,7 @@ Phidget.prototype._parsePskKey = function(oPsk, self) {
 
   } else if ( keyword === &#x27;Label&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
-    self.label = label;
+    self._label = label;
 
   } else if ( keyword === &#x27;ID&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
