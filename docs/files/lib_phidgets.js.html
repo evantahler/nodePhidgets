@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.12</em>
+            <em>API Docs for: 0.5.0-alpha.14</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -84,6 +84,7 @@
     <pre class="code prettyprint linenums">
 &#x27;use strict&#x27;;
 
+var crypto = require(&#x27;crypto&#x27;);
 var net = require(&#x27;net&#x27;);
 var util = require(&#x27;util&#x27;);
 var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
@@ -105,11 +106,10 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  *
  * @module phidgets
  *
- * @todo Add support for authentication.
- * @todo Implement a decent toString() method for completeness.
- * @todo Parse missing report lines for PhidgetLED.
+ * @todo Complete the PhidgetLED object.
+ * @todo Add support for more Phidget boards
  */
-var phidgets = {};
+module.exports = {};
 
 /**
  * The &#x60;Phidget&#x60; class is an abstract class providing common properties and methods to all
@@ -180,7 +180,7 @@ var Phidget = function(type) {
   });
 
   /**
-   * Whether to try automatically reopen the device if it gets remotely closed.
+   * Whether to try to automatically reopen the device if it gets remotely closed.
    * @property reopen
    * @type {Boolean}
    * @default true
@@ -238,18 +238,24 @@ var Phidget = function(type) {
   });
 
   /**
-   * The unique ID of the Phidget WebService the device is currently connected to.
+   * [read-only] The unique ID of the Phidget WebService the device is currently connected
+   * to.
    *
    * @property serverId
    * @type {int}
    * @default undefined
    */
-  this.serverId = undefined;
+  Object.defineProperty(this, &#x27;serverId&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._serverId);
+    }
+  });
 
   /**
    * The password to connect to the WebService. If specified, it will be used when opening
-   * a new connection. As soon as connected the password will be erased. THIS IS CURRENTLY
-   * SET TO PRIVATE BECAUSE IT&#x27;S NOT IMPLEMENTED YET!
+   * a new connection. As soon as connected the password property will be erased. THIS IS
+   * CURRENTLY SET TO PRIVATE BECAUSE IT&#x27;S NOT IMPLEMENTED YET!
    *
    * @property password
    * @type {String}
@@ -308,22 +314,20 @@ var Phidget = function(type) {
     }
   });
 
-  this._label = undefined;
-  this._interReportPeriod = 8;
-  this._ready = false;
   this._client = null;
-  this._name = undefined;
-  this._version = undefined;
-  this._inputBuffer = &#x27;&#x27;;
-  this._protocol = &quot;1.0.10&quot;;
   this._delimiter = &#x27;\r\n&#x27;;
-  this._reopenDelay = 1000;
-  this._reopenCount = 0;
-  this._reopenMaxCount = 5;
+  this._inputBuffer = &#x27;&#x27;;
+  this._interReportPeriod = 8;
+  this._label = undefined;
+  this._name = undefined;
   this._openTimeOutDuration = 1000;
   this._openTimeOutId = undefined;
-
-  return this;
+  this._protocol = &quot;1.0.10&quot;;
+  this._ready = false;
+  this._reopenCount = 0;
+  this._reopenDelay = 1000;
+  this._reopenMaxCount = 5;
+  this._version = undefined;
 
 };
 
@@ -383,45 +387,6 @@ Phidget.prototype.open = function(options) {
     // automatic status reports sent out by the server).
     self._sendLine(&quot;995 authenticate, version=&quot; + self._protocol);
 
-    // Adjust inter-report period (triggering the setter will send the request to the
-    // Phidget WebService.
-    self.interReportPeriod = self._interReportPeriod;
-
-    // Open session to a specific device. The factors deciding which device to connect to
-    // are: type, label (optional) and serial (optional).
-    self._randomId = Math.floor(Math.random() * 99999);
-    var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot;;
-    message += self.type;
-    if (self._label) {
-      message += &quot;/-1/&quot; + self._label;
-    } else if (self.serial &amp;&amp; self.serial &gt; 0) {
-      message += &quot;/&quot; + self.serial;
-    }
-    message += &#x27;=&quot;Open&quot; for session&#x27;;
-    self._sendLine(message);
-
-    // Listen message
-    self._sendLine(&quot;listen /PSK/&quot; + self.type + &quot; lid0&quot;);
-
-    // Here we have a challenge: if we connect successfully to the web service but the
-    // device is not plugged in, we do not know. That&#x27;s why the device is set as ready
-    // only when the first occurrence of the following line is received: &quot;report
-    // 200-that&#x27;s all for now&quot;. If that line is not received within a certain delay, we
-    // must issue a timeout.
-    self._openTimeOutId = setTimeout(
-      function() {
-        /**
-         * Event emitted when an attempt to open a Phidget times out.
-         *
-         * @event timeout
-         * @param {Phidget} emitter The actual Phidget object that emitted the event.
-         */
-        self.emit(&#x27;timeout&#x27;, self);
-        self._handleConnectionEnd();
-      },
-      self._openTimeOutDuration
-    );
-
   });
 
   self._client.on(&#x27;error&#x27;, function(e) {
@@ -443,20 +408,18 @@ Phidget.prototype.close = function() {
 
   var self = this;
 
-  // Only close if open
   if (!self.ready) { return self; }
 
   self.reopen = false;
   clearTimeout(self._openTimeOutId);
 
-  var message  = &quot;set /PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
+  var message  = &quot;/PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
   if (self.label) {
     message += &quot;/-1/&quot; + self.label;
   } else if (self.serial &amp;&amp; self.serial &gt; 0) {
     message += &quot;/&quot; + self.serial;
   }
-  message += &#x27;=&quot;Close&quot; for session&#x27;;
-  self._sendLine(message);
+  self._sendPck(message, &#x27;Close&#x27;, false);
   self._sendLine(&quot;quit&quot;);
 
   self._terminateConnection();
@@ -495,7 +458,7 @@ Phidget.prototype._handleConnectionEnd = function() {
 
     self._reopenCount++;
 
-    // Instead of trying to reconnect right away, we give a little for the network or
+    // Instead of trying to reconnect right away, we give a little time for the network or
     // device to come back
     setTimeout(
       function() {
@@ -643,32 +606,81 @@ Phidget.prototype._parseLineInput = function(line) {
 
     // Ignored: &quot;200 set successful&quot; and &quot;200 inter-report period adjusted to 8ms.&quot;
 
-  } else if (status === &#x27;994&#x27;) {    // Version mismatch
+  } else if (status === 994) {    // Version mismatch
 
     err = new Error(&#x27;Protocol version mismatch.&#x27;, &#x27;PROTOCOL_MISMATCH&#x27;);
     err.details = line;
     self.emit(&#x27;error&#x27;, self, err);
 
-  } else if (status === &#x27;996&#x27;) {   // Authenticated or no authentication necessary
+  } else if (status === 996) {   // Authenticated or no authentication necessary
 
-    // nothing to do.
+    // Adjust inter-report period (triggering the setter will send the request to the
+    // Phidget WebService.
+    self.interReportPeriod = self._interReportPeriod;
 
-  } else if (status === &#x27;998&#x27;) {     // Authentication failed
+    // Open session to a specific device. The factors deciding which device to connect to
+    // are: type, label (optional) and serial (optional).
+    self._randomId = Math.floor(Math.random() * 99999);
+    var pck  = &quot;/PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
+    if (self._label) {
+      pck += &quot;/-1/&quot; + self._label;
+    } else if (self.serial &amp;&amp; self.serial &gt; 0) {
+      pck += &quot;/&quot; + self.serial;
+    }
+    self._sendPck(pck, &#x27;Open&#x27;, false);
 
-    err = new Error(&#x27;Authentication failed&#x27;, &#x27;AUTHENTICATION_FAILED&#x27;);
+    // Issue &quot;listen&quot; command
+    self._sendLine(&quot;listen /PSK/&quot; + self.type + &quot; lid0&quot;);
+
+    // Here we have a challenge: if we connect successfully to the web service but the
+    // device is not plugged in, we do not know. That&#x27;s why the device is set as ready
+    // only when the first occurrence of the following line is received: &quot;report
+    // 200-that&#x27;s all for now&quot;. If that line is not received within a certain delay, we
+    // must issue a timeout.
+    self._openTimeOutId = setTimeout(
+      function() {
+        /**
+         * Event emitted when an attempt to open a Phidget times out.
+         *
+         * @event timeout
+         * @param {Phidget} emitter The actual Phidget object that emitted the event.
+         */
+        self.emit(&#x27;timeout&#x27;, self);
+        self._handleConnectionEnd();
+      },
+      self._openTimeOutDuration
+    );
+
+  } else if (status === 998) {     // Authentication failed
+
+    err = new Error(&#x27;The authentication attempt failed.&#x27;, &#x27;AUTHENTICATION_FAILED&#x27;);
     err.details = line;
     self.emit(&#x27;error&#x27;, self, err);
+    self.reopen = false;
+    self._terminateConnection();
 
-  } else if (status === &#x27;999&#x27;) {   // Authentication required
+  } else if (status === 999) {   // Authentication required
 
-    err = new Error(&#x27;Authentication is not yet supported&#x27;, &#x27;AUTHENTICATION_UNSUPPORTED&#x27;);
-    err.details = line;
-    self.emit(&#x27;error&#x27;, self, err);
+    if (!self.password) {
 
-    //var ticket = line.split(&quot; &quot;)[1] + self.password;
-    //self.password = undefined;
-    //  var hash = MD5.hex_md5(ticket); &lt;=== this is where it gets a bit more complicated!!!
-    //  self._sendLine(&quot;997 &quot; + hash);
+      err = new Error(
+        &#x27;A connection to this Phidget WebService requires a valid password.&#x27;,
+        &#x27;PASSWORD_REQUIRED&#x27;
+      );
+      err.details = line;
+      self.emit(&#x27;error&#x27;, self, err);
+      self.reopen = false;
+      self._terminateConnection();
+
+    } else {
+
+      var ticket = line.split(&quot; &quot;)[1] + self.password;
+      self.password = undefined;
+      var hash = crypto.createHash(&#x27;md5&#x27;);
+      hash.update(ticket, &#x27;utf8&#x27;);
+      self._sendLine(&quot;997 &quot; + hash.digest(&#x27;hex&#x27;));
+
+    }
 
   }
 
@@ -693,7 +705,7 @@ Phidget.prototype._parsePskKey = function(oPsk, self) {
   var keyword = parts[3];                             // Sensor, Name, DataRate, etc.
   var index   = parseInt(parts[4]);                   // not always present
   var value   = psk.split(&#x27;&quot;&#x27;)[1];                    // 69, PhidgetLED, label, 904, etc.
-  var status  = psk.split(&#x27;&quot; (&#x27;)[1].replace(&quot;)&quot;, &#x27;&#x27;); // added, changed, etc.
+  var status  = psk.split(&#x27;&quot; (&#x27;)[1].replace(&quot;)&quot;, &#x27;&#x27;); // added, changed, removing, etc.
 
   // Grab the serial as soon as we see it. This is also our first chance to initialize
   // the board with desired phidget-specific initial settings.
@@ -720,7 +732,7 @@ Phidget.prototype._parsePskKey = function(oPsk, self) {
 
   } else if ( keyword === &#x27;ID&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
-    self.serverId = value;
+    self._serverId = value;
 
   } else if ( keyword === &#x27;InitKeys&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
@@ -798,7 +810,7 @@ Phidget.prototype._makePckString = function (keyword, index) {
  * @method _sendPck
  * @param key {String} A /PCK string (typically form the _makePckString() method)
  * @param value {int|string} The value to set
- * @param persistent {Boolean=false} Whether the value should persist or whether its for
+ * @param [persistent=false] {Boolean} Whether the value should persist or whether its for
  *        the session only.
  * @private
  */
@@ -847,6 +859,7 @@ Phidget.prototype._forceBetween = function(value, min, max) {
   return (Math.min(max, Math.max(min, value)));
 };
 
+module.exports.Phidget = Phidget;
 
 
 /****************************************************************************************/
@@ -1162,6 +1175,8 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
 };
 
+module.exports.PhidgetInterfaceKit = PhidgetInterfaceKit;
+
 /****************************************************************************************/
 /*************************************  PhidgetLED  *************************************/
 /****************************************************************************************/
@@ -1179,12 +1194,15 @@ var PhidgetLED = function() {
   PhidgetLED.super_.call(this, &#x27;PhidgetLED&#x27;);
 
   /**
-   * [read-only] An object containing the current value for all board outputs. The values
-   * are integers between 0 and 100. To retrieve the value simply use the output number.
-   * For example: PhidgetLED.outputs[5].
+   * [read-only] An object containing information about the digital outputs of the device.
+   * Here are a few examples of how to retrieve information in that object:
    *
-   * @property outputs
-   * @type {{}}
+   *     PhidgetLED.outputs[5].value     // Output 5 current value
+   *     PhidgetLED.outputs.count        // Total number of outputs on the device
+   *
+   * @property outputs {Object}
+   * @property outputs.count {int} The total number of physical outputs on the device.
+   * @property outputs[int].value {int} The current value of the specified output.
    */
   this.outputs = {};
 
@@ -1205,7 +1223,7 @@ util.inherits(PhidgetLED, Phidget);
 PhidgetLED.prototype.setBrightness = function(index, value) {
 
   var self = this;
-  if (self.ready !== true) { return self; }
+  if (!self.ready) { return self; }
 
   index = [].concat(index);
   value = self._forceBetween(value, 0, 100);
@@ -1213,22 +1231,14 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
   for (var i = 0; i &lt; index.length; i++) {
     var pos = self._forceBetween(index[i], 0, 63);
     self._sendPck(self._makePckString(&#x27;Brightness&#x27;, pos), value, true);
-    self.outputs[pos] = value;
+    self.outputs[pos].value = value;
   }
 
   return self;
 
 };
 
-
-
-
-
-
-phidgets.Phidget = Phidget;
-phidgets.PhidgetInterfaceKit = PhidgetInterfaceKit;
-phidgets.PhidgetLED = PhidgetLED;
-module.exports = phidgets;
+module.exports.PhidgetLED = PhidgetLED;
     </pre>
 </div>
                     </div>

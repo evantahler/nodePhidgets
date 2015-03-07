@@ -84,6 +84,15 @@ pik.open({
 });
 ```
 
+Obviously, if the Phidget WebService has been password-protected, you will have to specify
+said password:
+
+```javascript
+pik.open({
+    password: "abc"
+});
+```
+
 You can also connect to devices on another machine:
 
 ```javascript
@@ -138,5 +147,5 @@ The full **API documentation** is available for download in the *docs* folder. Y
 also **[view it online](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)**.
 
 ### ToDo:
-* Support for phidget authentication
+* Add all features to the PhidgetLED object
 * Support for missing boards
