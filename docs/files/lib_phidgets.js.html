@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.14</em>
+            <em>API Docs for: 0.5.0-alpha.15</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -106,7 +106,6 @@ var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
  *
  * @module phidgets
  *
- * @todo Complete the PhidgetLED object.
  * @todo Add support for more Phidget boards
  */
 module.exports = {};
@@ -675,7 +674,7 @@ Phidget.prototype._parseLineInput = function(line) {
     } else {
 
       var ticket = line.split(&quot; &quot;)[1] + self.password;
-      self.password = undefined;
+      self.password = &#x27;&#x27;;
       var hash = crypto.createHash(&#x27;md5&#x27;);
       hash.update(ticket, &#x27;utf8&#x27;);
       self._sendLine(&quot;997 &quot; + hash.digest(&#x27;hex&#x27;));
@@ -990,6 +989,23 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
     if (!self.outputs[pos]) { self.outputs[pos] = {}; }
     self.outputs[pos].value = value;
     self._sendPck(self._makePckString(&#x27;Output&#x27;, pos), vOut, true);
+
+    /**
+     * Event emitted when an output&#x27;s status is changed.
+     *
+     * @event output
+     * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+     *        emitted the event.
+     * @param {Object} data An object containing the output data and related information
+     * @param {int} data.index The output&#x27;s index number
+     * @param {int} data.value The output&#x27;s new value
+     */
+    self.emit(
+      &quot;output&quot;,
+      self,
+      { &quot;index&quot;: pos, &quot;value&quot;: self.outputs[pos].value }
+    );
+
   }
 
   return self;
@@ -1135,22 +1151,6 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
     if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
     self.outputs[data.index].value = (data.value === &#x27;1&#x27;);
 
-    /**
-     * Event emitted when data is being outputted through one of the outputs
-     *
-     * @event output
-     * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
-     *        emitted the event.
-     * @param {Object} data An object containing the output data and related information
-     * @param {int} data.index The sensor&#x27;s index number
-     * @param {int} data.value The sensor&#x27;s received value
-     */
-    self.emit(
-      &quot;output&quot;,
-      self,
-      { &quot;index&quot;: data.index, &quot;value&quot;: self.outputs[data.index].value }
-    );
-
   } else if (data.keyword === &#x27;Ratiometric&#x27;) {
     self._ratiometric = (data.value === &#x27;1&#x27;);
   } else if (data.keyword === &#x27;NumberOfInputs&#x27;) {
@@ -1193,18 +1193,104 @@ module.exports.PhidgetInterfaceKit = PhidgetInterfaceKit;
 var PhidgetLED = function() {
   PhidgetLED.super_.call(this, &#x27;PhidgetLED&#x27;);
 
+  var self = this;
+
   /**
-   * [read-only] An object containing information about the digital outputs of the device.
+   * [read-only] An object containing information about all LED outputs of the device.
    * Here are a few examples of how to retrieve information in that object:
    *
-   *     PhidgetLED.outputs[5].value     // Output 5 current value
-   *     PhidgetLED.outputs.count        // Total number of outputs on the device
+   *     PhidgetLED.leds[5].value     // LED 5 current value
+   *     PhidgetLED.leds.count        // Total number of LED outputs on the device
    *
-   * @property outputs {Object}
-   * @property outputs.count {int} The total number of physical outputs on the device.
-   * @property outputs[int].value {int} The current value of the specified output.
+   * @property leds {Object}
+   * @property leds.count {int} The total number of physical LED outputs on the device.
+   * @property leds[int].value {int} The current brightness value of the specified LED
+   *           output (between 0 and 100)
+   * @property leds[int].currentLimit {int} The current limit of the specified LED output
+   *           (in mA).
    */
-  this.outputs = {};
+  this.leds = {};
+
+  /**
+   * The global voltage for all led outputs. When setting the voltage, you must use one of
+   * the values in the &#x60;PhidgetLED.supportedVoltages&#x60; array. Valid values currently are
+   * (in volts):
+   *
+   * * 1.7
+   * * 2.75
+   * * 3.9
+   * * 5
+   *
+   * Trying to set the voltage to another value will fail silently. This is not supported
+   * by all PhidgetLED boards.
+   *
+   * @property voltage {Number}
+   */
+  Object.defineProperty(this, &#x27;voltage&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._voltage);
+    },
+    set: function(value) {
+      if (self.ready) {
+        var index = self.supportedVoltages.indexOf(value) + 1;
+        if (index &gt; 0) {
+          self._sendPck(self._makePckString(&#x27;Voltage&#x27;), index, true);
+          self._voltage = value;
+        }
+      }
+    }
+  });
+
+  /**
+   * The global &quot;current limit&quot; for all led outputs. When setting the global current
+   * limit, you must use one of the values in the
+   * &#x60;PhidgetLED.supportedGlobalCurrentLimits&#x60; array. Valid values currently are (in mA):
+   * 20, 40, 60, 80. Trying to set the current limit to another value will fail silently.
+   *
+   * This is not supported by all PhidgetLED boards.
+   *
+   * @property currentLimit {Number}
+   */
+  Object.defineProperty(this, &#x27;currentLimit&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._currentLimit);
+    },
+    set: function(value) {
+      if (self.ready) {
+        var index = self.supportedGlobalCurrentLimits.indexOf(value) + 1;
+        if (index &gt; 0) {
+          self._sendPck(self._makePckString(&#x27;CurrentLimit&#x27;), index, true);
+          self._currentLimit = value;
+        }
+      }
+    }
+  });
+
+  /**
+   * [read-only] Array of supported voltages (in volts).
+   * @property supportedVoltages {Array}
+   */
+  Object.defineProperty(this, &#x27;supportedVoltages&#x27;, {
+    enumerable: true,
+    writable: false,
+    value: [1.7, 2.75, 3.9, 5]
+  });
+
+  /**
+   * [read-only] An array of values that are valid when setting the global current limit
+   * (in mA).
+   * @property supportedGlobalCurrentLimits {Array}
+   */
+  Object.defineProperty(this, &#x27;supportedGlobalCurrentLimits&#x27;, {
+    enumerable: true,
+    writable: false,
+    value: [20, 40, 60, 80]
+  });
+
+  this._voltage = undefined;
+  this._currentLimit = undefined;
 
 };
 
@@ -1216,25 +1302,93 @@ util.inherits(PhidgetLED, Phidget);
  * @method setBrightness
  * @param index {int|Array} The LED output number for which to adjust the brightness (or
  *        array of LED output numbers)
- * @param {int} value The value (0-100) you wish to adjust the brightness to
+ * @param [value=100] {int} The value (0-100) you wish to adjust the brightness to.
  * @returns {Phidget} Returns the Phidget to allow method chaining
  * @chainable
  */
 PhidgetLED.prototype.setBrightness = function(index, value) {
 
   var self = this;
-  if (!self.ready) { return self; }
+  if (!self.ready || index === undefined) { return self; }
 
   index = [].concat(index);
-  value = self._forceBetween(value, 0, 100);
+  value = self._forceBetween(value, 0, 100) || 100;
 
   for (var i = 0; i &lt; index.length; i++) {
     var pos = self._forceBetween(index[i], 0, 63);
     self._sendPck(self._makePckString(&#x27;Brightness&#x27;, pos), value, true);
-    self.outputs[pos].value = value;
+    self.leds[pos].value = value;
+    /**
+     * Event emitted right after a LED&#x27;s brightness has been changed.
+     *
+     * @event brightness
+     * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
+     *        emitted the event.
+     * @param {Object} data An object containing the brightness data and related
+     *        information
+     * @param {int} data.index The LED output index number
+     * @param {int} data.value The brightness value
+     */
+    self.emit(
+      &quot;brightness&quot;,
+      self,
+      { &quot;index&quot;: pos, &quot;value&quot;: self.leds[pos].value }
+    );
   }
 
   return self;
+
+};
+
+/**
+ * Sets the current limit (in mA) for a specific LED output (or an array of LED outputs).
+ * The value must be between 0 and 80 mA. If the value provided is outside this range, the
+ * closest acceptable value will be used instead.
+ *
+ * @method setCurrentLimit
+ * @param index {int|Array} The LED output number (or array of LED output numbers) for
+ *        which to adjust the current limit
+ * @param [value=20] {Number} The value you wish to adjust the current limit to. Should be within
+ *        the range defined by &#x60;PhidgetLED.currentLimitRange&#x60;.
+ * @returns {Phidget} Returns the Phidget to allow method chaining
+ * @chainable
+ */
+PhidgetLED.prototype.setCurrentLimit = function(index, value) {
+
+  var self = this;
+  if (!self.ready || index === undefined) { return self; }
+
+  index = [].concat(index);
+  value = self._forceBetween(value, 0, 80) || 20;
+
+  for (var i = 0; i &lt; index.length; i++) {
+    var pos = self._forceBetween(index[i], 0, self.leds.count);
+    self._sendPck(self._makePckString(&#x27;CurrentLimitIndexed&#x27;, pos), value, true);
+    self.leds[pos].currentLimit = value;
+  }
+
+  return self;
+
+};
+
+PhidgetLED.prototype._parsePhidgetSpecificData = function (data) {
+
+  var self = this;
+
+  if (data.keyword === &quot;NumberOfLEDs&quot;) {
+    self.leds.count = parseInt(data.value);
+  } else if (data.keyword === &quot;Voltage&quot;) {
+    var v = self._forceBetween(data.value, 1, 4);
+    self._voltage = self.supportedVoltages[v - 1];
+  } else if (data.keyword === &quot;CurrentLimit&quot;) {
+    self._currentLimit = self.supportedGlobalCurrentLimits[data.value - 1];
+  } else if (data.keyword === &quot;Brightness&quot;) {
+    if (!self.leds[data.index]) { self.leds[data.index] = {}; }
+    self.leds[data.index].value = parseInt(data.value);
+  } else if (data.keyword === &quot;CurrentLimitIndexed&quot;) {
+    if (!self.leds[data.index]) { self.leds[data.index] = {}; }
+    self.leds[data.index].currentLimit = parseInt(data.value);
+  }
 
 };
 

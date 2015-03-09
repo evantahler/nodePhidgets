@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "phidgets",
-        "version": "0.5.0-alpha.14",
+        "version": "0.5.0-alpha.15",
         "description": "A Node.js library enabling the use of various Phidgets interface boards.",
         "url": ""
     },
@@ -36,7 +36,6 @@
             "line": 1100,
             "description": "The `Phidgets` library module makes it easy to connect to various sensor and controller\nboards made by [Phidgets Inc.](http://www.phidgets.com) This library works under\n[Node.js](http://www.nodejs.org) and other compatible frameworks such as\n[io.js](http://www.iojs.org)\n\nFor support, go to the GitHub [project page](https://github.com/evantahler/nodePhidgets).\n\nPlease note that this library is an open source project that is not affiliated with\nPhidgets Inc.",
             "todo": [
-                "Complete the PhidgetLED object.",
                 "Add support for more Phidget boards"
             ]
         }
@@ -53,7 +52,7 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 30,
+            "line": 29,
             "description": "The `Phidget` class is an abstract class providing common properties and methods to all\nthe board-specific child classes. This class cannot be instantiated directly. Please\ninstantiate one of the child classes instead:\n\n   * {{#crossLink \"PhidgetInterfaceKit\"}}{{/crossLink}}\n   * {{#crossLink \"PhidgetLED\"}}{{/crossLink}}",
             "is_constructor": 1,
             "throws": {
@@ -72,7 +71,7 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 785,
+            "line": 784,
             "description": "The `PhidgetInterfaceKit` class allows you to control and receive data from all Phidget\ninterface kit boards :\n\n * PhidgetInterfaceKit 8/8/8 normal and mini-format\n * PhidgetInterfaceKit 2/2/2\n * PhidgetInterfaceKit 0/16/16\n * PhidgetInterfaceKit 8/8/8 (with and without hub)\n * etc.\n\nNot all of these boards have been tested. If you possess one and can verify its\ncompatibility, let us know.",
             "is_constructor": 1,
             "extends": "Phidget"
@@ -112,7 +111,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 51,
+            "line": 50,
             "description": "[read-only] Array of all the devices supported by this library.",
             "itemtype": "property",
             "name": "supportedDevices",
@@ -123,7 +122,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 70,
+            "line": 69,
             "description": "[read-only] The type of device (i.e. PhidgetInterfaceKit, PhidgetLED, etc.).",
             "itemtype": "property",
             "name": "type",
@@ -134,7 +133,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 83,
+            "line": 82,
             "description": "[read-only]  Whether the device is ready for use or not. A device must be 'opened'\nbefore it can be used.",
             "itemtype": "property",
             "name": "ready",
@@ -145,7 +144,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 98,
+            "line": 97,
             "description": "Whether to try to automatically reopen the device if it gets remotely closed.",
             "itemtype": "property",
             "name": "reopen",
@@ -156,7 +155,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 106,
+            "line": 105,
             "description": "The host name or address of the Phidgets WebService to connect to.",
             "itemtype": "property",
             "name": "host",
@@ -167,7 +166,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 114,
+            "line": 113,
             "description": "The port of the Phidgets webservice to connect to.",
             "itemtype": "property",
             "name": "port",
@@ -178,7 +177,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 122,
+            "line": 121,
             "description": "The unique serial number of the device. If specified, it will be used to connect to\nthe matching device.",
             "itemtype": "property",
             "name": "serial",
@@ -189,7 +188,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 132,
+            "line": 131,
             "description": "The unique label of the device. The label must have a maximum length of 10\ncharacters. If you try to set a longer label, the remainder will be truncated. Labels\nare supported only on newer devices and are remembered even when the device is\nunplugged. A label can only be set after a Phidget has been 'opened'. Trying to set\nthe label before that will fail silently.",
             "itemtype": "property",
             "name": "label",
@@ -200,7 +199,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 156,
+            "line": 155,
             "description": "[read-only] The unique ID of the Phidget WebService the device is currently connected\nto.",
             "itemtype": "property",
             "name": "serverId",
@@ -211,7 +210,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 171,
+            "line": 170,
             "description": "The password to connect to the WebService. If specified, it will be used when opening\na new connection. As soon as connected the password property will be erased. THIS IS\nCURRENTLY SET TO PRIVATE BECAUSE IT'S NOT IMPLEMENTED YET!",
             "itemtype": "property",
             "name": "password",
@@ -224,7 +223,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 183,
+            "line": 182,
             "description": "[read-only] Human-readable version of the board's name (i.e. \"Phidget InterfaceKit\n8/8/8\". This information is only available some time after the connection has been\nsuccessfully opened.",
             "itemtype": "property",
             "name": "name",
@@ -235,7 +234,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 199,
+            "line": 198,
             "description": "[read-only] This number distinguishes between revisions of a specific type of\nPhidget. It is only useful for debugging purposes. This information is only available\nsome time after the connection has been successfully opened.",
             "itemtype": "property",
             "name": "version",
@@ -246,7 +245,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 215,
+            "line": 214,
             "description": "The delay (in milliseconds) between report updates sent from the webservice.",
             "itemtype": "property",
             "name": "interReportPeriod",
@@ -257,7 +256,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 252,
+            "line": 251,
             "description": "Opens a connection to a Phidget device. Opening a connection is a two-step process.\nFirst, a connection to the Phidget WebService (which must be running) is established.\nThen, a session to the specified device (which must be plugged in) is opened.",
             "itemtype": "method",
             "name": "open",
@@ -308,7 +307,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 278,
+            "line": 277,
             "description": "Event emitted when an attempt to open a Phidget has been initiated.",
             "itemtype": "event",
             "name": "opening",
@@ -324,7 +323,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 316,
+            "line": 315,
             "description": "Closes a previously opened connection to a Phidget device.",
             "itemtype": "method",
             "name": "close",
@@ -338,13 +337,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 346,
+            "line": 345,
             "class": "Phidget",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 355,
+            "line": 354,
             "description": "Event emitted when the connection to a phidget has been remotely closed.",
             "itemtype": "event",
             "name": "closed",
@@ -360,13 +359,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 365,
+            "line": 364,
             "class": "Phidget",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 381,
+            "line": 380,
             "description": "Event emitted when an attempt to automatically re-open a closed Phidget is\nbeing carried on.",
             "itemtype": "event",
             "name": "reopening",
@@ -399,13 +398,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 408,
+            "line": 407,
             "class": "Phidget",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 413,
+            "line": 412,
             "description": "Event emitted when an error occurs while trying to open a phidget",
             "itemtype": "event",
             "name": "error",
@@ -453,7 +452,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 431,
+            "line": 430,
             "description": "This function is called each time data is received from the Phidget WebSerice. It adds\nthe data to the input buffer and checks if full lines (separated by '\\n') can be\nreconstructed. If full lines are found they are handed over to the `_parseLineInput()`\nmethod for processing.",
             "itemtype": "method",
             "name": "_handleData",
@@ -471,7 +470,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 455,
+            "line": 454,
             "description": "Event emitted when a new line of data has been received from the web service. This\nis mostly useful for debugging purposes (hence the @private denomination). It will\nlet you view all data coming in.",
             "itemtype": "event",
             "name": "received",
@@ -494,7 +493,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 473,
+            "line": 472,
             "description": "Parses a single line of data typically received from the Phidget WebService. If the\nline is a *report* line, the function hands it off to the `_parsePskKey()` method.\nOtherwise, it deals with it locally.",
             "itemtype": "method",
             "name": "_parseLineInput",
@@ -512,7 +511,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 505,
+            "line": 504,
             "description": "Event emitted when a phidget is successfully opened.",
             "itemtype": "event",
             "name": "opened",
@@ -528,7 +527,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 558,
+            "line": 557,
             "description": "Event emitted when an attempt to open a Phidget times out.",
             "itemtype": "event",
             "name": "timeout",
@@ -544,7 +543,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 605,
+            "line": 604,
             "description": "Parses a /PSK string and performs appropriate action.",
             "params": [
                 {
@@ -564,7 +563,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 677,
+            "line": 676,
             "description": "Parses Phidget-specific data received from the Phidget WebService. This function is\nmeant to be overridden by subclasses.",
             "itemtype": "method",
             "name": "_parsePhidgetSpecificData",
@@ -619,7 +618,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 697,
+            "line": 696,
             "description": "Sets phidget-specific state before the 'opened' event is triggered. This is a good\nplace for subclasses to assign initial values to the board. This is meant to be\noverridden by subclasses.",
             "itemtype": "method",
             "name": "_setPhidgetSpecificInitialState",
@@ -630,7 +629,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 707,
+            "line": 706,
             "description": "Returns a /PCK string built from the specified parameters. PCK strings are the keys\nsent out to control the board.",
             "itemtype": "method",
             "name": "_makePckString",
@@ -654,7 +653,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 723,
+            "line": 722,
             "description": "Sends the /PCK string (with attached value) to the webservice.",
             "itemtype": "method",
             "name": "_sendPck",
@@ -684,7 +683,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 740,
+            "line": 739,
             "description": "Sends a line of data to the webservice",
             "itemtype": "method",
             "name": "_sendLine",
@@ -702,7 +701,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 751,
+            "line": 750,
             "description": "Event emitted when a new line of data has been sent to the Phidget WebService. This\nis mostly useful for debugging purposes (hence the @private denomination). It will\nlet you view all data going out.",
             "itemtype": "event",
             "name": "sent",
@@ -725,7 +724,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 764,
+            "line": 763,
             "description": "Returns the value after making sure it falls between min and max.",
             "itemtype": "method",
             "name": "_forceBetween",
@@ -756,6 +755,12 @@
         },
         {
             "file": "lib/phidgets.js",
+            "line": 780,
+            "class": "Phidget",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
             "line": 781,
             "class": "Phidget",
             "module": "phidgets"
@@ -768,13 +773,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 783,
-            "class": "Phidget",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
-            "line": 807,
+            "line": 806,
             "description": "[read-only] An object containing information about the digital inputs of the device.\nHere are a few examples of how to retrieve information in that object:\n\n    PhidgetInterfaceKit.inputs[5].value         // Input 5 current value\n    PhidgetInterfaceKit.inputs.count            // Total number of inputs on the device",
             "itemtype": "property",
             "name": "inputs",
@@ -796,7 +795,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 820,
+            "line": 819,
             "description": "[read-only] An object containing information about the analog sensor inputs of the\ndevice. Here are a few examples of how to retrieve information in that object:\n\n    PhidgetInterfaceKit.sensors[5].value         // Sensor 5 current value\n    PhidgetInterfaceKit.sensors.count            // Total number of sensors on the device\n    PhidgetInterfaceKit.sensors[3].sensitivity   // Sensor 3 sensitivity level",
             "itemtype": "property",
             "name": "sensors",
@@ -833,7 +832,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 839,
+            "line": 838,
             "description": "[read-only] An object containing information about the digital outputs of the device.\nHere are a few examples of how to retrieve information in that object:\n\n    PhidgetInterfaceKit.outputs[5].value     // Output 5 current value\n    PhidgetInterfaceKit.outputs.count        // Total number of outputs on the device",
             "itemtype": "property",
             "name": "outputs",
@@ -855,7 +854,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 852,
+            "line": 851,
             "description": "Determines whether ratiometric values should be used or not for analog sensors. If\nthis property is defined before the phidget is opened, it will be set as soon as\npossible after opening it. If it is defined after the board is opened and ready, it\nwill be set right away.",
             "itemtype": "property",
             "name": "ratiometric",
@@ -866,13 +865,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 874,
+            "line": 873,
             "class": "PhidgetInterfaceKit",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 884,
+            "line": 883,
             "description": "Sets the specified output to active (true) or inactive (false). This method should only\nbe used after the board is 'opened'. Calling it before will fail silently.",
             "itemtype": "method",
             "name": "setOutput",
@@ -900,7 +899,40 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 915,
+            "line": 909,
+            "description": "Event emitted when an output's status is changed.",
+            "itemtype": "event",
+            "name": "output",
+            "params": [
+                {
+                    "name": "emitter",
+                    "description": "The actual PhidgetInterfaceKit object that\n       emitted the event.",
+                    "type": "PhidgetInterfaceKit"
+                },
+                {
+                    "name": "data",
+                    "description": "An object containing the output data and related information",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "index",
+                            "description": "The output's index number",
+                            "type": "Int"
+                        },
+                        {
+                            "name": "value",
+                            "description": "The output's new value",
+                            "type": "Int"
+                        }
+                    ]
+                }
+            ],
+            "class": "PhidgetInterfaceKit",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 931,
             "description": "Sets the update interval of a sensor. The update interval is the number of\nmilliseconds between update notifications. The shorter the interval is and the more\nfrequent the updates will be. However, shorter intervals are more demanding on the cpu.\nThis function accepts a single sensor number or an array of sensor numbers to set. This\nmethod should only be used after the board is 'opened'. Calling it before will fail\nsilently.",
             "itemtype": "method",
             "name": "setUpdateInterval",
@@ -928,7 +960,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 950,
+            "line": 966,
             "description": "Sets the sensitivity threshold of a sensor. The threshold is measured in `sensorvalue`\n(0-1000). It is the smallest change that will trigger an update notification from the\nsensor. Sensitivity threshold and update intervals are mutually exclusive. If you set\nthe sensitivity of a sensor, the update interval will be ignored and vice versa.\n\nThis function accepts a single sensor number or an array of sensor numbers for which to\nset the sensitivity.\n\nThis method should only be used after the board is 'opened'. Calling it before will\nfail silently.",
             "itemtype": "method",
             "name": "setSensitivity",
@@ -956,13 +988,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 996,
+            "line": 1012,
             "class": "PhidgetInterfaceKit",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1006,
+            "line": 1022,
             "description": "Event emitted when binary input data is received.",
             "itemtype": "event",
             "name": "input",
@@ -995,7 +1027,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1031,
+            "line": 1047,
             "description": "Event emitted when analog sensor data is received",
             "itemtype": "event",
             "name": "sensor",
@@ -1008,39 +1040,6 @@
                 {
                     "name": "data",
                     "description": "An object containing the sensor data and related information",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "index",
-                            "description": "The sensor's index number",
-                            "type": "Int"
-                        },
-                        {
-                            "name": "value",
-                            "description": "The sensor's received value",
-                            "type": "Int"
-                        }
-                    ]
-                }
-            ],
-            "class": "PhidgetInterfaceKit",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
-            "line": 1054,
-            "description": "Event emitted when data is being outputted through one of the outputs",
-            "itemtype": "event",
-            "name": "output",
-            "params": [
-                {
-                    "name": "emitter",
-                    "description": "The actual PhidgetInterfaceKit object that\n       emitted the event.",
-                    "type": "PhidgetInterfaceKit"
-                },
-                {
-                    "name": "data",
-                    "description": "An object containing the output data and related information",
                     "type": "Object",
                     "props": [
                         {
@@ -1079,29 +1078,74 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1112,
-            "description": "[read-only] An object containing information about the digital outputs of the device.\nHere are a few examples of how to retrieve information in that object:\n\n    PhidgetLED.outputs[5].value     // Output 5 current value\n    PhidgetLED.outputs.count        // Total number of outputs on the device",
+            "line": 1114,
+            "description": "[read-only] An object containing information about all LED outputs of the device.\nHere are a few examples of how to retrieve information in that object:\n\n    PhidgetLED.leds[5].value     // LED 5 current value\n    PhidgetLED.leds.count        // Total number of LED outputs on the device",
             "itemtype": "property",
-            "name": "outputs",
+            "name": "leds",
             "type": "Object",
             "class": "PhidgetLED",
             "module": "phidgets",
             "subprops": [
                 {
                     "name": "count",
-                    "description": "The total number of physical outputs on the device.",
+                    "description": "The total number of physical LED outputs on the device.",
                     "type": "Int"
                 },
                 {
-                    "name": "outputs[int].value",
-                    "description": "The current value of the specified output.",
+                    "name": "leds[int].value",
+                    "description": "The current brightness value of the specified LED\n          output (between 0 and 100)",
+                    "type": "Int"
+                },
+                {
+                    "name": "leds[int].currentLimit",
+                    "description": "The current limit of the specified LED output\n          (in mA).",
                     "type": "Int"
                 }
             ]
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1129,
+            "line": 1130,
+            "description": "The global voltage for all led outputs. When setting the voltage, you must use one of\nthe values in the `PhidgetLED.supportedVoltages` array. Valid values currently are\n(in volts):\n\n* 1.7\n* 2.75\n* 3.9\n* 5\n\nTrying to set the voltage to another value will fail silently. This is not supported\nby all PhidgetLED boards.",
+            "itemtype": "property",
+            "name": "voltage",
+            "type": "Number",
+            "class": "PhidgetLED",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1161,
+            "description": "The global \"current limit\" for all led outputs. When setting the global current\nlimit, you must use one of the values in the\n`PhidgetLED.supportedGlobalCurrentLimits` array. Valid values currently are (in mA):\n20, 40, 60, 80. Trying to set the current limit to another value will fail silently.\n\nThis is not supported by all PhidgetLED boards.",
+            "itemtype": "property",
+            "name": "currentLimit",
+            "type": "Number",
+            "class": "PhidgetLED",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1187,
+            "description": "[read-only] Array of supported voltages (in volts).",
+            "itemtype": "property",
+            "name": "supportedVoltages",
+            "type": "Array",
+            "class": "PhidgetLED",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1197,
+            "description": "[read-only] An array of values that are valid when setting the global current limit\n(in mA).",
+            "itemtype": "property",
+            "name": "supportedGlobalCurrentLimits",
+            "type": "Array",
+            "class": "PhidgetLED",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1215,
             "description": "Adjusts the brightness of a LED.",
             "itemtype": "method",
             "name": "setBrightness",
@@ -1113,8 +1157,71 @@
                 },
                 {
                     "name": "value",
-                    "description": "The value (0-100) you wish to adjust the brightness to",
-                    "type": "Int"
+                    "description": "The value (0-100) you wish to adjust the brightness to.",
+                    "type": "Int",
+                    "optional": true,
+                    "optdefault": "100"
+                }
+            ],
+            "return": {
+                "description": "Returns the Phidget to allow method chaining",
+                "type": "Phidget"
+            },
+            "chainable": 1,
+            "class": "PhidgetLED",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1237,
+            "description": "Event emitted right after a LED's brightness has been changed.",
+            "itemtype": "event",
+            "name": "brightness",
+            "params": [
+                {
+                    "name": "emitter",
+                    "description": "The actual PhidgetInterfaceKit object that\n       emitted the event.",
+                    "type": "PhidgetInterfaceKit"
+                },
+                {
+                    "name": "data",
+                    "description": "An object containing the brightness data and related\n       information",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "index",
+                            "description": "The LED output index number",
+                            "type": "Int"
+                        },
+                        {
+                            "name": "value",
+                            "description": "The brightness value",
+                            "type": "Int"
+                        }
+                    ]
+                }
+            ],
+            "class": "PhidgetLED",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1259,
+            "description": "Sets the current limit (in mA) for a specific LED output (or an array of LED outputs).\nThe value must be between 0 and 80 mA. If the value provided is outside this range, the\nclosest acceptable value will be used instead.",
+            "itemtype": "method",
+            "name": "setCurrentLimit",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "The LED output number (or array of LED output numbers) for\n       which to adjust the current limit",
+                    "type": "Int|Array"
+                },
+                {
+                    "name": "value",
+                    "description": "The value you wish to adjust the current limit to. Should be within\n       the range defined by `PhidgetLED.currentLimitRange`.",
+                    "type": "Number",
+                    "optional": true,
+                    "optdefault": "20"
                 }
             ],
             "return": {
@@ -1129,27 +1236,31 @@
     "warnings": [
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:252"
+            "line": " lib/phidgets.js:251"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:316"
+            "line": " lib/phidgets.js:315"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:884"
+            "line": " lib/phidgets.js:883"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:915"
+            "line": " lib/phidgets.js:931"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:950"
+            "line": " lib/phidgets.js:966"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1129"
+            "line": " lib/phidgets.js:1215"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/phidgets.js:1259"
         },
         {
             "message": "Missing item type",
@@ -1165,19 +1276,23 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:346"
+            "line": " lib/phidgets.js:345"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:365"
+            "line": " lib/phidgets.js:364"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:408"
+            "line": " lib/phidgets.js:407"
         },
         {
             "message": "Missing item type\nParses a /PSK string and performs appropriate action.",
-            "line": " lib/phidgets.js:605"
+            "line": " lib/phidgets.js:604"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/phidgets.js:780"
         },
         {
             "message": "Missing item type",
@@ -1189,15 +1304,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:783"
+            "line": " lib/phidgets.js:873"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:874"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/phidgets.js:996"
+            "line": " lib/phidgets.js:1012"
         },
         {
             "message": "Missing item type",
