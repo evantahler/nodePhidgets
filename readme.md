@@ -147,5 +147,4 @@ The full **API documentation** is available for download in the *docs* folder. Y
 also **[view it online](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)**.
 
 ### ToDo:
-* Add all features to the PhidgetLED object
 * Support for missing boards
