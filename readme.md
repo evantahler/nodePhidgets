@@ -1,90 +1,150 @@
-# nodePhidgets
-_A node.js library for interacting with a Phidget board_
+# phidgets
+_A [Node.js](http://www.nodejs.org/) and [iojs.org](http://www.iojs.org/)-compatible
+JavaScript library to interface with the Phidgets line of hardware boards._
 
-[![Nodei stats](https://nodei.co/npm/phidgets.png?downloads=true)](https://npmjs.org/package/phidgets)
+[![NPM](https://nodei.co/npm/phidgets.png?downloads=true)](https://nodei.co/npm/phidgets/) [![NPM](https://nodei.co/npm-dl/phidgets.png?months=6&height=2)](https://nodei.co/npm/phidgets/)
 
-## WHAT?!
-[Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle digital inputs and outputs, along with a great array of analog sensors (RFID, temperature, etc).  [node.js](http://nodejs.org) is a fantastic networking library which makes it easy to create fast networked applications.  This project aims to make it simple to interact with them both.  Synergy!
+[Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle
+digital inputs and outputs, along with a great array of analog sensors (RFID, temperature,
+distance, etc.).  [Node.js](http://nodejs.org) and [io.js](http://iojs.org) are fantastic
+networking library which makes it easy to create fast networked applications.  This
+project aims to make it simple for them to interact. Synergy!
 
-## Phidget Web Service
-This project assumes you have the Phidget server up and running.  For most "regular" (USB) Phidget boards, that assumes that the computer you have connected to the Phidget board via USB has the server up and running.  For stand-alone Phidget micro-computers (phidgetsbc), this assumes you have configured the server via the web portal.  You will be connecting to the Phidget server via TCP, so be sure you can access the server from the machine running this project.
+>#### Warning to users of version <= 0.4.0
+>
+>The API in version 0.5.0 and above has changed and is not backwards-compatible. We had to
+> make this change in order to support more than just the PhidgetInterfaceKit board. An
+> archived copy of [version 0.4.0]
+>(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
+>kept around for those needing to maintain older projects.
 
-This package can interact with multiple phidget boards connected to a single phidgetWebService
+## Getting started
+This project assumes you have the [Phidget WebService]
+(http://www.phidgets.com/docs/Phidget_WebService) up and running.  For "regular" (USB)
+Phidget boards, this simply means that the computer you are connecting to has got the
+webservice installed and activated.
+
+For stand-alone Phidget Single Board Computers (phidgetsbc), this assumes you have
+configured the server via the web portal. Since you will be connecting to the Phidget
+server via TCP, be sure you can access the server from the machine running this project.
+
+This library can interface with multiple phidget boards connected to a single computer via
+the Phidget WebService.
 
 ## Installation
-`npm install phidgets`
+If you already have Node.js installed, you also have npm installed. This means you can
+install the *phidgets* package with: `npm install phidgets`.
 
-## Running node.js on a phidget board
-Phidget makes a line of phidget boards which themselves are small ARM Debian comptuers.  It it possble to run node.js on them, and use this package locally.  Here's a [gist](https://gist.github.com/1574158) with the steps and a [Blog Post](http://blog.evantahler.com/node-js-running-on-a-phidgets-sbc2-board) about hot to get this up and running.
+[Phidgets Inc.](http://www.phidgets.com) makes a line of phidget boards which are
+themselves small ARM Debian computers. It it possble to run Node.js on them, and use this
+package locally. Here's a [gist](https://gist.github.com/1574158) with the steps and a
+[blog post](http://blog.evantahler.com/node-js-running-on-a-phidgets-sbc2-board) about how
+to get this up and running.
 
-## Interaction
+## Examples
 
-The Phidgets package exposes a few different ways of interacting with your Phidget board:
-
-### Events
-
-```javascript
-
-var phidgetsPrototype = require('phidgets');
-var options = {
-  host: "phidgetsbc.local"
-}
-var phidgets = new phidgetsPrototype(options);
-
-// events
-phidgets.on('state',  function(state){              console.log("[state] " + state);   });
-phidgets.on('error',  function(error){              console.log("[error] " + error);   });
-phidgets.on('input',  function(boardId, id, value){ console.log("[" + boardId + "][input] " + id + " @ " + value);  });
-phidgets.on('sensor', function(boardId, id, value){ console.log("[" + boardId + "][sensor] " + id + " @ " + value); });
-phidgets.on('output', function(boardId, id, value){ console.log("[" + boardId + "][output] " + id + " @ " + value); });
-
-phidgets.connect(function(){
-  console.log('connected to PhidgetBoards:');
-  console.log(phidgets.ids);
-})
-```
-
-### Objects
-
-You can also read the state of your board from `phidget.data` which will be an object like below:
+The most common way to interact with a *phidgets* board is to set up listeners for the
+things you are interested in. For example, this code will log to the console all changes
+detected on the analog sensor inputs of the device:
 
 ```javascript
-  {
-    1234:
-    { inputs: { '0': 0, '1': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
-      outputs: { '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 },
-      sensors: { '0': 371, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 259 },
-    }
-  }
+var phidgets = require('phidgets');
+
+var pik = new phidgets.PhidgetInterfaceKit();
+
+pik.on('sensor', function(emitter, data) {
+    console.log('Sensor: ' + data.index + ', value: ' + data.value);
+});
+
+pik.open();
 ```
 
-The number of inputs, sensors, and outputs will vary depending on your phidget board.  DO NOT set the output values via this object, as it won't work.
+Since all relevant functions are chainable, the above example can be written more
+concisely:
 
-### Methods
+```javascript
+var phidgets = require('phidgets');
 
-__phidgets.connect()__  
+var pik = new phidgets.PhidgetInterfaceKit()
+    .on('sensor', function(emitter, data) {
+        console.log('Sensor: ' + data.index + ', value: ' + data.value);
+    })
+    .open();
+```
 
-__phidgets.setOutput(boardId, id, value)__  This method is used to set the digital outputs of the phidget board.  `id` is a number from 0 to n, and value is `true` for on, and `false` for off.  There will be some lag (~0.5 seconds) when sending the set command to seeing the change reflected via the server and associated node event.  This is normal.  Keep this in mind, and try not to send `set` commands too fast.
+When no parameters are passed to the `open()` method, the first matching device on the
+local machine is used. If you have multiple devices connected, you can connect to a
+specific one by passing its serial number or label (as defined in the webservice control
+panel):
 
-If your phidgetWebService is connected to more than 1 board, you will need to provide a boardId.  Otherwise, you can send `null`, and we will look up the boardId for you.
+```javascript
+pik.open({
+    serial: 123456,
+    label: "mydevice"
+});
+```
 
-__phidgets.quit()__ 
+Obviously, if the Phidget WebService has been password-protected, you will have to specify
+said password:
 
-## Connecting & Configuration Params
-`phidgets.connect` can be passed an a JSON object of options.  Here are the options and their defaults:
+```javascript
+pik.open({
+    password: "abc"
+});
+```
+
+You can also connect to devices on another machine:
+
+```javascript
+pik.open({
+    host: "123.123.123.123",
+    port: 5001
+});
+```
+
+At any time, you can check the status of any inputs, sensors or outputs. Depending on the
+type of board you are using, all of these will or will not be available. For example, on a
+`PhidgetLED` board, there are not inputs or sensors. However, you can still read the state
+of outputs by looking at the `PhidgetLED.outputs` object. This object will look like this:
 
 ```javascript
 {
-  host:             "127.0.0.1",
-  port:             5001,
-  version:          "1.0.10",
-  password:         null,
-  delimiter:        '\r\n',
-  readyWaitTimeout: 200,
+    0: 0,
+    1: 67,
+    2: 0,
+    3: 13,
+    // etc.
 }
 ```
 
-__Note on `version`__: version in this case is the version of the phidget server and associated API.  You should check your phidget server to learn the version in use.  The good news is that the APIs we are using here have not changed for the bast 3 years, and appear to be unlikely to do so in the future.  If you run into errors with newer versions, let me know.
+The `outputs` object is read-only. If you want to change the value of an output, use the
+relevant method. For example, to change the output on a `PhidgetInterfaceKit`, you would
+use the `setOutput()` method. To do the same on a `PhidgetLED`, you would use
+`setBrightness()`.
 
-## ToDo:
-* Support for phidget authentication
+### Supported boards
+
+Currently, all *interface kit* boards are supported through the `PhidgetInterfaceKit`
+object. This includes boards such as:
+
+ * PhidgetInterfaceKit 8/8/8 normal and mini-format
+ * PhidgetInterfaceKit 2/2/2
+ * PhidgetInterfaceKit 0/16/16
+ * PhidgetInterfaceKit 8/8/8 (with and without hub)
+
+Also included in the library (via the `PhidgetLED` object) is basic support for the
+following:
+
+ * PhidgetLED
+
+Other boards will be added in the future. Help from contributors is always welcomed. If
+you are in a hurry, and can support the development effort, please contact one of the
+[project contributors](https://github.com/cotejp/node-phidgets/graphs/contributors).
+
+### Documentation
+
+The full **API documentation** is available for download in the *docs* folder. You can 
+also **[view it online](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)**.
+
+### ToDo:
+* Support for missing boards

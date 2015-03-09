@@ -1,0 +1,2343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PhidgetLED - phidgets</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.5.0-alpha.15</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Phidget.html">Phidget</a></li>
+                                <li><a href="../classes/PhidgetInterfaceKit.html">PhidgetInterfaceKit</a></li>
+                                <li><a href="../classes/PhidgetLED.html">PhidgetLED</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/phidgets.html">phidgets</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>PhidgetLED Class</h1>
+<div class="box meta">
+
+        <div class="extends">
+            Extends <a href="../classes/Phidget.html" class="crosslink">Phidget</a>
+        </div>
+
+        <div class="foundat">
+            Defined in: <a href="../files/lib_phidgets.js.html#l1100"><code>lib&#x2F;phidgets.js:1100</code></a>
+        </div>
+
+            Module: <a href="../modules/phidgets.html">phidgets</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.</p>
+<p>Warning: as of now, only basic functionalities have been implemented. More to come...</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_PhidgetLED" class="method item">
+            <h3 class="name"><code>PhidgetLED</code></h3>
+        
+                <span class="paren">()</span>
+        
+        
+        
+        
+        
+        
+        
+        
+            <div class="meta">
+                        <p>
+                        Defined in
+                <a href="../files/lib_phidgets.js.html#l1100"><code>lib&#x2F;phidgets.js:1100</code></a>
+                </p>
+        
+        
+        
+            </div>
+        
+            <div class="description">
+                
+            </div>
+        
+        
+        
+        
+        </div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                            <li class="index-item method protected inherited">
+                                <a href="#method__forceBetween">_forceBetween</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__handleData">_handleData</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__makePckString">_makePckString</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__parseLineInput">_parseLineInput</a>
+
+                            </li>
+                            <li class="index-item method protected inherited">
+                                <a href="#method__parsePhidgetSpecificData">_parsePhidgetSpecificData</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__sendLine">_sendLine</a>
+
+                            </li>
+                            <li class="index-item method private inherited">
+                                <a href="#method__sendPck">_sendPck</a>
+
+                            </li>
+                            <li class="index-item method protected inherited">
+                                <a href="#method__setPhidgetSpecificInitialState">_setPhidgetSpecificInitialState</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_close">close</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_open">open</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setBrightness">setBrightness</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setCurrentLimit">setCurrentLimit</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_currentLimit">currentLimit</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_host">host</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_interReportPeriod">interReportPeriod</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_label">label</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_leds">leds</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property private inherited">
+                                <a href="#property_password">password</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_port">port</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_ready">ready</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_reopen">reopen</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_serial">serial</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_serverId">serverId</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_supportedDevices">supportedDevices</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_supportedGlobalCurrentLimits">supportedGlobalCurrentLimits</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_supportedVoltages">supportedVoltages</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_type">type</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_version">version</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_voltage">voltage</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+                <div class="index-section events">
+                    <h3>Events</h3>
+
+                    <ul class="index-list events extends">
+                            <li class="index-item event">
+                                <a href="#event_brightness">brightness</a>
+
+                            </li>
+                            <li class="index-item event inherited">
+                                <a href="#event_closed">closed</a>
+
+                            </li>
+                            <li class="index-item event inherited">
+                                <a href="#event_error">error</a>
+
+                            </li>
+                            <li class="index-item event inherited">
+                                <a href="#event_opened">opened</a>
+
+                            </li>
+                            <li class="index-item event inherited">
+                                <a href="#event_opening">opening</a>
+
+                            </li>
+                            <li class="index-item event private inherited">
+                                <a href="#event_received">received</a>
+
+                            </li>
+                            <li class="index-item event inherited">
+                                <a href="#event_reopening">reopening</a>
+
+                            </li>
+                            <li class="index-item event private inherited">
+                                <a href="#event_sent">sent</a>
+
+                            </li>
+                            <li class="index-item event inherited">
+                                <a href="#event_timeout">timeout</a>
+
+                            </li>
+                    </ul>
+                </div>
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method__forceBetween" class="method item protected inherited">
+    <h3 class="name"><code>_forceBetween</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>value</code>
+                </li>
+                <li class="arg">
+                        <code>min</code>
+                </li>
+                <li class="arg">
+                        <code>max</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__forceBetween">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l763"><code>lib&#x2F;phidgets.js:763</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the value after making sure it falls between min and max.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Int | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+                    <div class="param-description">
+                        <p>The value to check</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">min</code>
+                        <span class="type">Int</span>
+
+
+                    <div class="param-description">
+                        <p>The minimum value desired</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">max</code>
+                        <span class="type">Int</span>
+
+
+                    <div class="param-description">
+                        <p>The maximum value desired</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>int</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method__handleData" class="method item private inherited">
+    <h3 class="name"><code>_handleData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>chunk</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__handleData">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l430"><code>lib&#x2F;phidgets.js:430</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>This function is called each time data is received from the Phidget WebSerice. It adds
+the data to the input buffer and checks if full lines (separated by &#39;\n&#39;) can be
+reconstructed. If full lines are found they are handed over to the <code>_parseLineInput()</code>
+method for processing.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">chunk</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>A chunk of utf8 encoded text to parse</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__makePckString" class="method item private inherited">
+    <h3 class="name"><code>_makePckString</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>keyword</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[index]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__makePckString">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l706"><code>lib&#x2F;phidgets.js:706</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a /PCK string built from the specified parameters. PCK strings are the keys
+sent out to control the board.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">keyword</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The operation keyword to use</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[index]</code>
+                        <span class="type">Int</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The index of the output to use</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__parseLineInput" class="method item private inherited">
+    <h3 class="name"><code>_parseLineInput</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>line</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__parseLineInput">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l472"><code>lib&#x2F;phidgets.js:472</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Parses a single line of data typically received from the Phidget WebService. If the
+line is a <em>report</em> line, the function hands it off to the <code>_parsePskKey()</code> method.
+Otherwise, it deals with it locally.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">line</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>A non-terminated line of utf8 text</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__parsePhidgetSpecificData" class="method item protected inherited">
+    <h3 class="name"><code>_parsePhidgetSpecificData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>data</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__parsePhidgetSpecificData">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l676"><code>lib&#x2F;phidgets.js:676</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Parses Phidget-specific data received from the Phidget WebService. This function is
+meant to be overridden by subclasses.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>An object containing the received data</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">device</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The device identifier (e.g. PhidgetInterfaceKey,
+       PhidgetLED, etc.).</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">label</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The custom label set for the device.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">serial</code>
+                                    <span class="type">Int</span>
+
+                                <div class="param-description">
+                                    <p>The serial number of the device.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">keyword</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>A keyword identifying the type of information conveyed. It
+       could be &#39;Input&#39;, &#39;Version&#39;, &#39;DataRate&#39;, etc.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">index</code>
+                                    <span class="type">Int</span>
+
+                                <div class="param-description">
+                                    <p>The numerical index (for indexed keys only)</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">value</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The actual value.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">status</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+                                <div class="param-description">
+                                    <p>The status of the key. It could be: &#39;added&#39;, &#39;changed&#39;,
+       &#39;removing&#39;, etc.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__sendLine" class="method item private inherited">
+    <h3 class="name"><code>_sendLine</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>line</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__sendLine">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l739"><code>lib&#x2F;phidgets.js:739</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sends a line of data to the webservice</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">line</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>A non-terminated line of data to send</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__sendPck" class="method item private inherited">
+    <h3 class="name"><code>_sendPck</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>key</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[persistent=false]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__sendPck">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l722"><code>lib&#x2F;phidgets.js:722</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sends the /PCK string (with attached value) to the webservice.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">key</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>A /PCK string (typically form the _makePckString() method)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Int | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The value to set</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[persistent=false]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Whether the value should persist or whether its for
+       the session only.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__setPhidgetSpecificInitialState" class="method item protected inherited">
+    <h3 class="name"><code>_setPhidgetSpecificInitialState</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method__setPhidgetSpecificInitialState">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l696"><code>lib&#x2F;phidgets.js:696</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets phidget-specific state before the &#39;opened&#39; event is triggered. This is a good
+place for subclasses to assign initial values to the board. This is meant to be
+overridden by subclasses.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_close" class="method item inherited">
+    <h3 class="name"><code>close</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method_close">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l315"><code>lib&#x2F;phidgets.js:315</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Closes a previously opened connection to a Phidget device.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>:
+                    <p>Returns the Phidget to allow method chaining.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_open" class="method item inherited">
+    <h3 class="name"><code>open</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[options={}]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method_open">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l251"><code>lib&#x2F;phidgets.js:251</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Opens a connection to a Phidget device. Opening a connection is a two-step process.
+First, a connection to the Phidget WebService (which must be running) is established.
+Then, a session to the specified device (which must be plugged in) is opened.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[options={}]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Options</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name optional">[host=&quot;127.0.0.1&quot;]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Hostname or IP address to connect to</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[port=5001]</code>
+                                    <span class="type">Int</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Port to connect to</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[serial]</code>
+                                    <span class="type">Int</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Serial number of the device to connect to</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[label]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Label of the device to connect to (can be set in the
+       Phidgets control panel).</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>:
+                    <p>Returns the Phidget to allow method chaining.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setBrightness" class="method item">
+    <h3 class="name"><code>setBrightness</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>index</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[value=100]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_phidgets.js.html#l1215"><code>lib&#x2F;phidgets.js:1215</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adjusts the brightness of a LED.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">index</code>
+                        <span class="type">Int | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The LED output number for which to adjust the brightness (or
+       array of LED output numbers)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[value=100]</code>
+                        <span class="type">Int</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The value (0-100) you wish to adjust the brightness to.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>:
+                    <p>Returns the Phidget to allow method chaining</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setCurrentLimit" class="method item">
+    <h3 class="name"><code>setCurrentLimit</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>index</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[value=20]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/lib_phidgets.js.html#l1259"><code>lib&#x2F;phidgets.js:1259</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the current limit (in mA) for a specific LED output (or an array of LED outputs).
+The value must be between 0 and 80 mA. If the value provided is outside this range, the
+closest acceptable value will be used instead.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">index</code>
+                        <span class="type">Int | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>The LED output number (or array of LED output numbers) for
+       which to adjust the current limit</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[value=20]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The value you wish to adjust the current limit to. Should be within
+       the range defined by <code>PhidgetLED.currentLimitRange</code>.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>:
+                    <p>Returns the Phidget to allow method chaining</p>
+
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                    <div id="property_currentLimit" class="property item">
+                        <h3 class="name"><code>currentLimit</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l1161"><code>lib&#x2F;phidgets.js:1161</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The global &quot;current limit&quot; for all led outputs. When setting the global current
+                    limit, you must use one of the values in the
+                    <code>PhidgetLED.supportedGlobalCurrentLimits</code> array. Valid values currently are (in mA):
+                    20, 40, 60, 80. Trying to set the current limit to another value will fail silently.</p>
+                    <p>This is not supported by all PhidgetLED boards.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_host" class="property item inherited">
+                        <h3 class="name"><code>host</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_host">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l105"><code>lib&#x2F;phidgets.js:105</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The host name or address of the Phidgets WebService to connect to.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> 127.0.0.1</p>
+                    
+                    
+                    </div>
+                    <div id="property_interReportPeriod" class="property item inherited">
+                        <h3 class="name"><code>interReportPeriod</code></h3>
+                        <span class="type">Int</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_interReportPeriod">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l214"><code>lib&#x2F;phidgets.js:214</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The delay (in milliseconds) between report updates sent from the webservice.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> 8</p>
+                    
+                    
+                    </div>
+                    <div id="property_label" class="property item inherited">
+                        <h3 class="name"><code>label</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_label">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l131"><code>lib&#x2F;phidgets.js:131</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The unique label of the device. The label must have a maximum length of 10
+                    characters. If you try to set a longer label, the remainder will be truncated. Labels
+                    are supported only on newer devices and are remembered even when the device is
+                    unplugged. A label can only be set after a Phidget has been &#39;opened&#39;. Trying to set
+                    the label before that will fail silently.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
+                    
+                    
+                    </div>
+                    <div id="property_leds" class="property item">
+                        <h3 class="name"><code>leds</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l1114"><code>lib&#x2F;phidgets.js:1114</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] An object containing information about all LED outputs of the device.
+                    Here are a few examples of how to retrieve information in that object:</p>
+                    <pre class="code prettyprint"><code>PhidgetLED.leds[5].value     // LED 5 current value
+                    PhidgetLED.leds.count        // Total number of LED outputs on the device
+                    </code></pre>
+                        </div>
+                    
+                    
+                    
+                            <h4>Sub-properties:</h4>
+                    
+                            <ul class="params-list">
+                                <li class="param">
+                                        <code class="param-name">count</code>
+                                        <span class="type">Int</span>
+                    
+                                    <div class="param-description">
+                                        <p>The total number of physical LED outputs on the device.</p>
+                    
+                                    </div>
+                    
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">leds[int].value</code>
+                                        <span class="type">Int</span>
+                    
+                                    <div class="param-description">
+                                        <p>The current brightness value of the specified LED
+                              output (between 0 and 100)</p>
+                    
+                                    </div>
+                    
+                                </li>
+                                <li class="param">
+                                        <code class="param-name">leds[int].currentLimit</code>
+                                        <span class="type">Int</span>
+                    
+                                    <div class="param-description">
+                                        <p>The current limit of the specified LED output
+                              (in mA).</p>
+                    
+                                    </div>
+                    
+                                </li>
+                            </ul>
+                    </div>
+                    <div id="property_name" class="property item inherited">
+                        <h3 class="name"><code>name</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_name">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l182"><code>lib&#x2F;phidgets.js:182</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] Human-readable version of the board&#39;s name (i.e. &quot;Phidget InterfaceKit
+                    8/8/8&quot;. This information is only available some time after the connection has been
+                    successfully opened.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
+                    
+                    
+                    </div>
+                    <div id="property_password" class="property item private inherited">
+                        <h3 class="name"><code>password</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_password">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l170"><code>lib&#x2F;phidgets.js:170</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The password to connect to the WebService. If specified, it will be used when opening
+                    a new connection. As soon as connected the password property will be erased. THIS IS
+                    CURRENTLY SET TO PRIVATE BECAUSE IT&#39;S NOT IMPLEMENTED YET!</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
+                    
+                    
+                    </div>
+                    <div id="property_port" class="property item inherited">
+                        <h3 class="name"><code>port</code></h3>
+                        <span class="type">Int</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_port">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l113"><code>lib&#x2F;phidgets.js:113</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The port of the Phidgets webservice to connect to.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> 5001</p>
+                    
+                    
+                    </div>
+                    <div id="property_ready" class="property item inherited">
+                        <h3 class="name"><code>ready</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_ready">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l82"><code>lib&#x2F;phidgets.js:82</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only]  Whether the device is ready for use or not. A device must be &#39;opened&#39;
+                    before it can be used.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_reopen" class="property item inherited">
+                        <h3 class="name"><code>reopen</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_reopen">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l97"><code>lib&#x2F;phidgets.js:97</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Whether to try to automatically reopen the device if it gets remotely closed.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> true</p>
+                    
+                    
+                    </div>
+                    <div id="property_serial" class="property item inherited">
+                        <h3 class="name"><code>serial</code></h3>
+                        <span class="type">Int</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_serial">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l121"><code>lib&#x2F;phidgets.js:121</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The unique serial number of the device. If specified, it will be used to connect to
+                    the matching device.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
+                    
+                    
+                    </div>
+                    <div id="property_serverId" class="property item inherited">
+                        <h3 class="name"><code>serverId</code></h3>
+                        <span class="type">Int</span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_serverId">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l155"><code>lib&#x2F;phidgets.js:155</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] The unique ID of the Phidget WebService the device is currently connected
+                    to.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
+                    
+                    
+                    </div>
+                    <div id="property_supportedDevices" class="property item inherited">
+                        <h3 class="name"><code>supportedDevices</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String[]</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_supportedDevices">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l50"><code>lib&#x2F;phidgets.js:50</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] Array of all the devices supported by this library.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_supportedGlobalCurrentLimits" class="property item">
+                        <h3 class="name"><code>supportedGlobalCurrentLimits</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l1197"><code>lib&#x2F;phidgets.js:1197</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] An array of values that are valid when setting the global current limit
+                    (in mA).</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_supportedVoltages" class="property item">
+                        <h3 class="name"><code>supportedVoltages</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l1187"><code>lib&#x2F;phidgets.js:1187</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] Array of supported voltages (in volts).</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_type" class="property item inherited">
+                        <h3 class="name"><code>type</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_type">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l69"><code>lib&#x2F;phidgets.js:69</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] The type of device (i.e. PhidgetInterfaceKit, PhidgetLED, etc.).</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+                    <div id="property_version" class="property item inherited">
+                        <h3 class="name"><code>version</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#property_version">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l198"><code>lib&#x2F;phidgets.js:198</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>[read-only] This number distinguishes between revisions of a specific type of
+                    Phidget. It is only useful for debugging purposes. This information is only available
+                    some time after the connection has been successfully opened.</p>
+                    
+                        </div>
+                    
+                            <p><strong>Default:</strong> undefined</p>
+                    
+                    
+                    </div>
+                    <div id="property_voltage" class="property item">
+                        <h3 class="name"><code>voltage</code></h3>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l1130"><code>lib&#x2F;phidgets.js:1130</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>The global voltage for all led outputs. When setting the voltage, you must use one of
+                    the values in the <code>PhidgetLED.supportedVoltages</code> array. Valid values currently are
+                    (in volts):</p>
+                    <ul>
+                    <li>1.7</li>
+                    <li>2.75</li>
+                    <li>3.9</li>
+                    <li>5</li>
+                    </ul>
+                    <p>Trying to set the voltage to another value will fail silently. This is not supported
+                    by all PhidgetLED boards.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
+
+
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+
+                    <div id="event_brightness" class="events item">
+                        <h3 class="name"><code>brightness</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/lib_phidgets.js.html#l1237"><code>lib&#x2F;phidgets.js:1237</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted right after a LED&#39;s brightness has been changed.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/PhidgetInterfaceKit.html" class="crosslink">PhidgetInterfaceKit</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual PhidgetInterfaceKit object that
+                           emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">data</code>
+                                            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>An object containing the brightness data and related
+                           information</p>
+                    
+                                        </div>
+                    
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">index</code>
+                                                        <span class="type">Int</span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The LED output index number</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                                <li class="param">
+                                                        <code class="param-name">value</code>
+                                                        <span class="type">Int</span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The brightness value</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_closed" class="events item inherited">
+                        <h3 class="name"><code>closed</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_closed">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l354"><code>lib&#x2F;phidgets.js:354</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when the connection to a phidget has been remotely closed.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_error" class="events item inherited">
+                        <h3 class="name"><code>error</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_error">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l412"><code>lib&#x2F;phidgets.js:412</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when an error occurs while trying to open a phidget</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">error</code>
+                                            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Error" class="crosslink external" target="_blank">Error</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The error object</p>
+                    
+                                        </div>
+                    
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">address</code>
+                                                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The network address</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                                <li class="param">
+                                                        <code class="param-name">code</code>
+                                                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The error code</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                                <li class="param">
+                                                        <code class="param-name">errno</code>
+                                                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The error number</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                                <li class="param">
+                                                        <code class="param-name">message</code>
+                                                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The error message</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                                <li class="param">
+                                                        <code class="param-name">port</code>
+                                                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The network port</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_opened" class="events item inherited">
+                        <h3 class="name"><code>opened</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_opened">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l504"><code>lib&#x2F;phidgets.js:504</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when a phidget is successfully opened.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual Phidget object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_opening" class="events item inherited">
+                        <h3 class="name"><code>opening</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_opening">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l277"><code>lib&#x2F;phidgets.js:277</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when an attempt to open a Phidget has been initiated.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual Phidget object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_received" class="events item private inherited">
+                        <h3 class="name"><code>received</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_received">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l454"><code>lib&#x2F;phidgets.js:454</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when a new line of data has been received from the web service. This
+                    is mostly useful for debugging purposes (hence the @private denomination). It will
+                    let you view all data coming in.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual Phidget object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">data</code>
+                                            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual string data received.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_reopening" class="events item inherited">
+                        <h3 class="name"><code>reopening</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_reopening">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l380"><code>lib&#x2F;phidgets.js:380</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when an attempt to automatically re-open a closed Phidget is
+                    being carried on.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual Phidget object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">data</code>
+                                            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>Additional data regarding the event.</p>
+                    
+                                        </div>
+                    
+                                            <ul class="params-list">
+                                                <li class="param">
+                                                        <code class="param-name">attempt</code>
+                                                        <span class="type">Int</span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The number of re-opening attempts performed.</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                                <li class="param">
+                                                        <code class="param-name">max</code>
+                                                        <span class="type">Int</span>
+                    
+                                                    <div class="param-description">
+                                                        <p>The maximum number of attempts that will be tried before
+                    failing.</p>
+                    
+                                                    </div>
+                    
+                                                </li>
+                                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_sent" class="events item private inherited">
+                        <h3 class="name"><code>sent</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_sent">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l750"><code>lib&#x2F;phidgets.js:750</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when a new line of data has been sent to the Phidget WebService. This
+                    is mostly useful for debugging purposes (hence the @private denomination). It will
+                    let you view all data going out.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual Phidget object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">data</code>
+                                            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual string of sent data.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_timeout" class="events item inherited">
+                        <h3 class="name"><code>timeout</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Phidget.html#event_timeout">Phidget</a>:
+                            <a href="../files/lib_phidgets.js.html#l557"><code>lib&#x2F;phidgets.js:557</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Event emitted when an attempt to open a Phidget times out.</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">emitter</code>
+                                            <span class="type"><a href="../classes/Phidget.html" class="crosslink">Phidget</a></span>
+                    
+                    
+                                        <div class="param-description">
+                                            <p>The actual Phidget object that emitted the event.</p>
+                    
+                                        </div>
+                    
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+            </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

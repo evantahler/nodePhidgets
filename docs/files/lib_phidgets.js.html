@@ -1,16 +1,100 @@
-'use strict';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/phidgets.js - phidgets</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
 
-var crypto = require('crypto');
-var net = require('net');
-var util = require('util');
-var EventEmitter = require('events').EventEmitter;
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.5.0-alpha.15</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Phidget.html">Phidget</a></li>
+                                <li><a href="../classes/PhidgetInterfaceKit.html">PhidgetInterfaceKit</a></li>
+                                <li><a href="../classes/PhidgetLED.html">PhidgetLED</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/phidgets.html">phidgets</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: lib/phidgets.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x27;use strict&#x27;;
+
+var crypto = require(&#x27;crypto&#x27;);
+var net = require(&#x27;net&#x27;);
+var util = require(&#x27;util&#x27;);
+var EventEmitter = require(&#x27;events&#x27;).EventEmitter;
 
 /****************************************************************************************/
 /**************************************  Phidget  ***************************************/
 /****************************************************************************************/
 
 /**
- * The `Phidgets` library module makes it easy to connect to various sensor and controller
+ * The &#x60;Phidgets&#x60; library module makes it easy to connect to various sensor and controller
  * boards made by [Phidgets Inc.](http://www.phidgets.com) This library works under
  * [Node.js](http://www.nodejs.org) and other compatible frameworks such as
  * [io.js](http://www.iojs.org)
@@ -27,12 +111,12 @@ var EventEmitter = require('events').EventEmitter;
 module.exports = {};
 
 /**
- * The `Phidget` class is an abstract class providing common properties and methods to all
+ * The &#x60;Phidget&#x60; class is an abstract class providing common properties and methods to all
  * the board-specific child classes. This class cannot be instantiated directly. Please
  * instantiate one of the child classes instead:
  *
- *    * {{#crossLink "PhidgetInterfaceKit"}}{{/crossLink}}
- *    * {{#crossLink "PhidgetLED"}}{{/crossLink}}
+ *    * {{#crossLink &quot;PhidgetInterfaceKit&quot;}}{{/crossLink}}
+ *    * {{#crossLink &quot;PhidgetLED&quot;}}{{/crossLink}}
  *
  * @class Phidget
  * @constructor
@@ -44,7 +128,7 @@ var Phidget = function(type) {
   var self = this;
 
   if (this.constructor === Phidget) {
-    throw new Error("This class is abstract, you cannot instantiate it directly.");
+    throw new Error(&quot;This class is abstract, you cannot instantiate it directly.&quot;);
   }
 
   /**
@@ -53,17 +137,17 @@ var Phidget = function(type) {
    * @type {string[]}
    * @readOnly
    */
-  Object.defineProperty(this, 'supportedDevices', {
+  Object.defineProperty(this, &#x27;supportedDevices&#x27;, {
     enumerable: true,
     writable: false,
     value: [
-      'PhidgetInterfaceKit',
-      'PhidgetLED'
+      &#x27;PhidgetInterfaceKit&#x27;,
+      &#x27;PhidgetLED&#x27;
     ]
   });
 
-  if (this.supportedDevices.indexOf(type) < 0) {
-    throw new Error("Unsupported device type.");
+  if (this.supportedDevices.indexOf(type) &lt; 0) {
+    throw new Error(&quot;Unsupported device type.&quot;);
   }
 
   /**
@@ -73,21 +157,21 @@ var Phidget = function(type) {
    * @type {String}
    * @readOnly
    */
-  Object.defineProperty(this, 'type', {
+  Object.defineProperty(this, &#x27;type&#x27;, {
     enumerable: true,
     writable: false,
     value: type
   });
 
   /**
-   * [read-only]  Whether the device is ready for use or not. A device must be 'opened'
+   * [read-only]  Whether the device is ready for use or not. A device must be &#x27;opened&#x27;
    * before it can be used.
    *
    * @property ready
    * @type {Boolean}
    * @readOnly
    */
-  Object.defineProperty(this, 'ready', {
+  Object.defineProperty(this, &#x27;ready&#x27;, {
     enumerable: true,
     get: function () {
       return (self._ready);
@@ -108,7 +192,7 @@ var Phidget = function(type) {
    * @type {String}
    * @default 127.0.0.1
    */
-  this.host = "127.0.0.1";
+  this.host = &quot;127.0.0.1&quot;;
 
   /**
    * The port of the Phidgets webservice to connect to.
@@ -132,14 +216,14 @@ var Phidget = function(type) {
    * The unique label of the device. The label must have a maximum length of 10
    * characters. If you try to set a longer label, the remainder will be truncated. Labels
    * are supported only on newer devices and are remembered even when the device is
-   * unplugged. A label can only be set after a Phidget has been 'opened'. Trying to set
+   * unplugged. A label can only be set after a Phidget has been &#x27;opened&#x27;. Trying to set
    * the label before that will fail silently.
    *
    * @property label
    * @type {String}
    * @default undefined
    */
-  Object.defineProperty(this, 'label', {
+  Object.defineProperty(this, &#x27;label&#x27;, {
     enumerable: true,
     get: function () {
       return (self._label);
@@ -147,7 +231,7 @@ var Phidget = function(type) {
     set: function(value) {
       if (self.ready) {
         self._label = value.substr(0, 10);
-        self._sendPck(self._makePckString('Label'), self._label, true);
+        self._sendPck(self._makePckString(&#x27;Label&#x27;), self._label, true);
       }
     }
   });
@@ -160,7 +244,7 @@ var Phidget = function(type) {
    * @type {int}
    * @default undefined
    */
-  Object.defineProperty(this, 'serverId', {
+  Object.defineProperty(this, &#x27;serverId&#x27;, {
     enumerable: true,
     get: function () {
       return (self._serverId);
@@ -170,7 +254,7 @@ var Phidget = function(type) {
   /**
    * The password to connect to the WebService. If specified, it will be used when opening
    * a new connection. As soon as connected the password property will be erased. THIS IS
-   * CURRENTLY SET TO PRIVATE BECAUSE IT'S NOT IMPLEMENTED YET!
+   * CURRENTLY SET TO PRIVATE BECAUSE IT&#x27;S NOT IMPLEMENTED YET!
    *
    * @property password
    * @type {String}
@@ -180,15 +264,15 @@ var Phidget = function(type) {
   this.password = undefined;
 
   /**
-   * [read-only] Human-readable version of the board's name (i.e. "Phidget InterfaceKit
-   * 8/8/8". This information is only available some time after the connection has been
+   * [read-only] Human-readable version of the board&#x27;s name (i.e. &quot;Phidget InterfaceKit
+   * 8/8/8&quot;. This information is only available some time after the connection has been
    * successfully opened.
    *
    * @property name
    * @type {String}
    * @default undefined
    */
-  Object.defineProperty(this, 'name', {
+  Object.defineProperty(this, &#x27;name&#x27;, {
     enumerable: true,
     get: function () {
       return (self._name);
@@ -204,7 +288,7 @@ var Phidget = function(type) {
    * @type {String}
    * @default undefined
    */
-  Object.defineProperty(this, 'version', {
+  Object.defineProperty(this, &#x27;version&#x27;, {
     enumerable: true,
     get: function () {
       return (self._version);
@@ -218,26 +302,26 @@ var Phidget = function(type) {
    * @type {int}
    * @default 8
    */
-  Object.defineProperty(this, 'interReportPeriod', {
+  Object.defineProperty(this, &#x27;interReportPeriod&#x27;, {
     enumerable: true,
     get: function () {
       return (self._interReportPeriod);
     },
     set: function(value) {
       self._interReportPeriod = parseInt(value);
-      self._sendLine("report " + self._interReportPeriod + " report");
+      self._sendLine(&quot;report &quot; + self._interReportPeriod + &quot; report&quot;);
     }
   });
 
   this._client = null;
-  this._delimiter = '\r\n';
-  this._inputBuffer = '';
+  this._delimiter = &#x27;\r\n&#x27;;
+  this._inputBuffer = &#x27;&#x27;;
   this._interReportPeriod = 8;
   this._label = undefined;
   this._name = undefined;
   this._openTimeOutDuration = 1000;
   this._openTimeOutId = undefined;
-  this._protocol = "1.0.10";
+  this._protocol = &quot;1.0.10&quot;;
   this._ready = false;
   this._reopenCount = 0;
   this._reopenDelay = 1000;
@@ -255,7 +339,7 @@ util.inherits(Phidget, EventEmitter);
  *
  * @method open
  * @param {Object} [options={}] Options
- * @param {String} [options.host="127.0.0.1"] Hostname or IP address to connect to
+ * @param {String} [options.host=&quot;127.0.0.1&quot;] Hostname or IP address to connect to
  * @param {int} [options.port=5001] Port to connect to
  * @param {int} [options.serial] Serial number of the device to connect to
  * @param {String} [options.label] Label of the device to connect to (can be set in the
@@ -280,31 +364,31 @@ Phidget.prototype.open = function(options) {
    * @event opening
    * @param {Phidget} emitter The actual Phidget object that emitted the event.
    */
-  self.emit('opening', self);
+  self.emit(&#x27;opening&#x27;, self);
 
-  // The function passed as a parameter is only executed when the 'connect' event is
-  // received (only on success). That's why the 'error' handler needs to be below.
+  // The function passed as a parameter is only executed when the &#x27;connect&#x27; event is
+  // received (only on success). That&#x27;s why the &#x27;error&#x27; handler needs to be below.
   self._client = net.createConnection(self.port, self.host, function() {
 
     // Makes the data come in as a string instead of a Buffer object
-    self._client.setEncoding('utf8');
-    self._client.setKeepAlive("enable", 10000);
+    self._client.setEncoding(&#x27;utf8&#x27;);
+    self._client.setKeepAlive(&quot;enable&quot;, 10000);
 
-    self._client.on('end', function() {
+    self._client.on(&#x27;end&#x27;, function() {
       self._handleConnectionEnd();
     });
 
-    self._client.on('data', function(d) {
+    self._client.on(&#x27;data&#x27;, function(d) {
       self._handleData(d);
     });
 
     // Open connection to Phidget WebService and set reporting delay (the delay between
     // automatic status reports sent out by the server).
-    self._sendLine("995 authenticate, version=" + self._protocol);
+    self._sendLine(&quot;995 authenticate, version=&quot; + self._protocol);
 
   });
 
-  self._client.on('error', function(e) {
+  self._client.on(&#x27;error&#x27;, function(e) {
     self._handleConnectionError(e);
   });
 
@@ -328,14 +412,14 @@ Phidget.prototype.close = function() {
   self.reopen = false;
   clearTimeout(self._openTimeOutId);
 
-  var message  = "/PCK/Client/0.0.0.0/" + self._randomId + "/" + self.type;
+  var message  = &quot;/PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
   if (self.label) {
-    message += "/-1/" + self.label;
-  } else if (self.serial && self.serial > 0) {
-    message += "/" + self.serial;
+    message += &quot;/-1/&quot; + self.label;
+  } else if (self.serial &amp;&amp; self.serial &gt; 0) {
+    message += &quot;/&quot; + self.serial;
   }
-  self._sendPck(message, 'Close', false);
-  self._sendLine("quit");
+  self._sendPck(message, &#x27;Close&#x27;, false);
+  self._sendLine(&quot;quit&quot;);
 
   self._terminateConnection();
   return self;
@@ -347,7 +431,7 @@ Phidget.prototype._terminateConnection = function() {
 
   var self = this;
 
-  self._client.removeAllListeners(['end', 'error', 'data']);
+  self._client.removeAllListeners([&#x27;end&#x27;, &#x27;error&#x27;, &#x27;data&#x27;]);
   self._client.destroy();
   self._ready = false;
 
@@ -357,7 +441,7 @@ Phidget.prototype._terminateConnection = function() {
    * @event closed
    * @param {Phidget} emitter The actual object that emitted the event.
    */
-  self.emit('closed', self);
+  self.emit(&#x27;closed&#x27;, self);
 
 };
 
@@ -369,7 +453,7 @@ Phidget.prototype._handleConnectionEnd = function() {
   self._terminateConnection();
 
   // Attempt to reopen if configured as such
-  if(self.reopen === true && self._reopenCount < self._reopenMaxCount) {
+  if(self.reopen === true &amp;&amp; self._reopenCount &lt; self._reopenMaxCount) {
 
     self._reopenCount++;
 
@@ -389,7 +473,7 @@ Phidget.prototype._handleConnectionEnd = function() {
          * failing.
          */
         self.emit(
-          'reopening',
+          &#x27;reopening&#x27;,
           self,
           {attempt: self._reopenCount, max: self._reopenMaxCount}
         );
@@ -421,7 +505,7 @@ Phidget.prototype._handleConnectionError = function(e) {
    * @param {String} error.message The error message
    * @param {String} error.port The network port
    */
-  self.emit('error', self, e);
+  self.emit(&#x27;error&#x27;, self, e);
 
   self._handleConnectionEnd();
 
@@ -429,8 +513,8 @@ Phidget.prototype._handleConnectionError = function(e) {
 
 /**
  * This function is called each time data is received from the Phidget WebSerice. It adds
- * the data to the input buffer and checks if full lines (separated by '\n') can be
- * reconstructed. If full lines are found they are handed over to the `_parseLineInput()`
+ * the data to the input buffer and checks if full lines (separated by &#x27;\n&#x27;) can be
+ * reconstructed. If full lines are found they are handed over to the &#x60;_parseLineInput()&#x60;
  * method for processing.
  *
  * @method _handleData
@@ -444,12 +528,12 @@ Phidget.prototype._handleData = function(chunk) {
 
   self._inputBuffer += chunk;
 
-  while( (index = self._inputBuffer.indexOf('\n')) > -1 ) {
+  while( (index = self._inputBuffer.indexOf(&#x27;\n&#x27;)) &gt; -1 ) {
 
     line = self._inputBuffer.slice(0, index);
     self._inputBuffer = self._inputBuffer.slice(index + 1);
-    line = line.replace(/\u0000/gi, "");
-    line = line.replace(/\u0001/gi, "");
+    line = line.replace(/\u0000/gi, &quot;&quot;);
+    line = line.replace(/\u0001/gi, &quot;&quot;);
 
     /**
      * Event emitted when a new line of data has been received from the web service. This
@@ -461,7 +545,7 @@ Phidget.prototype._handleData = function(chunk) {
      * @param {String} data The actual string data received.
      * @private
      */
-    self.emit('received', self, line);
+    self.emit(&#x27;received&#x27;, self, line);
 
     self._parseLineInput(line);
 
@@ -471,7 +555,7 @@ Phidget.prototype._handleData = function(chunk) {
 
 /**
  * Parses a single line of data typically received from the Phidget WebService. If the
- * line is a *report* line, the function hands it off to the `_parsePskKey()` method.
+ * line is a *report* line, the function hands it off to the &#x60;_parsePskKey()&#x60; method.
  * Otherwise, it deals with it locally.
  *
  * @method _parseLineInput
@@ -484,15 +568,15 @@ Phidget.prototype._parseLineInput = function(line) {
   var err;
 
   // Is it a report line ?
-  if (line.indexOf('report') === 0 ) {
+  if (line.indexOf(&#x27;report&#x27;) === 0 ) {
 
-    if (line.indexOf(' is pending, key ') > -1 ) {
+    if (line.indexOf(&#x27; is pending, key &#x27;) &gt; -1 ) {
 
       // It has a key: hand it over, we are done.
-      self._parsePskKey(line.split(" is pending, key ")[1], self);
+      self._parsePskKey(line.split(&quot; is pending, key &quot;)[1], self);
 
     } else if (
-      line.indexOf("report 200-that's all for now") === 0 &&
+      line.indexOf(&quot;report 200-that&#x27;s all for now&quot;) === 0 &amp;&amp;
       self.ready === false
     ) {
 
@@ -507,7 +591,7 @@ Phidget.prototype._parseLineInput = function(line) {
        * @event opened
        * @param {Phidget} emitter The actual Phidget object that emitted the event.
        */
-      self.emit("opened", self);
+      self.emit(&quot;opened&quot;, self);
 
     }
 
@@ -515,17 +599,17 @@ Phidget.prototype._parseLineInput = function(line) {
 
   }
 
-  var status = parseInt(line.split(" ")[0]);
+  var status = parseInt(line.split(&quot; &quot;)[0]);
 
   if (status === 200) {             // Information
 
-    // Ignored: "200 set successful" and "200 inter-report period adjusted to 8ms."
+    // Ignored: &quot;200 set successful&quot; and &quot;200 inter-report period adjusted to 8ms.&quot;
 
   } else if (status === 994) {    // Version mismatch
 
-    err = new Error('Protocol version mismatch.', 'PROTOCOL_MISMATCH');
+    err = new Error(&#x27;Protocol version mismatch.&#x27;, &#x27;PROTOCOL_MISMATCH&#x27;);
     err.details = line;
-    self.emit('error', self, err);
+    self.emit(&#x27;error&#x27;, self, err);
 
   } else if (status === 996) {   // Authenticated or no authentication necessary
 
@@ -536,21 +620,21 @@ Phidget.prototype._parseLineInput = function(line) {
     // Open session to a specific device. The factors deciding which device to connect to
     // are: type, label (optional) and serial (optional).
     self._randomId = Math.floor(Math.random() * 99999);
-    var pck  = "/PCK/Client/0.0.0.0/" + self._randomId + "/" + self.type;
+    var pck  = &quot;/PCK/Client/0.0.0.0/&quot; + self._randomId + &quot;/&quot; + self.type;
     if (self._label) {
-      pck += "/-1/" + self._label;
-    } else if (self.serial && self.serial > 0) {
-      pck += "/" + self.serial;
+      pck += &quot;/-1/&quot; + self._label;
+    } else if (self.serial &amp;&amp; self.serial &gt; 0) {
+      pck += &quot;/&quot; + self.serial;
     }
-    self._sendPck(pck, 'Open', false);
+    self._sendPck(pck, &#x27;Open&#x27;, false);
 
-    // Issue "listen" command
-    self._sendLine("listen /PSK/" + self.type + " lid0");
+    // Issue &quot;listen&quot; command
+    self._sendLine(&quot;listen /PSK/&quot; + self.type + &quot; lid0&quot;);
 
     // Here we have a challenge: if we connect successfully to the web service but the
-    // device is not plugged in, we do not know. That's why the device is set as ready
-    // only when the first occurrence of the following line is received: "report
-    // 200-that's all for now". If that line is not received within a certain delay, we
+    // device is not plugged in, we do not know. That&#x27;s why the device is set as ready
+    // only when the first occurrence of the following line is received: &quot;report
+    // 200-that&#x27;s all for now&quot;. If that line is not received within a certain delay, we
     // must issue a timeout.
     self._openTimeOutId = setTimeout(
       function() {
@@ -560,7 +644,7 @@ Phidget.prototype._parseLineInput = function(line) {
          * @event timeout
          * @param {Phidget} emitter The actual Phidget object that emitted the event.
          */
-        self.emit('timeout', self);
+        self.emit(&#x27;timeout&#x27;, self);
         self._handleConnectionEnd();
       },
       self._openTimeOutDuration
@@ -568,9 +652,9 @@ Phidget.prototype._parseLineInput = function(line) {
 
   } else if (status === 998) {     // Authentication failed
 
-    err = new Error('The authentication attempt failed.', 'AUTHENTICATION_FAILED');
+    err = new Error(&#x27;The authentication attempt failed.&#x27;, &#x27;AUTHENTICATION_FAILED&#x27;);
     err.details = line;
-    self.emit('error', self, err);
+    self.emit(&#x27;error&#x27;, self, err);
     self.reopen = false;
     self._terminateConnection();
 
@@ -579,21 +663,21 @@ Phidget.prototype._parseLineInput = function(line) {
     if (!self.password) {
 
       err = new Error(
-        'A connection to this Phidget WebService requires a valid password.',
-        'PASSWORD_REQUIRED'
+        &#x27;A connection to this Phidget WebService requires a valid password.&#x27;,
+        &#x27;PASSWORD_REQUIRED&#x27;
       );
       err.details = line;
-      self.emit('error', self, err);
+      self.emit(&#x27;error&#x27;, self, err);
       self.reopen = false;
       self._terminateConnection();
 
     } else {
 
-      var ticket = line.split(" ")[1] + self.password;
-      self.password = '';
-      var hash = crypto.createHash('md5');
-      hash.update(ticket, 'utf8');
-      self._sendLine("997 " + hash.digest('hex'));
+      var ticket = line.split(&quot; &quot;)[1] + self.password;
+      self.password = &#x27;&#x27;;
+      var hash = crypto.createHash(&#x27;md5&#x27;);
+      hash.update(ticket, &#x27;utf8&#x27;);
+      self._sendLine(&quot;997 &quot; + hash.digest(&#x27;hex&#x27;));
 
     }
 
@@ -611,49 +695,49 @@ Phidget.prototype._parseLineInput = function(line) {
 Phidget.prototype._parsePskKey = function(oPsk, self) {
 
   // Remove front /PSK/ and retrieve necessary values
-  var psk     = oPsk.split("/PSK/")[1];
-  var parts   = psk.split(' ')[0].split('/');         // [PhidgetLED,label,123456,Input,4]
+  var psk     = oPsk.split(&quot;/PSK/&quot;)[1];
+  var parts   = psk.split(&#x27; &#x27;)[0].split(&#x27;/&#x27;);         // [PhidgetLED,label,123456,Input,4]
 
   var device  = parts[0];
   var label   = parts[1];
   var serial  = parseInt(parts[2]);
   var keyword = parts[3];                             // Sensor, Name, DataRate, etc.
   var index   = parseInt(parts[4]);                   // not always present
-  var value   = psk.split('"')[1];                    // 69, PhidgetLED, label, 904, etc.
-  var status  = psk.split('" (')[1].replace(")", ''); // added, changed, removing, etc.
+  var value   = psk.split(&#x27;&quot;&#x27;)[1];                    // 69, PhidgetLED, label, 904, etc.
+  var status  = psk.split(&#x27;&quot; (&#x27;)[1].replace(&quot;)&quot;, &#x27;&#x27;); // added, changed, removing, etc.
 
   // Grab the serial as soon as we see it. This is also our first chance to initialize
   // the board with desired phidget-specific initial settings.
-  if ( !self.serial && parseInt(parts[2]) > 0 ) {
+  if ( !self.serial &amp;&amp; parseInt(parts[2]) &gt; 0 ) {
     self.serial = parseInt(parts[2]);
     self._setPhidgetSpecificInitialState();
   }
 
-  if ( keyword === 'Status' && status === 'removing') {
+  if ( keyword === &#x27;Status&#x27; &amp;&amp; status === &#x27;removing&#x27;) {
 
     self._handleConnectionEnd();
 
-  } else if ( keyword === 'Name' && status === 'added' ) {
+  } else if ( keyword === &#x27;Name&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
     self._name = value;
 
-  } else if ( keyword === 'Version' && status === 'added' ) {
+  } else if ( keyword === &#x27;Version&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
     self._version = value;
 
-  } else if ( keyword === 'Label' && status === 'added' ) {
+  } else if ( keyword === &#x27;Label&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
     self._label = label;
 
-  } else if ( keyword === 'ID' && status === 'added' ) {
+  } else if ( keyword === &#x27;ID&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
     self._serverId = value;
 
-  } else if ( keyword === 'InitKeys' && status === 'added' ) {
+  } else if ( keyword === &#x27;InitKeys&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
     // ignored
 
-  } else if ( keyword === 'Status' && status === 'added' ) {
+  } else if ( keyword === &#x27;Status&#x27; &amp;&amp; status === &#x27;added&#x27; ) {
 
     // ignored
 
@@ -684,17 +768,17 @@ Phidget.prototype._parsePskKey = function(oPsk, self) {
  * @param data.label {String} The custom label set for the device.
  * @param data.serial {int} The serial number of the device.
  * @param data.keyword {String} A keyword identifying the type of information conveyed. It
- *        could be 'Input', 'Version', 'DataRate', etc.
+ *        could be &#x27;Input&#x27;, &#x27;Version&#x27;, &#x27;DataRate&#x27;, etc.
  * @param data.index {int} The numerical index (for indexed keys only)
  * @param data.value {String} The actual value.
- * @param data.status {String} The status of the key. It could be: 'added', 'changed',
- *        'removing', etc.
+ * @param data.status {String} The status of the key. It could be: &#x27;added&#x27;, &#x27;changed&#x27;,
+ *        &#x27;removing&#x27;, etc.
  * @protected
  */
 Phidget.prototype._parsePhidgetSpecificData = function (data) {};
 
 /**
- * Sets phidget-specific state before the 'opened' event is triggered. This is a good
+ * Sets phidget-specific state before the &#x27;opened&#x27; event is triggered. This is a good
  * place for subclasses to assign initial values to the board. This is meant to be
  * overridden by subclasses.
  *
@@ -714,8 +798,8 @@ Phidget.prototype._setPhidgetSpecificInitialState = function () {};
  */
 Phidget.prototype._makePckString = function (keyword, index) {
   var self = this;
-  var pck = '/PCK/' + self.type + '/' + self.serial + '/' + keyword;
-  if (index > -1) { pck += '/' + index; }
+  var pck = &#x27;/PCK/&#x27; + self.type + &#x27;/&#x27; + self.serial + &#x27;/&#x27; + keyword;
+  if (index &gt; -1) { pck += &#x27;/&#x27; + index; }
   return pck;
 };
 
@@ -731,8 +815,8 @@ Phidget.prototype._makePckString = function (keyword, index) {
  */
 Phidget.prototype._sendPck = function (key, value, persistent) {
   var self = this;
-  var request = "set " + key + "=\"" + value + "\"";
-  if(!persistent) { request += " for session"; }
+  var request = &quot;set &quot; + key + &quot;=\&quot;&quot; + value + &quot;\&quot;&quot;;
+  if(!persistent) { request += &quot; for session&quot;; }
   self._sendLine(request);
 };
 
@@ -757,7 +841,7 @@ Phidget.prototype._sendLine = function (line) {
    * @param data {String} The actual string of sent data.
    * @private
    */
-  self.emit('sent', self, line);
+  self.emit(&#x27;sent&#x27;, self, line);
 };
 
 /**
@@ -782,7 +866,7 @@ module.exports.Phidget = Phidget;
 /****************************************************************************************/
 
 /**
- * The `PhidgetInterfaceKit` class allows you to control and receive data from all Phidget
+ * The &#x60;PhidgetInterfaceKit&#x60; class allows you to control and receive data from all Phidget
  * interface kit boards :
  *
  *  * PhidgetInterfaceKit 8/8/8 normal and mini-format
@@ -799,7 +883,7 @@ module.exports.Phidget = Phidget;
  * @extends Phidget
  */
 var PhidgetInterfaceKit = function() {
-  PhidgetInterfaceKit.super_.call(this, 'PhidgetInterfaceKit');
+  PhidgetInterfaceKit.super_.call(this, &#x27;PhidgetInterfaceKit&#x27;);
 
   var self = this;
 
@@ -857,7 +941,7 @@ var PhidgetInterfaceKit = function() {
    * @property ratiometric {Boolean}
    * @default undefined
    */
-  Object.defineProperty(this, 'ratiometric', {
+  Object.defineProperty(this, &#x27;ratiometric&#x27;, {
     enumerable: true,
     get: function () {
       return (self._ratiometric);
@@ -865,7 +949,7 @@ var PhidgetInterfaceKit = function() {
     set: function (value) {
       self._ratiometric = value;
       if (self.ready) {
-        self._sendPck(self._makePckString('Ratiometric'), value ? 1:0, true);
+        self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), value ? 1:0, true);
       }
     }
   });
@@ -882,7 +966,7 @@ util.inherits(PhidgetInterfaceKit, Phidget);
 
 /**
  * Sets the specified output to active (true) or inactive (false). This method should only
- * be used after the board is 'opened'. Calling it before will fail silently.
+ * be used after the board is &#x27;opened&#x27;. Calling it before will fail silently.
  *
  * @method setOutput
  * @param index {int|Array} The output number to set (or array of output numbers)
@@ -900,26 +984,26 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
   value = (value === true);
   var vOut = (value === true) ? 1 : 0;
 
-  for (var i = 0; i < index.length; i++) {
+  for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
     if (!self.outputs[pos]) { self.outputs[pos] = {}; }
     self.outputs[pos].value = value;
-    self._sendPck(self._makePckString('Output', pos), vOut, true);
+    self._sendPck(self._makePckString(&#x27;Output&#x27;, pos), vOut, true);
 
     /**
-     * Event emitted when an output's status is changed.
+     * Event emitted when an output&#x27;s status is changed.
      *
      * @event output
      * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
      *        emitted the event.
      * @param {Object} data An object containing the output data and related information
-     * @param {int} data.index The output's index number
-     * @param {int} data.value The output's new value
+     * @param {int} data.index The output&#x27;s index number
+     * @param {int} data.value The output&#x27;s new value
      */
     self.emit(
-      "output",
+      &quot;output&quot;,
       self,
-      { "index": pos, "value": self.outputs[pos].value }
+      { &quot;index&quot;: pos, &quot;value&quot;: self.outputs[pos].value }
     );
 
   }
@@ -933,11 +1017,11 @@ PhidgetInterfaceKit.prototype.setOutput = function(index, value) {
  * milliseconds between update notifications. The shorter the interval is and the more
  * frequent the updates will be. However, shorter intervals are more demanding on the cpu.
  * This function accepts a single sensor number or an array of sensor numbers to set. This
- * method should only be used after the board is 'opened'. Calling it before will fail
+ * method should only be used after the board is &#x27;opened&#x27;. Calling it before will fail
  * silently.
  *
  * @method setUpdateInterval
- * @param index {int|Array} The sensor's number (or an array of sensor numbers)
+ * @param index {int|Array} The sensor&#x27;s number (or an array of sensor numbers)
  * @param [value=16] {int} The number of milliseconds you wish to set the interval to.
  * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
  *          chaining.
@@ -952,11 +1036,11 @@ PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
   value = value || 16;
   value = self._forceBetween(value, self._shortestUpdateInterval, self._longestUpdateInterval);
 
-  for (var i = 0; i < index.length; i++) {
+  for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
     if (!self.sensors[pos]) { self.sensors[pos] = {}; }
     self.sensors[pos].updateInterval = value;
-    self._sendPck(self._makePckString('DataRate', pos), value, true);
+    self._sendPck(self._makePckString(&#x27;DataRate&#x27;, pos), value, true);
   }
 
   return self;
@@ -964,7 +1048,7 @@ PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
 };
 
 /**
- * Sets the sensitivity threshold of a sensor. The threshold is measured in `sensorvalue`
+ * Sets the sensitivity threshold of a sensor. The threshold is measured in &#x60;sensorvalue&#x60;
  * (0-1000). It is the smallest change that will trigger an update notification from the
  * sensor. Sensitivity threshold and update intervals are mutually exclusive. If you set
  * the sensitivity of a sensor, the update interval will be ignored and vice versa.
@@ -972,11 +1056,11 @@ PhidgetInterfaceKit.prototype.setUpdateInterval = function(index, value) {
  * This function accepts a single sensor number or an array of sensor numbers for which to
  * set the sensitivity.
  *
- * This method should only be used after the board is 'opened'. Calling it before will
+ * This method should only be used after the board is &#x27;opened&#x27;. Calling it before will
  * fail silently.
  *
  * @method setSensitivity
- * @param index {int|Array} The sensor's number (or an array of sensor numbers)
+ * @param index {int|Array} The sensor&#x27;s number (or an array of sensor numbers)
  * @param [value=10] {int} The number sensitivity threshold to assign (0-1000)
  * @returns {PhidgetInterfaceKit} Returns the PhidgetInterfaceKit to allow method
  *          chaining.
@@ -991,11 +1075,11 @@ PhidgetInterfaceKit.prototype.setSensitivity = function(index, value) {
   value = value || 10;
   value = self._forceBetween(value, 0, 1000);
 
-  for (var i = 0; i < index.length; i++) {
+  for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
     if (!self.sensors[pos]) { self.sensors[pos] = {}; }
     self.sensors[pos].sensitivity = value;
-    self._sendPck(self._makePckString('Trigger', pos), value, true);
+    self._sendPck(self._makePckString(&#x27;Trigger&#x27;, pos), value, true);
   }
 
   return self;
@@ -1005,7 +1089,7 @@ PhidgetInterfaceKit.prototype.setSensitivity = function(index, value) {
 PhidgetInterfaceKit.prototype._setPhidgetSpecificInitialState = function () {
   var self = this;
   if (self.ratiometric !== undefined) {
-    self._sendPck(self._makePckString('Ratiometric'), (self.ratiometric ? 1:0), true);
+    self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), (self.ratiometric ? 1:0), true);
   }
 };
 
@@ -1014,10 +1098,10 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
 
   var self = this;
 
-  if (data.keyword === "Input") {
+  if (data.keyword === &quot;Input&quot;) {
 
     if (!self.inputs[data.index]) { self.inputs[data.index] = {}; }
-    self.inputs[data.index].value = (data.value === '1');
+    self.inputs[data.index].value = (data.value === &#x27;1&#x27;);
 
     /**
      * Event emitted when binary input data is received.
@@ -1026,23 +1110,23 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
      * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
      *        emitted the event.
      * @param {Object} data An object containing the input data and related information
-     * @param {int} data.index The input's index number
-     * @param {Boolean} data.value The input's received value
+     * @param {int} data.index The input&#x27;s index number
+     * @param {Boolean} data.value The input&#x27;s received value
      */
     self.emit(
-      "input",
+      &quot;input&quot;,
       self,
-      { "index": data.index, "value": self.inputs[data.index].value }
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.inputs[data.index].value }
     );
 
-  } else if (data.keyword === "Sensor") {
+  } else if (data.keyword === &quot;Sensor&quot;) {
 
     // The event is emitted after RawSensor is received to make sure both have been
-    // received (it's always right after).
+    // received (it&#x27;s always right after).
     if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].value = parseInt(data.value);
 
-  } else if (data.keyword === 'RawSensor') {
+  } else if (data.keyword === &#x27;RawSensor&#x27;) {
 
     /**
      * Event emitted when analog sensor data is received
@@ -1051,41 +1135,41 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
      * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
      *        emitted the event.
      * @param {Object} data An object containing the sensor data and related information
-     * @param {int} data.index The sensor's index number
-     * @param {int} data.value The sensor's received value
+     * @param {int} data.index The sensor&#x27;s index number
+     * @param {int} data.value The sensor&#x27;s received value
      */
     if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].rawValue = parseInt(data.value);
     self.emit(
-      "sensor",
+      &quot;sensor&quot;,
       self,
-      { "index": data.index, "value": self.sensors[data.index].value }
+      { &quot;index&quot;: data.index, &quot;value&quot;: self.sensors[data.index].value }
     );
 
-  } else if (data.keyword === "Output") {
+  } else if (data.keyword === &quot;Output&quot;) {
 
     if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
-    self.outputs[data.index].value = (data.value === '1');
+    self.outputs[data.index].value = (data.value === &#x27;1&#x27;);
 
-  } else if (data.keyword === 'Ratiometric') {
-    self._ratiometric = (data.value === '1');
-  } else if (data.keyword === 'NumberOfInputs') {
+  } else if (data.keyword === &#x27;Ratiometric&#x27;) {
+    self._ratiometric = (data.value === &#x27;1&#x27;);
+  } else if (data.keyword === &#x27;NumberOfInputs&#x27;) {
     self.inputs.count = parseInt(data.value);
-  } else if (data.keyword === 'NumberOfOutputs') {
+  } else if (data.keyword === &#x27;NumberOfOutputs&#x27;) {
     self.outputs.count = parseInt(data.value);
-  } else if (data.keyword === 'NumberOfSensors') {
+  } else if (data.keyword === &#x27;NumberOfSensors&#x27;) {
     self.sensors.count = parseInt(data.value);
-  } else if (data.keyword === 'DataRate') {
+  } else if (data.keyword === &#x27;DataRate&#x27;) {
     if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].updateInterval = parseInt(data.value);
-  } else if (data.keyword === 'DataRateMax') {
+  } else if (data.keyword === &#x27;DataRateMax&#x27;) {
     self._shortestUpdateInterval = parseInt(data.value);
-  } else if (data.keyword === 'DataRateMin') {
+  } else if (data.keyword === &#x27;DataRateMin&#x27;) {
     self._longestUpdateInterval = parseInt(data.value);
-  } else if (data.keyword === 'Trigger') {
+  } else if (data.keyword === &#x27;Trigger&#x27;) {
     if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].sensitivity = parseInt(data.value);
-  } else if (data.keyword === 'InterruptRate') {
+  } else if (data.keyword === &#x27;InterruptRate&#x27;) {
     self._interruptRate = parseInt(data.value);
   }
 
@@ -1100,12 +1184,14 @@ module.exports.PhidgetInterfaceKit = PhidgetInterfaceKit;
 /**
  * The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.
  *
+ * Warning: as of now, only basic functionalities have been implemented. More to come...
+ *
  * @class PhidgetLED
  * @constructor
  * @extends Phidget
  */
 var PhidgetLED = function() {
-  PhidgetLED.super_.call(this, 'PhidgetLED');
+  PhidgetLED.super_.call(this, &#x27;PhidgetLED&#x27;);
 
   var self = this;
 
@@ -1127,7 +1213,7 @@ var PhidgetLED = function() {
 
   /**
    * The global voltage for all led outputs. When setting the voltage, you must use one of
-   * the values in the `PhidgetLED.supportedVoltages` array. Valid values currently are
+   * the values in the &#x60;PhidgetLED.supportedVoltages&#x60; array. Valid values currently are
    * (in volts):
    *
    * * 1.7
@@ -1140,7 +1226,7 @@ var PhidgetLED = function() {
    *
    * @property voltage {Number}
    */
-  Object.defineProperty(this, 'voltage', {
+  Object.defineProperty(this, &#x27;voltage&#x27;, {
     enumerable: true,
     get: function () {
       return (self._voltage);
@@ -1148,8 +1234,8 @@ var PhidgetLED = function() {
     set: function(value) {
       if (self.ready) {
         var index = self.supportedVoltages.indexOf(value) + 1;
-        if (index > 0) {
-          self._sendPck(self._makePckString('Voltage'), index, true);
+        if (index &gt; 0) {
+          self._sendPck(self._makePckString(&#x27;Voltage&#x27;), index, true);
           self._voltage = value;
         }
       }
@@ -1157,16 +1243,16 @@ var PhidgetLED = function() {
   });
 
   /**
-   * The global "current limit" for all led outputs. When setting the global current
+   * The global &quot;current limit&quot; for all led outputs. When setting the global current
    * limit, you must use one of the values in the
-   * `PhidgetLED.supportedGlobalCurrentLimits` array. Valid values currently are (in mA):
+   * &#x60;PhidgetLED.supportedGlobalCurrentLimits&#x60; array. Valid values currently are (in mA):
    * 20, 40, 60, 80. Trying to set the current limit to another value will fail silently.
    *
    * This is not supported by all PhidgetLED boards.
    *
    * @property currentLimit {Number}
    */
-  Object.defineProperty(this, 'currentLimit', {
+  Object.defineProperty(this, &#x27;currentLimit&#x27;, {
     enumerable: true,
     get: function () {
       return (self._currentLimit);
@@ -1174,8 +1260,8 @@ var PhidgetLED = function() {
     set: function(value) {
       if (self.ready) {
         var index = self.supportedGlobalCurrentLimits.indexOf(value) + 1;
-        if (index > 0) {
-          self._sendPck(self._makePckString('CurrentLimit'), index, true);
+        if (index &gt; 0) {
+          self._sendPck(self._makePckString(&#x27;CurrentLimit&#x27;), index, true);
           self._currentLimit = value;
         }
       }
@@ -1186,7 +1272,7 @@ var PhidgetLED = function() {
    * [read-only] Array of supported voltages (in volts).
    * @property supportedVoltages {Array}
    */
-  Object.defineProperty(this, 'supportedVoltages', {
+  Object.defineProperty(this, &#x27;supportedVoltages&#x27;, {
     enumerable: true,
     writable: false,
     value: [1.7, 2.75, 3.9, 5]
@@ -1197,7 +1283,7 @@ var PhidgetLED = function() {
    * (in mA).
    * @property supportedGlobalCurrentLimits {Array}
    */
-  Object.defineProperty(this, 'supportedGlobalCurrentLimits', {
+  Object.defineProperty(this, &#x27;supportedGlobalCurrentLimits&#x27;, {
     enumerable: true,
     writable: false,
     value: [20, 40, 60, 80]
@@ -1228,12 +1314,12 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
   index = [].concat(index);
   value = self._forceBetween(value, 0, 100) || 100;
 
-  for (var i = 0; i < index.length; i++) {
+  for (var i = 0; i &lt; index.length; i++) {
     var pos = self._forceBetween(index[i], 0, 63);
-    self._sendPck(self._makePckString('Brightness', pos), value, true);
+    self._sendPck(self._makePckString(&#x27;Brightness&#x27;, pos), value, true);
     self.leds[pos].value = value;
     /**
-     * Event emitted right after a LED's brightness has been changed.
+     * Event emitted right after a LED&#x27;s brightness has been changed.
      *
      * @event brightness
      * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
@@ -1244,9 +1330,9 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
      * @param {int} data.value The brightness value
      */
     self.emit(
-      "brightness",
+      &quot;brightness&quot;,
       self,
-      { "index": pos, "value": self.leds[pos].value }
+      { &quot;index&quot;: pos, &quot;value&quot;: self.leds[pos].value }
     );
   }
 
@@ -1263,7 +1349,7 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
  * @param index {int|Array} The LED output number (or array of LED output numbers) for
  *        which to adjust the current limit
  * @param [value=20] {Number} The value you wish to adjust the current limit to. Should be within
- *        the range defined by `PhidgetLED.currentLimitRange`.
+ *        the range defined by &#x60;PhidgetLED.currentLimitRange&#x60;.
  * @returns {Phidget} Returns the Phidget to allow method chaining
  * @chainable
  */
@@ -1275,9 +1361,9 @@ PhidgetLED.prototype.setCurrentLimit = function(index, value) {
   index = [].concat(index);
   value = self._forceBetween(value, 0, 80) || 20;
 
-  for (var i = 0; i < index.length; i++) {
+  for (var i = 0; i &lt; index.length; i++) {
     var pos = self._forceBetween(index[i], 0, self.leds.count);
-    self._sendPck(self._makePckString('CurrentLimitIndexed', pos), value, true);
+    self._sendPck(self._makePckString(&#x27;CurrentLimitIndexed&#x27;, pos), value, true);
     self.leds[pos].currentLimit = value;
   }
 
@@ -1289,17 +1375,17 @@ PhidgetLED.prototype._parsePhidgetSpecificData = function (data) {
 
   var self = this;
 
-  if (data.keyword === "NumberOfLEDs") {
+  if (data.keyword === &quot;NumberOfLEDs&quot;) {
     self.leds.count = parseInt(data.value);
-  } else if (data.keyword === "Voltage") {
+  } else if (data.keyword === &quot;Voltage&quot;) {
     var v = self._forceBetween(data.value, 1, 4);
     self._voltage = self.supportedVoltages[v - 1];
-  } else if (data.keyword === "CurrentLimit") {
+  } else if (data.keyword === &quot;CurrentLimit&quot;) {
     self._currentLimit = self.supportedGlobalCurrentLimits[data.value - 1];
-  } else if (data.keyword === "Brightness") {
+  } else if (data.keyword === &quot;Brightness&quot;) {
     if (!self.leds[data.index]) { self.leds[data.index] = {}; }
     self.leds[data.index].value = parseInt(data.value);
-  } else if (data.keyword === "CurrentLimitIndexed") {
+  } else if (data.keyword === &quot;CurrentLimitIndexed&quot;) {
     if (!self.leds[data.index]) { self.leds[data.index] = {}; }
     self.leds[data.index].currentLimit = parseInt(data.value);
   }
@@ -1307,3 +1393,21 @@ PhidgetLED.prototype._parsePhidgetSpecificData = function (data) {
 };
 
 module.exports.PhidgetLED = PhidgetLED;
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
