@@ -118,8 +118,8 @@ pik.open({
 
 At any time, you can check the status of any inputs, sensors or outputs. Depending on the
 type of board you are using, all of these will or will not be available. For example, on a
-`PhidgetLED` board, there are not inputs or sensors. However, you can still read the state
-of outputs by looking at the `PhidgetLED.outputs` object. This object will look like this:
+`PhidgetLED` board, there are no inputs or sensors. However, you can still read the state
+of all LEDS by looking at the `PhidgetLED.leds` object. This object will look like this:
 
 ```javascript
 {
@@ -128,6 +128,7 @@ of outputs by looking at the `PhidgetLED.outputs` object. This object will look 
     2: 0,
     3: 13,
     // etc.
+    count: 64
 }
 ```
 
