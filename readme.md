@@ -131,8 +131,22 @@ of all LEDS by looking at the `PhidgetLED.leds` object. This object will look li
     count: 64
 }
 ```
+For example, if you wanted to periodically check the status of an analog sensor hooked up to port 3 of a `PhidgetInterfaceKit`, you could to the following:
 
-The `outputs` object is read-only. If you want to change the value of an output, use the
+```javascript
+var phidgets = require('phidgets');
+
+var pik = new phidgets.PhidgetInterfaceKit()
+    .on('opened', function(emitter) {
+        setInterval(
+            function() {  console.log("Sensor 3:" + pik.sensors[3].value);  },
+            1000
+        );
+    })
+    .open();
+```
+
+The `outputs` object is meant to be read-only. If you want to change the value of an output, use the
 relevant method. For example, to change the output on a `PhidgetInterfaceKit`, you would
 use the `setOutput()` method. To do the same on a `PhidgetLED`, you would use
 `setBrightness()`.
@@ -147,8 +161,8 @@ object. This includes boards such as:
  * PhidgetInterfaceKit 0/16/16
  * PhidgetInterfaceKit 8/8/8 (with and without hub)
 
-Also included in the library (via the `PhidgetLED` object) is basic support for the
-following:
+Also included in the library (via the `PhidgetLED` object) is full support for the
+following boards:
 
  * PhidgetLED
 
