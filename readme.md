@@ -58,6 +58,20 @@ pik.on('sensor', function(emitter, data) {
 
 pik.open();
 ```
+Obviously, many other events are available. The exact events vary with the device type. As an example, here are the events specific to `PhidgetInterfaceKit` devices:
+
+* **input** : triggered when a digital input changes status
+* **sensor** : triggered when data is received on the analog sensors
+* **output** : triggered when the status of a digital output changes
+
+The following (pretty much self-describing) events are common to all phidgets: 
+
+* **opening**
+* **reopening**
+* **timeout**
+* **opened**
+* **closed**
+* **error**
 
 Since all relevant functions are chainable, the above example can be written more
 concisely:
@@ -66,15 +80,15 @@ concisely:
 var phidgets = require('phidgets');
 
 var pik = new phidgets.PhidgetInterfaceKit()
-    .on('sensor', function(emitter, data) {
-        console.log('Sensor: ' + data.index + ', value: ' + data.value);
+    .on('input', function(emitter, data) {
+        console.log('Digital input: ' + data.index + ', value: ' + data.value);
     })
     .open();
 ```
 
 When no parameters are passed to the `open()` method, the first matching device on the
 local machine is used. If you have multiple devices connected, you can connect to a
-specific one by passing its serial number or label (as defined in the webservice control
+specific one by passing its serial number or label (as defined in the Phidget WebService control
 panel):
 
 ```javascript
