@@ -147,7 +147,7 @@ var phidgets = require('phidgets');
 var pik = new phidgets.PhidgetInterfaceKit()
     .on('opened', function(emitter) {
         setInterval(
-            function() {  console.log("Sensor 3:" + pik.sensors[3].value);  },
+            function() {  console.log("Sensor 3: " + pik.sensors[3].value);  },
             1000
         );
     })
