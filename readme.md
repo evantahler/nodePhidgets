@@ -35,7 +35,11 @@ the Phidget WebService.
 
 ## Installation
 If you already have Node.js installed, you also have npm installed. This means you can
-install the *phidgets* package with: `npm install phidgets`.
+install the *phidgets* package with:
+
+```javascript
+npm install phidgets`
+```
 
 [Phidgets Inc.](http://www.phidgets.com) makes a line of phidget boards which are
 themselves small ARM Debian computers. It it possble to run Node.js on them, and use this
@@ -45,7 +49,7 @@ to get this up and running.
 
 ## Usage
 
-The most common way to interact with a *phidgets* board is to set up listeners for the
+The most common way to interact with a *phidgets* board is to set up listeners for
 whatever you are interested in. For example, this code will log to the console all changes
 detected on the analog sensor inputs of the device:
 
@@ -123,7 +127,7 @@ pik.open({
 
 As illustrated above, you can retrieve data by adding the appropriate listeners
 (`'input'`, `'sensor'`, etc.). You can also, at any time, manually check the status of any
-inputs, sensors or outputs. Depending on the type of board you are using, all of these
+inputs, sensors, leds, outputs, etc. Depending on the type of board you are using, all of these
 will or will not be available. For example, on a `PhidgetLED` board, there are no inputs
 or sensors. However, you can still read the state of all LEDS by looking at the
 `PhidgetLED.leds` object. This object will look like this:
@@ -135,7 +139,7 @@ or sensors. However, you can still read the state of all LEDS by looking at the
     2: 0,
     3: 13,
     // etc.
-    count: 64 // The total number of LEDs (as reported by the board)
+    count: 64 // The total number of inputs/outputs/leds/etc. (as reported by the board)
 }
 ```
 For example, if you wanted to periodically check the status of an analog sensor hooked up
