@@ -13,21 +13,21 @@ project aims to make it simple for them to interact. Synergy!
 >#### Warning to users of version <= 0.4.0
 >
 >The API in version 0.5.0 and above has changed and is not backwards-compatible. We had to
-> make this change in order to support more than just the PhidgetInterfaceKit boards. An
-> archived copy of [version 0.4.0]
->(http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip) is being
->kept around for those needing to maintain older projects.
+>make this change in order to support more than just the PhidgetInterfaceKit boards. An
+>archived copy of
+>[version 0.4.0](http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip)
+>is being kept around for those needing to maintain older projects.
 
 ## Getting started
-This project assumes you have the [Phidget WebService]
-(http://www.phidgets.com/docs/Phidget_WebService) up and running.  For "regular" (USB)
-Phidget boards, this simply means that the computer you are connecting to has got the
-webservice installed and started.
+This project assumes you have the
+[Phidget WebService](http://www.phidgets.com/docs/Phidget_WebService) up and running.  For
+"regular" (USB) Phidget boards, this simply means that the computer you are connecting to
+has got the webservice installed and started.
 
-For stand-alone *Phidget Single Board Computers* ([phidgetsbc](http://www.phidgets.com/products.php?category=21)), 
-this assumes you have configured the server via the web portal. Since you will be connecting 
-to the Phidget server via TCP, be sure you can access the server from the machine running 
-this project.
+For stand-alone *Phidget Single Board Computers*
+([phidgetsbc](http://www.phidgets.com/products.php?category=21)), this assumes you have
+configured the server via the web portal. Since you will be connecting to the Phidget
+server via TCP, be sure you can access the server from the machine running this project.
 
 This library can interface with multiple phidget boards connected to a single computer via
 the Phidget WebService.
@@ -61,7 +61,8 @@ pik.open();
 ```
 ##### Using events
 
-Obviously, many other events are available. The exact events vary with the device type. As an example, here are the events specific to `PhidgetInterfaceKit` devices:
+Obviously, many other events are available. The exact events vary with the device type. As
+an example, here are the events specific to `PhidgetInterfaceKit` devices:
 
 * **"input"** : triggered when a digital input changes status
 * **"sensor"** : triggered when data is received on the analog sensors
@@ -70,10 +71,13 @@ Obviously, many other events are available. The exact events vary with the devic
 The following events are common to all phidgets: 
 
 * **"opening"** : triggered when a connection to a phidget board is attempted
-* **"reopening"** : triggered when trying to automatically reconnect to a remotely-closed phidget
+* **"reopening"** : triggered when trying to automatically reconnect to a remotely-closed
+  phidget
 * **"timeout"** : triggered when a connection attempt times out
-* **"opened"** : triggered when a the connection attempt has succeeded and the board is ready
-* **"closed"** : triggered when the connection to the board has been closed (locally or remotely)
+* **"opened"** : triggered when a the connection attempt has succeeded and the board is
+  ready
+* **"closed"** : triggered when the connection to the board has been closed (locally or
+  remotely)
 * **"error"** : triggered when an error occured
 
 ##### Using chaining
@@ -95,8 +99,8 @@ var pik = new phidgets.PhidgetInterfaceKit()
 
 When no parameters are passed to the `open()` method, the first matching device on the
 local machine is used. If you have multiple devices connected, you can connect to a
-specific one by passing its serial number or label (as defined in the Phidget WebService control
-panel). You can also, if necessary, specify a password:
+specific one by passing its serial number or label (as defined in the Phidget WebService
+control panel). You can also, if necessary, specify a password:
 
 ```javascript
 pik.open({
@@ -116,12 +120,12 @@ pik.open({
 ```
 ##### Retrieving data from the board
 
-As illustrated above, you can retrieve data by adding the appropriate listeners (`'input'`, 
-`'sensor'`, etc.). You can also, at any time, manually check the status of any inputs, 
-sensors or outputs. Depending on the type of board you are using, all of these will or will 
-not be available. For example, on a `PhidgetLED` board, there are no inputs or sensors. 
-However, you can still read the state of all LEDS by looking at the `PhidgetLED.leds` 
-object. This object will look like this:
+As illustrated above, you can retrieve data by adding the appropriate listeners
+(`'input'`, `'sensor'`, etc.). You can also, at any time, manually check the status of any
+inputs, sensors or outputs. Depending on the type of board you are using, all of these
+will or will not be available. For example, on a `PhidgetLED` board, there are no inputs
+or sensors. However, you can still read the state of all LEDS by looking at the
+`PhidgetLED.leds` object. This object will look like this:
 
 ```javascript
 {
@@ -133,7 +137,8 @@ object. This object will look like this:
     count: 64 // The total number of LEDs (as reported by the board)
 }
 ```
-For example, if you wanted to periodically check the status of an analog sensor hooked up to port 3 of a `PhidgetInterfaceKit`, you could to the following:
+For example, if you wanted to periodically check the status of an analog sensor hooked up
+to port 3 of a `PhidgetInterfaceKit`, you could to the following:
 
 ```javascript
 var phidgets = require('phidgets');
@@ -149,10 +154,10 @@ var pik = new phidgets.PhidgetInterfaceKit()
 ```
 ##### Sending data to the board
 
-The `outputs` object is meant to be read-only. If you want to change the value of an output, 
-use the relevant method. For example, to change an output on a `PhidgetInterfaceKit`, you 
-would use the `PhidgetInterfaceKit.setOutput()` method. To do the same on a `PhidgetLED`, 
-you would use `PhidgetLED.setBrightness()`.
+The `outputs` object is meant to be read-only. If you want to change the value of an
+output, use the relevant method. For example, to change an output on a
+`PhidgetInterfaceKit`, you would use the `PhidgetInterfaceKit.setOutput()` method. To do
+the same on a `PhidgetLED`, you would use `PhidgetLED.setBrightness()`.
 
 ### Supported boards
 
@@ -168,13 +173,16 @@ Also included in the library is full support for the following boards:
 
  * PhidgetLED
 
-Other boards will be added in the future. Help from contributors is always welcomed. Addding support for a specific board is relatively straightforward. If you are in a hurry, and can support the development effort, please contact one of the
-[project contributors](https://github.com/cotejp/node-phidgets/graphs/contributors).
+Other boards will be added in the future. Help from contributors is always welcomed.
+Addding support for a specific board is relatively straightforward. If you are in a hurry,
+and can support the development effort, please contact one of the
+[project contributors](https://github.com/evantahler/nodePhidgets/graphs/contributors).
 
 ### API Documentation
 
-If this primer wasn't enough, the full **API documentation** is available for download in the *docs* folder. You can 
-also **[view it online](http://cote.cc/w/wp-content/uploads/projects/phidgets/docs/)**.
+If this primer wasn't enough, the full **API documentation** is available for download in
+the *docs* folder. You can also
+**[view it online](http://cotejp.github.io/node-phidgets/docs/)**.
 
 ### Things to do:
 * Add support for missing boards.
