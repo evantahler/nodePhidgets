@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "phidgets",
-        "version": "0.5.0-alpha.15",
+        "version": "0.5.0-alpha.16",
         "description": "A Node.js library enabling the use of various Phidgets interface boards.",
         "url": ""
     },
@@ -88,7 +88,7 @@
             "namespace": "",
             "file": "lib/phidgets.js",
             "line": 1100,
-            "description": "The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.\n\nWarning: as of now, only basic functionalities have been implemented. More to come...",
+            "description": "The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.",
             "is_constructor": 1,
             "extends": "Phidget"
         }
@@ -1078,7 +1078,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1114,
+            "line": 1112,
             "description": "[read-only] An object containing information about all LED outputs of the device.\nHere are a few examples of how to retrieve information in that object:\n\n    PhidgetLED.leds[5].value     // LED 5 current value\n    PhidgetLED.leds.count        // Total number of LED outputs on the device",
             "itemtype": "property",
             "name": "leds",
@@ -1105,7 +1105,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1130,
+            "line": 1128,
             "description": "The global voltage for all led outputs. When setting the voltage, you must use one of\nthe values in the `PhidgetLED.supportedVoltages` array. Valid values currently are\n(in volts):\n\n* 1.7\n* 2.75\n* 3.9\n* 5\n\nTrying to set the voltage to another value will fail silently. This is not supported\nby all PhidgetLED boards.",
             "itemtype": "property",
             "name": "voltage",
@@ -1115,7 +1115,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1161,
+            "line": 1159,
             "description": "The global \"current limit\" for all led outputs. When setting the global current\nlimit, you must use one of the values in the\n`PhidgetLED.supportedGlobalCurrentLimits` array. Valid values currently are (in mA):\n20, 40, 60, 80. Trying to set the current limit to another value will fail silently.\n\nThis is not supported by all PhidgetLED boards.",
             "itemtype": "property",
             "name": "currentLimit",
@@ -1125,7 +1125,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1187,
+            "line": 1185,
             "description": "[read-only] Array of supported voltages (in volts).",
             "itemtype": "property",
             "name": "supportedVoltages",
@@ -1135,7 +1135,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1197,
+            "line": 1195,
             "description": "[read-only] An array of values that are valid when setting the global current limit\n(in mA).",
             "itemtype": "property",
             "name": "supportedGlobalCurrentLimits",
@@ -1145,7 +1145,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1215,
+            "line": 1213,
             "description": "Adjusts the brightness of a LED.",
             "itemtype": "method",
             "name": "setBrightness",
@@ -1173,7 +1173,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1237,
+            "line": 1235,
             "description": "Event emitted right after a LED's brightness has been changed.",
             "itemtype": "event",
             "name": "brightness",
@@ -1206,7 +1206,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1259,
+            "line": 1257,
             "description": "Sets the current limit (in mA) for a specific LED output (or an array of LED outputs).\nThe value must be between 0 and 80 mA. If the value provided is outside this range, the\nclosest acceptable value will be used instead.",
             "itemtype": "method",
             "name": "setCurrentLimit",
@@ -1256,11 +1256,11 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1215"
+            "line": " lib/phidgets.js:1213"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1259"
+            "line": " lib/phidgets.js:1257"
         },
         {
             "message": "Missing item type",

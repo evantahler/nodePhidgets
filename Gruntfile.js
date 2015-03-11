@@ -27,13 +27,25 @@ module.exports = function (grunt) {
           paths: ['./lib']
         }
       }
+    },
+
+    release: {
+      options: {
+        bump: false,
+        commitMessage: 'Release <%= version %>'
+      }
     }
 
   });
 
   grunt.loadNpmTasks('grunt-bumpup');
   grunt.loadNpmTasks("grunt-contrib-yuidoc");
+  grunt.loadNpmTasks('grunt-release');
 
-  grunt.registerTask("release", ['bumpup:prerelease', 'yuidoc']);
+  grunt.registerTask('publish', ['publish:prerelease']);
+  grunt.registerTask("publish:prerelease", ['bumpup:prerelease', 'yuidoc', 'release']);
+  grunt.registerTask("publish:patch", ['bumpup:patch', 'yuidoc', 'release']);
+  grunt.registerTask('publish:minor', ['bumpup:minor', 'yuidoc', 'release']);
+  grunt.registerTask('publish:major', ['bumpup:major', 'yuidoc', 'release']);
 
 };
