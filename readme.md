@@ -16,7 +16,7 @@ project aims to make it simple for them to interact. Synergy!
 >The API in version 0.5.0 and above has changed and is not backwards-compatible. We had to
 >make this change in order to support more than just the PhidgetInterfaceKit boards. An
 >archived copy of
->[version 0.4.0](http://cote.cc/w/wp-content/uploads/projects/phidgets/nodePhidgets-0.4.0.zip)
+> [version 0.4.0](https://github.com/evantahler/nodePhidgets/archive/v0.4.0.zip)
 >is being kept around for those needing to maintain older projects.
 
 ## Getting started
