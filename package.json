@@ -22,7 +22,9 @@
     "phidgetsbc",
     "socket",
     "interface",
-    "kit"
+    "kit",
+    "phidgetinterfacekit",
+    "phidgetled"
   ],
   "homepage": "https://github.com/evantahler/nodePhidgets",
   "engines": {
