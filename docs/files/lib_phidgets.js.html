@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.16</em>
+            <em>API Docs for: 0.5.0-alpha.18</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -118,7 +118,12 @@ module.exports = {};
  *    * {{#crossLink &quot;PhidgetInterfaceKit&quot;}}{{/crossLink}}
  *    * {{#crossLink &quot;PhidgetLED&quot;}}{{/crossLink}}
  *
+ * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for inherited methods.
+ *
  * @class Phidget
+ * @extends events.EventEmitter
  * @constructor
  * @throws {Error} This class is abstract, you cannot instantiate it directly.
  * @throws {Error} Unsupported device type.
@@ -142,7 +147,8 @@ var Phidget = function(type) {
     writable: false,
     value: [
       &#x27;PhidgetInterfaceKit&#x27;,
-      &#x27;PhidgetLED&#x27;
+      &#x27;PhidgetLED&#x27;,
+      &#x27;PhidgetRFID&#x27;
     ]
   });
 
@@ -382,8 +388,7 @@ Phidget.prototype.open = function(options) {
       self._handleData(d);
     });
 
-    // Open connection to Phidget WebService and set reporting delay (the delay between
-    // automatic status reports sent out by the server).
+    // Open connection to Phidget WebService
     self._sendLine(&quot;995 authenticate, version=&quot; + self._protocol);
 
   });
@@ -878,6 +883,9 @@ module.exports.Phidget = Phidget;
  * Not all of these boards have been tested. If you possess one and can verify its
  * compatibility, let us know.
  *
+ * This object extends the &#x60;Phidget&#x60; object which extends Node.js&#x27; [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for inherited methods.
+ *
  * @class PhidgetInterfaceKit
  * @constructor
  * @extends Phidget
@@ -949,7 +957,7 @@ var PhidgetInterfaceKit = function() {
     set: function (value) {
       self._ratiometric = value;
       if (self.ready) {
-        self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), value ? 1:0, true);
+        self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), value ? 1 : 0, true);
       }
     }
   });
@@ -1089,7 +1097,7 @@ PhidgetInterfaceKit.prototype.setSensitivity = function(index, value) {
 PhidgetInterfaceKit.prototype._setPhidgetSpecificInitialState = function () {
   var self = this;
   if (self.ratiometric !== undefined) {
-    self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), (self.ratiometric ? 1:0), true);
+    self._sendPck(self._makePckString(&#x27;Ratiometric&#x27;), (self.ratiometric ? 1 : 0), true);
   }
 };
 
@@ -1104,7 +1112,7 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
     self.inputs[data.index].value = (data.value === &#x27;1&#x27;);
 
     /**
-     * Event emitted when binary input data is received.
+     * Event emitted when the status of a binary input changes.
      *
      * @event input
      * @param {PhidgetInterfaceKit} emitter The actual PhidgetInterfaceKit object that
@@ -1113,7 +1121,7 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
      * @param {int} data.index The input&#x27;s index number
      * @param {Boolean} data.value The input&#x27;s received value
      */
-    self.emit(
+    self.ready &amp;&amp; self.emit(
       &quot;input&quot;,
       self,
       { &quot;index&quot;: data.index, &quot;value&quot;: self.inputs[data.index].value }
@@ -1140,10 +1148,14 @@ PhidgetInterfaceKit.prototype._parsePhidgetSpecificData = function (data) {
      */
     if (!self.sensors[data.index]) { self.sensors[data.index] = {}; }
     self.sensors[data.index].rawValue = parseInt(data.value);
-    self.emit(
+    self.ready &amp;&amp; self.emit(
       &quot;sensor&quot;,
       self,
-      { &quot;index&quot;: data.index, &quot;value&quot;: self.sensors[data.index].value }
+      {
+        &quot;index&quot;: data.index,
+        &quot;value&quot;: self.sensors[data.index].value,
+        &quot;rawValue&quot;: self.sensors[data.index].rawValue
+      }
     );
 
   } else if (data.keyword === &quot;Output&quot;) {
@@ -1184,7 +1196,9 @@ module.exports.PhidgetInterfaceKit = PhidgetInterfaceKit;
 /**
  * The PhidgetLED class allows you to control a PhidgetLED-64 Advanced board.
  *
- * Warning: as of now, only basic functionalities have been implemented. More to come...
+ * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for inherited methods.
  *
  * @class PhidgetLED
  * @constructor
@@ -1329,7 +1343,7 @@ PhidgetLED.prototype.setBrightness = function(index, value) {
      * @param {int} data.index The LED output index number
      * @param {int} data.value The brightness value
      */
-    self.emit(
+    self.ready &amp;&amp; self.emit(
       &quot;brightness&quot;,
       self,
       { &quot;index&quot;: pos, &quot;value&quot;: self.leds[pos].value }
@@ -1393,6 +1407,124 @@ PhidgetLED.prototype._parsePhidgetSpecificData = function (data) {
 };
 
 module.exports.PhidgetLED = PhidgetLED;
+
+
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************************************************/
+/************************************  PhidgetRFID  *************************************/
+/****************************************************************************************/
+
+///**
+// * The PhidgetRFID class allows you to control a PhidgetRFID board.
+// *
+// * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
+// * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+// * See that object&#x27;s documentation for inherited methods.
+// *
+// * @class PhidgetRFID
+// * @constructorÈ
+// * @extends Phidget
+// */
+//var PhidgetRFID = function() {
+//
+//  PhidgetRFID.super_.call(this, &quot;PhidgetRFID&quot;);
+//
+//  var self = this;
+//
+//  /**
+//   * [read-only] An object containing information about the digital outputs of the device.
+//   * Output 0 is also labeled on the board as &quot;+5V&quot;. Output 1 is also labeled on the board
+//   * as &quot;LED&quot;. This is not to be confused with the onboard LED. To control the onboard
+//   * LED, please use the &#x60;PhidgetRFID.led&#x60; property.
+//   *
+//   * Here is how to retrieve an outputs value or the total number of outputs:
+//   *
+//   *     PhidgetRFID.outputs[1].value     // Output 1 current value
+//   *     PhidgetRFID.outputs.count        // Total number of outputs on the device
+//   *
+//   * @property outputs {Object}
+//   * @property outputs.count {int} The total number of outputs on the device.
+//   * @property outputs[int].value {int} The current value of the specified output.
+//   */
+//  this.outputs = {};
+//
+//  /**
+//   * The status of the onboard LED (not to be confused with the LED output). Setting this
+//   * property to true will turn on the onboard LED while setting it to false will turn it
+//   * off.
+//   *
+//   * @property led {Boolean}
+//   */
+//  Object.defineProperty(this, &#x27;led&#x27;, {
+//    enumerable: true,
+//    get: function () {
+//      return (self._led);
+//    },
+//    set: function(value) {
+//      self._sendPck(self._makePckString(&#x27;LEDOn&#x27;), value ? 1:0, true);
+//      self._antenna = value ? true : false;
+//    }
+//  });
+//
+//  /**
+//   * The activity status of the RFID antenna. The antenna must be activated in order for
+//   * the reader to work properly. Setting this property to &#x60;true&#x60; activates the antenna
+//   * while setting it to false deactivates it.
+//   *
+//   * @property antenna {Boolean}
+//   */
+//  Object.defineProperty(this, &#x27;antenna&#x27;, {
+//    enumerable: true,
+//    get: function () {
+//      return (self._antenna);
+//    },
+//    set: function(value) {
+//      self._sendPck(self._makePckString(&#x27;AntennaOn&#x27;), value ? 1 : 0, true);
+//      self._antenna = value ? true : false;
+//    }
+//  });
+//
+//  this._led = false;
+//  this._antenna = false;
+//
+//};
+//
+//util.inherits(PhidgetRFID, Phidget);
+
+
+//PhidgetRFID.prototype._parsePhidgetSpecificData = function (data) {
+//
+//  //var self = this;
+//
+//  //if (data.keyword === &quot;NumberOfLEDs&quot;) {
+//  //  self.leds.count = parseInt(data.value);
+//  //} else if (data.keyword === &quot;Voltage&quot;) {
+//  //  var v = self._forceBetween(data.value, 1, 4);
+//  //  self._voltage = self.supportedVoltages[v - 1];
+//  //} else if (data.keyword === &quot;CurrentLimit&quot;) {
+//  //  self._currentLimit = self.supportedGlobalCurrentLimits[data.value - 1];
+//  //} else if (data.keyword === &quot;Brightness&quot;) {
+//  //  if (!self.leds[data.index]) { self.leds[data.index] = {}; }
+//  //  self.leds[data.index].value = parseInt(data.value);
+//  //} else if (data.keyword === &quot;CurrentLimitIndexed&quot;) {
+//  //  if (!self.leds[data.index]) { self.leds[data.index] = {}; }
+//  //  self.leds[data.index].currentLimit = parseInt(data.value);
+//  //}
+//
+//};
+//
+//module.exports.PhidgetRFID = PhidgetRFID;
+
     </pre>
 </div>
                     </div>
