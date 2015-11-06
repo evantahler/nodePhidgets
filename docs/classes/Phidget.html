@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.0-alpha.16</em>
+            <em>API Docs for: 0.5.1-alpha.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/Phidget.html">Phidget</a></li>
+                                <li><a href="../classes/PhidgetBridge.html">PhidgetBridge</a></li>
                                 <li><a href="../classes/PhidgetInterfaceKit.html">PhidgetInterfaceKit</a></li>
                                 <li><a href="../classes/PhidgetLED.html">PhidgetLED</a></li>
                             </ul>
@@ -81,6 +82,9 @@
 <h1>Phidget Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends events.EventEmitter
+        </div>
 
         <div class="foundat">
             Defined in: <a href="../files/lib_phidgets.js.html#l29"><code>lib&#x2F;phidgets.js:29</code></a>
@@ -99,6 +103,9 @@ instantiate one of the child classes instead:</p>
 <li><a href="../classes/PhidgetInterfaceKit.html" class="crosslink">PhidgetInterfaceKit</a></li>
 <li><a href="../classes/PhidgetLED.html" class="crosslink">PhidgetLED</a></li>
 </ul>
+<p>This object extends the <code>Phidget</code> object which itself extends Node.js&#39;
+<a href="https://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code> object</a>.
+See that object&#39;s documentation for inherited methods.</p>
 
 </div>
 
@@ -161,7 +168,7 @@ instantiate one of the child classes instead:</p>
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
+                    <ul class="index-list methods extends">
                             <li class="index-item method protected">
                                 <a href="#method__forceBetween">_forceBetween</a>
 
@@ -208,7 +215,7 @@ instantiate one of the child classes instead:</p>
                 <div class="index-section properties">
                     <h3>Properties</h3>
 
-                    <ul class="index-list properties">
+                    <ul class="index-list properties extends">
                             <li class="index-item property">
                                 <a href="#property_host">host</a>
 
@@ -268,7 +275,7 @@ instantiate one of the child classes instead:</p>
                 <div class="index-section events">
                     <h3>Events</h3>
 
-                    <ul class="index-list events">
+                    <ul class="index-list events extends">
                             <li class="index-item event">
                                 <a href="#event_closed">closed</a>
 
@@ -339,7 +346,7 @@ instantiate one of the child classes instead:</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l763"><code>lib&#x2F;phidgets.js:763</code></a>
+        <a href="../files/lib_phidgets.js.html#l769"><code>lib&#x2F;phidgets.js:769</code></a>
         </p>
 
 
@@ -424,7 +431,7 @@ instantiate one of the child classes instead:</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l430"><code>lib&#x2F;phidgets.js:430</code></a>
+        <a href="../files/lib_phidgets.js.html#l436"><code>lib&#x2F;phidgets.js:436</code></a>
         </p>
 
 
@@ -485,7 +492,7 @@ method for processing.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l706"><code>lib&#x2F;phidgets.js:706</code></a>
+        <a href="../files/lib_phidgets.js.html#l712"><code>lib&#x2F;phidgets.js:712</code></a>
         </p>
 
 
@@ -553,7 +560,7 @@ sent out to control the board.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l472"><code>lib&#x2F;phidgets.js:472</code></a>
+        <a href="../files/lib_phidgets.js.html#l478"><code>lib&#x2F;phidgets.js:478</code></a>
         </p>
 
 
@@ -610,7 +617,7 @@ Otherwise, it deals with it locally.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l676"><code>lib&#x2F;phidgets.js:676</code></a>
+        <a href="../files/lib_phidgets.js.html#l682"><code>lib&#x2F;phidgets.js:682</code></a>
         </p>
 
 
@@ -741,7 +748,7 @@ meant to be overridden by subclasses.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l739"><code>lib&#x2F;phidgets.js:739</code></a>
+        <a href="../files/lib_phidgets.js.html#l745"><code>lib&#x2F;phidgets.js:745</code></a>
         </p>
 
 
@@ -802,7 +809,7 @@ meant to be overridden by subclasses.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l722"><code>lib&#x2F;phidgets.js:722</code></a>
+        <a href="../files/lib_phidgets.js.html#l728"><code>lib&#x2F;phidgets.js:728</code></a>
         </p>
 
 
@@ -875,7 +882,7 @@ meant to be overridden by subclasses.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l696"><code>lib&#x2F;phidgets.js:696</code></a>
+        <a href="../files/lib_phidgets.js.html#l702"><code>lib&#x2F;phidgets.js:702</code></a>
         </p>
 
 
@@ -912,7 +919,7 @@ overridden by subclasses.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l315"><code>lib&#x2F;phidgets.js:315</code></a>
+        <a href="../files/lib_phidgets.js.html#l321"><code>lib&#x2F;phidgets.js:321</code></a>
         </p>
 
 
@@ -962,7 +969,7 @@ overridden by subclasses.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l251"><code>lib&#x2F;phidgets.js:251</code></a>
+        <a href="../files/lib_phidgets.js.html#l258"><code>lib&#x2F;phidgets.js:258</code></a>
         </p>
 
 
@@ -1070,7 +1077,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l105"><code>lib&#x2F;phidgets.js:105</code></a>
+                            <a href="../files/lib_phidgets.js.html#l112"><code>lib&#x2F;phidgets.js:112</code></a>
                             </p>
                     
                     
@@ -1096,7 +1103,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l214"><code>lib&#x2F;phidgets.js:214</code></a>
+                            <a href="../files/lib_phidgets.js.html#l221"><code>lib&#x2F;phidgets.js:221</code></a>
                             </p>
                     
                     
@@ -1122,7 +1129,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l131"><code>lib&#x2F;phidgets.js:131</code></a>
+                            <a href="../files/lib_phidgets.js.html#l138"><code>lib&#x2F;phidgets.js:138</code></a>
                             </p>
                     
                     
@@ -1152,7 +1159,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l182"><code>lib&#x2F;phidgets.js:182</code></a>
+                            <a href="../files/lib_phidgets.js.html#l189"><code>lib&#x2F;phidgets.js:189</code></a>
                             </p>
                     
                     
@@ -1181,7 +1188,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l170"><code>lib&#x2F;phidgets.js:170</code></a>
+                            <a href="../files/lib_phidgets.js.html#l177"><code>lib&#x2F;phidgets.js:177</code></a>
                             </p>
                     
                     
@@ -1209,7 +1216,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l113"><code>lib&#x2F;phidgets.js:113</code></a>
+                            <a href="../files/lib_phidgets.js.html#l120"><code>lib&#x2F;phidgets.js:120</code></a>
                             </p>
                     
                     
@@ -1235,7 +1242,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l82"><code>lib&#x2F;phidgets.js:82</code></a>
+                            <a href="../files/lib_phidgets.js.html#l89"><code>lib&#x2F;phidgets.js:89</code></a>
                             </p>
                     
                     
@@ -1261,7 +1268,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l97"><code>lib&#x2F;phidgets.js:97</code></a>
+                            <a href="../files/lib_phidgets.js.html#l104"><code>lib&#x2F;phidgets.js:104</code></a>
                             </p>
                     
                     
@@ -1287,7 +1294,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l121"><code>lib&#x2F;phidgets.js:121</code></a>
+                            <a href="../files/lib_phidgets.js.html#l128"><code>lib&#x2F;phidgets.js:128</code></a>
                             </p>
                     
                     
@@ -1314,7 +1321,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l155"><code>lib&#x2F;phidgets.js:155</code></a>
+                            <a href="../files/lib_phidgets.js.html#l162"><code>lib&#x2F;phidgets.js:162</code></a>
                             </p>
                     
                     
@@ -1341,7 +1348,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l50"><code>lib&#x2F;phidgets.js:50</code></a>
+                            <a href="../files/lib_phidgets.js.html#l55"><code>lib&#x2F;phidgets.js:55</code></a>
                             </p>
                     
                     
@@ -1366,7 +1373,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l69"><code>lib&#x2F;phidgets.js:69</code></a>
+                            <a href="../files/lib_phidgets.js.html#l76"><code>lib&#x2F;phidgets.js:76</code></a>
                             </p>
                     
                     
@@ -1391,7 +1398,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l198"><code>lib&#x2F;phidgets.js:198</code></a>
+                            <a href="../files/lib_phidgets.js.html#l205"><code>lib&#x2F;phidgets.js:205</code></a>
                             </p>
                     
                     
@@ -1425,7 +1432,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l354"><code>lib&#x2F;phidgets.js:354</code></a>
+                            <a href="../files/lib_phidgets.js.html#l360"><code>lib&#x2F;phidgets.js:360</code></a>
                             </p>
                     
                     
@@ -1467,7 +1474,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l412"><code>lib&#x2F;phidgets.js:412</code></a>
+                            <a href="../files/lib_phidgets.js.html#l418"><code>lib&#x2F;phidgets.js:418</code></a>
                             </p>
                     
                     
@@ -1572,7 +1579,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l504"><code>lib&#x2F;phidgets.js:504</code></a>
+                            <a href="../files/lib_phidgets.js.html#l510"><code>lib&#x2F;phidgets.js:510</code></a>
                             </p>
                     
                     
@@ -1614,7 +1621,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l277"><code>lib&#x2F;phidgets.js:277</code></a>
+                            <a href="../files/lib_phidgets.js.html#l284"><code>lib&#x2F;phidgets.js:284</code></a>
                             </p>
                     
                     
@@ -1657,7 +1664,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l454"><code>lib&#x2F;phidgets.js:454</code></a>
+                            <a href="../files/lib_phidgets.js.html#l460"><code>lib&#x2F;phidgets.js:460</code></a>
                             </p>
                     
                     
@@ -1712,7 +1719,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l380"><code>lib&#x2F;phidgets.js:380</code></a>
+                            <a href="../files/lib_phidgets.js.html#l386"><code>lib&#x2F;phidgets.js:386</code></a>
                             </p>
                     
                     
@@ -1790,7 +1797,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l750"><code>lib&#x2F;phidgets.js:750</code></a>
+                            <a href="../files/lib_phidgets.js.html#l756"><code>lib&#x2F;phidgets.js:756</code></a>
                             </p>
                     
                     
@@ -1845,7 +1852,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l557"><code>lib&#x2F;phidgets.js:557</code></a>
+                            <a href="../files/lib_phidgets.js.html#l563"><code>lib&#x2F;phidgets.js:563</code></a>
                             </p>
                     
                     

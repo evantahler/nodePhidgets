@@ -37,7 +37,7 @@ If you already have Node.js installed, you also have npm installed. This means y
 install the *phidgets* package with:
 
 ```javascript
-npm install phidgets`
+npm install phidgets
 ```
 
 [Phidgets Inc.](http://www.phidgets.com) makes a line of phidget boards which are
@@ -176,6 +176,7 @@ object. This includes boards such as:
 Also included in the library is full support for the following boards:
 
  * PhidgetLED
+ * PhidgetBridge
 
 Other boards will be added in the future. Help from contributors is always welcomed.
 Addding support for a specific board is relatively straightforward. If you are in a hurry,
@@ -186,7 +187,7 @@ and can support the development effort, please contact one of the
 
 If this primer wasn't enough, the full **API documentation** is available for download in
 the *docs* folder. You can also
-**[view it online](http://cotejp.github.io/node-phidgets/docs/)**.
+**[view it online](http://cotejp.github.io/node-phidgets/)**.
 
 ### Things to do:
 * Add support for missing boards.
