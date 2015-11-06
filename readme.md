@@ -187,7 +187,7 @@ and can support the development effort, please contact one of the
 
 If this primer wasn't enough, the full **API documentation** is available for download in
 the *docs* folder. You can also
-**[view it online](http://cotejp.github.io/node-phidgets/docs/)**.
+**[view it online](http://cotejp.github.io/node-phidgets/)**.
 
 ### Things to do:
 * Add support for missing boards.

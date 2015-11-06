@@ -29,6 +29,14 @@ module.exports = function (grunt) {
       }
     },
 
+    // Push documentation to GitHub pages
+    'gh-pages': {
+      options: {
+        base: './docs'
+      },
+      src: ['**/*']
+    },
+
     release: {
       options: {
         bump: false,
@@ -40,10 +48,11 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-bumpup');
   grunt.loadNpmTasks("grunt-contrib-yuidoc");
+  grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-release');
 
   grunt.registerTask('publish', ['publish:prerelease']);
-  grunt.registerTask("publish:prerelease", ['bumpup:prerelease', 'yuidoc', 'release']);
+  grunt.registerTask("publish:prerelease", ['bumpup:prerelease', 'yuidoc', 'gh-pages', 'release']);
   grunt.registerTask("publish:patch", ['bumpup:patch', 'yuidoc', 'release']);
   grunt.registerTask('publish:minor', ['bumpup:minor', 'yuidoc', 'release']);
   grunt.registerTask('publish:major', ['bumpup:major', 'yuidoc', 'release']);

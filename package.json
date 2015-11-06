@@ -24,6 +24,7 @@
     "interface",
     "kit",
     "phidgetinterfacekit",
+    "phidgetbridge",
     "phidgetled"
   ],
   "homepage": "https://github.com/evantahler/nodePhidgets",
@@ -34,6 +35,7 @@
     "grunt": "^0.4.5",
     "grunt-bumpup": "^0.6.2",
     "grunt-contrib-yuidoc": "^0.7.0",
+    "grunt-gh-pages": "^1.0.0",
     "grunt-release": "^0.11.0"
   }
 }
