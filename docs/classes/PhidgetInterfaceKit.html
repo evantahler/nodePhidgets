@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.1-alpha.1</em>
+            <em>API Docs for: 0.5.1-alpha.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -42,6 +42,7 @@
                                 <li><a href="../classes/PhidgetBridge.html">PhidgetBridge</a></li>
                                 <li><a href="../classes/PhidgetInterfaceKit.html">PhidgetInterfaceKit</a></li>
                                 <li><a href="../classes/PhidgetLED.html">PhidgetLED</a></li>
+                                <li><a href="../classes/PhidgetStepper.html">PhidgetStepper</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
@@ -87,7 +88,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/lib_phidgets.js.html#l790"><code>lib&#x2F;phidgets.js:790</code></a>
+            Defined in: <a href="../files/lib_phidgets.js.html#l863"><code>lib&#x2F;phidgets.js:863</code></a>
         </div>
 
             Module: <a href="../modules/phidgets.html">phidgets</a>
@@ -129,7 +130,7 @@ See that object&#39;s documentation for inherited methods.</p>
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/lib_phidgets.js.html#l790"><code>lib&#x2F;phidgets.js:790</code></a>
+                <a href="../files/lib_phidgets.js.html#l863"><code>lib&#x2F;phidgets.js:863</code></a>
                 </p>
         
         
@@ -196,11 +197,31 @@ See that object&#39;s documentation for inherited methods.</p>
 
                             </li>
                             <li class="index-item method inherited">
+                                <a href="#method_addListener">addListener</a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_close">close</a>
 
                             </li>
                             <li class="index-item method inherited">
+                                <a href="#method_on">on</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_once">once</a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_open">open</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_removeAllListeners">removeAllListeners</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_removeListener">removeListener</a>
 
                             </li>
                             <li class="index-item method">
@@ -380,7 +401,7 @@ See that object&#39;s documentation for inherited methods.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__forceBetween">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l769"><code>lib&#x2F;phidgets.js:769</code></a>
+        <a href="../files/lib_phidgets.js.html#l842"><code>lib&#x2F;phidgets.js:842</code></a>
         </p>
 
 
@@ -465,7 +486,7 @@ See that object&#39;s documentation for inherited methods.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__handleData">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l436"><code>lib&#x2F;phidgets.js:436</code></a>
+        <a href="../files/lib_phidgets.js.html#l509"><code>lib&#x2F;phidgets.js:509</code></a>
         </p>
 
 
@@ -526,7 +547,7 @@ method for processing.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__makePckString">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l712"><code>lib&#x2F;phidgets.js:712</code></a>
+        <a href="../files/lib_phidgets.js.html#l785"><code>lib&#x2F;phidgets.js:785</code></a>
         </p>
 
 
@@ -594,7 +615,7 @@ sent out to control the board.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__parseLineInput">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l478"><code>lib&#x2F;phidgets.js:478</code></a>
+        <a href="../files/lib_phidgets.js.html#l551"><code>lib&#x2F;phidgets.js:551</code></a>
         </p>
 
 
@@ -651,7 +672,7 @@ Otherwise, it deals with it locally.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__parsePhidgetSpecificData">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l682"><code>lib&#x2F;phidgets.js:682</code></a>
+        <a href="../files/lib_phidgets.js.html#l755"><code>lib&#x2F;phidgets.js:755</code></a>
         </p>
 
 
@@ -782,7 +803,7 @@ meant to be overridden by subclasses.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__sendLine">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l745"><code>lib&#x2F;phidgets.js:745</code></a>
+        <a href="../files/lib_phidgets.js.html#l818"><code>lib&#x2F;phidgets.js:818</code></a>
         </p>
 
 
@@ -843,7 +864,7 @@ meant to be overridden by subclasses.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__sendPck">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l728"><code>lib&#x2F;phidgets.js:728</code></a>
+        <a href="../files/lib_phidgets.js.html#l801"><code>lib&#x2F;phidgets.js:801</code></a>
         </p>
 
 
@@ -916,7 +937,7 @@ meant to be overridden by subclasses.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method__setPhidgetSpecificInitialState">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l702"><code>lib&#x2F;phidgets.js:702</code></a>
+        <a href="../files/lib_phidgets.js.html#l775"><code>lib&#x2F;phidgets.js:775</code></a>
         </p>
 
 
@@ -930,6 +951,76 @@ overridden by subclasses.</p>
 
     </div>
 
+
+
+
+</div>
+<div id="method_addListener" class="method item inherited">
+    <h3 class="name"><code>addListener</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>event</code>
+                </li>
+                <li class="arg">
+                        <code>listener</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method_addListener">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l260"><code>lib&#x2F;phidgets.js:260</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>This is an alias for the <code>on()</code> method.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">event</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The event to add the listener for.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">listener</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The callback function to execute when the event is
+triggered.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -953,7 +1044,7 @@ overridden by subclasses.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method_close">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l321"><code>lib&#x2F;phidgets.js:321</code></a>
+        <a href="../files/lib_phidgets.js.html#l394"><code>lib&#x2F;phidgets.js:394</code></a>
         </p>
 
 
@@ -975,6 +1066,156 @@ overridden by subclasses.</p>
 
             </div>
         </div>
+
+
+</div>
+<div id="method_on" class="method item inherited">
+    <h3 class="name"><code>on</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>event</code>
+                </li>
+                <li class="arg">
+                        <code>listener</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method_on">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l269"><code>lib&#x2F;phidgets.js:269</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a listener to the end of the listeners array for the specified event. No checks
+are made to see if the listener has already been added. Multiple calls passing the same
+combination of event and listener will result in the listener being added multiple
+times.</p>
+<p>This method is inherited from Node.js&#39;
+<a href="https://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code> object</a>.
+See that object&#39;s documentation for more details methods.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">event</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The event to add the listener for.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">listener</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The callback function to execute when the event is
+triggered.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_once" class="method item inherited">
+    <h3 class="name"><code>once</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>event</code>
+                </li>
+                <li class="arg">
+                        <code>listener</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method_once">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l286"><code>lib&#x2F;phidgets.js:286</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a one time listener for the event. This listener is invoked only the next time the
+event is fired, after which it is removed.</p>
+<p>This method is inherited from Node.js&#39;
+<a href="https://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code> object</a>.
+See that object&#39;s documentation for more details methods.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">event</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                        <p>The event to add the listener for.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">listener</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The callback function to execute when the event is
+triggered.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
 
 
 </div>
@@ -1003,7 +1244,7 @@ overridden by subclasses.</p>
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Phidget.html#method_open">Phidget</a>:
-        <a href="../files/lib_phidgets.js.html#l258"><code>lib&#x2F;phidgets.js:258</code></a>
+        <a href="../files/lib_phidgets.js.html#l331"><code>lib&#x2F;phidgets.js:331</code></a>
         </p>
 
 
@@ -1095,6 +1336,142 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
 
 
 </div>
+<div id="method_removeAllListeners" class="method item inherited">
+    <h3 class="name"><code>removeAllListeners</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[event]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method_removeAllListeners">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l301"><code>lib&#x2F;phidgets.js:301</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes all listeners, or those of the specified event.</p>
+<p>This method is inherited from Node.js&#39;
+<a href="https://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code> object</a>.
+See that object&#39;s documentation for more details methods.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[event]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The event to remove the listeners for.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeListener" class="method item inherited">
+    <h3 class="name"><code>removeListener</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[event]</code>
+                </li>
+                <li class="arg">
+                        <code>listener</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Phidget.html#method_removeListener">Phidget</a>:
+        <a href="../files/lib_phidgets.js.html#l313"><code>lib&#x2F;phidgets.js:313</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a listener from the listener array for the specified event. <code>removeListener()</code>
+will remove, at most, one instance of a listener from the listener array. If any single
+listener has been added multiple times to the listener array for the specified event,
+then <code>removeListener()</code> must be called multiple times to remove each instance.</p>
+<p>This method is inherited from Node.js&#39;
+<a href="https://nodejs.org/api/events.html#events_class_events_eventemitter"><code>events.EventEmitter</code> object</a>.
+See that object&#39;s documentation for more details methods.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[event]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The event to remove the listeners for.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">listener</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <p>The callback function to execute when the event is
+triggered.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_setOutput" class="method item">
     <h3 class="name"><code>setOutput</code></h3>
 
@@ -1123,7 +1500,7 @@ Then, a session to the specified device (which must be plugged in) is opened.</p
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l892"><code>lib&#x2F;phidgets.js:892</code></a>
+        <a href="../files/lib_phidgets.js.html#l965"><code>lib&#x2F;phidgets.js:965</code></a>
         </p>
 
 
@@ -1207,7 +1584,7 @@ be used after the board is &#39;opened&#39;. Calling it before will fail silentl
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l977"><code>lib&#x2F;phidgets.js:977</code></a>
+        <a href="../files/lib_phidgets.js.html#l1050"><code>lib&#x2F;phidgets.js:1050</code></a>
         </p>
 
 
@@ -1297,7 +1674,7 @@ fail silently.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/lib_phidgets.js.html#l940"><code>lib&#x2F;phidgets.js:940</code></a>
+        <a href="../files/lib_phidgets.js.html#l1013"><code>lib&#x2F;phidgets.js:1013</code></a>
         </p>
 
 
@@ -1374,7 +1751,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_host">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l112"><code>lib&#x2F;phidgets.js:112</code></a>
+                            <a href="../files/lib_phidgets.js.html#l115"><code>lib&#x2F;phidgets.js:115</code></a>
                             </p>
                     
                     
@@ -1400,7 +1777,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l815"><code>lib&#x2F;phidgets.js:815</code></a>
+                            <a href="../files/lib_phidgets.js.html#l888"><code>lib&#x2F;phidgets.js:888</code></a>
                             </p>
                     
                     
@@ -1452,7 +1829,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_interReportPeriod">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l221"><code>lib&#x2F;phidgets.js:221</code></a>
+                            <a href="../files/lib_phidgets.js.html#l224"><code>lib&#x2F;phidgets.js:224</code></a>
                             </p>
                     
                     
@@ -1478,7 +1855,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_label">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l138"><code>lib&#x2F;phidgets.js:138</code></a>
+                            <a href="../files/lib_phidgets.js.html#l141"><code>lib&#x2F;phidgets.js:141</code></a>
                             </p>
                     
                     
@@ -1508,7 +1885,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_name">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l189"><code>lib&#x2F;phidgets.js:189</code></a>
+                            <a href="../files/lib_phidgets.js.html#l192"><code>lib&#x2F;phidgets.js:192</code></a>
                             </p>
                     
                     
@@ -1536,7 +1913,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l847"><code>lib&#x2F;phidgets.js:847</code></a>
+                            <a href="../files/lib_phidgets.js.html#l920"><code>lib&#x2F;phidgets.js:920</code></a>
                             </p>
                     
                     
@@ -1589,7 +1966,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_password">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l177"><code>lib&#x2F;phidgets.js:177</code></a>
+                            <a href="../files/lib_phidgets.js.html#l180"><code>lib&#x2F;phidgets.js:180</code></a>
                             </p>
                     
                     
@@ -1617,7 +1994,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_port">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l120"><code>lib&#x2F;phidgets.js:120</code></a>
+                            <a href="../files/lib_phidgets.js.html#l123"><code>lib&#x2F;phidgets.js:123</code></a>
                             </p>
                     
                     
@@ -1643,7 +2020,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l860"><code>lib&#x2F;phidgets.js:860</code></a>
+                            <a href="../files/lib_phidgets.js.html#l933"><code>lib&#x2F;phidgets.js:933</code></a>
                             </p>
                     
                     
@@ -1672,7 +2049,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_ready">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l89"><code>lib&#x2F;phidgets.js:89</code></a>
+                            <a href="../files/lib_phidgets.js.html#l92"><code>lib&#x2F;phidgets.js:92</code></a>
                             </p>
                     
                     
@@ -1698,7 +2075,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_reopen">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l104"><code>lib&#x2F;phidgets.js:104</code></a>
+                            <a href="../files/lib_phidgets.js.html#l107"><code>lib&#x2F;phidgets.js:107</code></a>
                             </p>
                     
                     
@@ -1724,7 +2101,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l828"><code>lib&#x2F;phidgets.js:828</code></a>
+                            <a href="../files/lib_phidgets.js.html#l901"><code>lib&#x2F;phidgets.js:901</code></a>
                             </p>
                     
                     
@@ -1809,7 +2186,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_serial">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l128"><code>lib&#x2F;phidgets.js:128</code></a>
+                            <a href="../files/lib_phidgets.js.html#l131"><code>lib&#x2F;phidgets.js:131</code></a>
                             </p>
                     
                     
@@ -1836,7 +2213,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_serverId">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l162"><code>lib&#x2F;phidgets.js:162</code></a>
+                            <a href="../files/lib_phidgets.js.html#l165"><code>lib&#x2F;phidgets.js:165</code></a>
                             </p>
                     
                     
@@ -1863,7 +2240,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_supportedDevices">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l55"><code>lib&#x2F;phidgets.js:55</code></a>
+                            <a href="../files/lib_phidgets.js.html#l57"><code>lib&#x2F;phidgets.js:57</code></a>
                             </p>
                     
                     
@@ -1888,7 +2265,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_type">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l76"><code>lib&#x2F;phidgets.js:76</code></a>
+                            <a href="../files/lib_phidgets.js.html#l79"><code>lib&#x2F;phidgets.js:79</code></a>
                             </p>
                     
                     
@@ -1913,7 +2290,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#property_version">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l205"><code>lib&#x2F;phidgets.js:205</code></a>
+                            <a href="../files/lib_phidgets.js.html#l208"><code>lib&#x2F;phidgets.js:208</code></a>
                             </p>
                     
                     
@@ -1947,7 +2324,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_closed">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l360"><code>lib&#x2F;phidgets.js:360</code></a>
+                            <a href="../files/lib_phidgets.js.html#l433"><code>lib&#x2F;phidgets.js:433</code></a>
                             </p>
                     
                     
@@ -1989,7 +2366,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_error">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l418"><code>lib&#x2F;phidgets.js:418</code></a>
+                            <a href="../files/lib_phidgets.js.html#l491"><code>lib&#x2F;phidgets.js:491</code></a>
                             </p>
                     
                     
@@ -2094,7 +2471,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l1033"><code>lib&#x2F;phidgets.js:1033</code></a>
+                            <a href="../files/lib_phidgets.js.html#l1106"><code>lib&#x2F;phidgets.js:1106</code></a>
                             </p>
                     
                     
@@ -2170,7 +2547,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_opened">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l510"><code>lib&#x2F;phidgets.js:510</code></a>
+                            <a href="../files/lib_phidgets.js.html#l583"><code>lib&#x2F;phidgets.js:583</code></a>
                             </p>
                     
                     
@@ -2212,7 +2589,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_opening">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l284"><code>lib&#x2F;phidgets.js:284</code></a>
+                            <a href="../files/lib_phidgets.js.html#l357"><code>lib&#x2F;phidgets.js:357</code></a>
                             </p>
                     
                     
@@ -2254,7 +2631,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l918"><code>lib&#x2F;phidgets.js:918</code></a>
+                            <a href="../files/lib_phidgets.js.html#l991"><code>lib&#x2F;phidgets.js:991</code></a>
                             </p>
                     
                     
@@ -2331,7 +2708,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_received">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l460"><code>lib&#x2F;phidgets.js:460</code></a>
+                            <a href="../files/lib_phidgets.js.html#l533"><code>lib&#x2F;phidgets.js:533</code></a>
                             </p>
                     
                     
@@ -2386,7 +2763,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_reopening">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l386"><code>lib&#x2F;phidgets.js:386</code></a>
+                            <a href="../files/lib_phidgets.js.html#l459"><code>lib&#x2F;phidgets.js:459</code></a>
                             </p>
                     
                     
@@ -2463,7 +2840,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/lib_phidgets.js.html#l1058"><code>lib&#x2F;phidgets.js:1058</code></a>
+                            <a href="../files/lib_phidgets.js.html#l1131"><code>lib&#x2F;phidgets.js:1131</code></a>
                             </p>
                     
                     
@@ -2540,7 +2917,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_sent">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l756"><code>lib&#x2F;phidgets.js:756</code></a>
+                            <a href="../files/lib_phidgets.js.html#l829"><code>lib&#x2F;phidgets.js:829</code></a>
                             </p>
                     
                     
@@ -2595,7 +2972,7 @@ is &#39;opened&#39;. Calling it before will fail silently.</p>
                         <div class="meta">
                                     <p>Inherited from
                                     <a href="../classes/Phidget.html#event_timeout">Phidget</a>:
-                            <a href="../files/lib_phidgets.js.html#l563"><code>lib&#x2F;phidgets.js:563</code></a>
+                            <a href="../files/lib_phidgets.js.html#l636"><code>lib&#x2F;phidgets.js:636</code></a>
                             </p>
                     
                     

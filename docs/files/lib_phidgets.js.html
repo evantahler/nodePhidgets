@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.1-alpha.1</em>
+            <em>API Docs for: 0.5.1-alpha.2</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -42,6 +42,7 @@
                                 <li><a href="../classes/PhidgetBridge.html">PhidgetBridge</a></li>
                                 <li><a href="../classes/PhidgetInterfaceKit.html">PhidgetInterfaceKit</a></li>
                                 <li><a href="../classes/PhidgetLED.html">PhidgetLED</a></li>
+                                <li><a href="../classes/PhidgetStepper.html">PhidgetStepper</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
@@ -118,8 +119,10 @@ module.exports = {};
  *
  *    * {{#crossLink &quot;PhidgetInterfaceKit&quot;}}{{/crossLink}}
  *    * {{#crossLink &quot;PhidgetLED&quot;}}{{/crossLink}}
+ *    * {{#crossLink &quot;PhidgetBridge&quot;}}{{/crossLink}}
+ *    * {{#crossLink &quot;PhidgetStepper&quot;}}{{/crossLink}}
  *
- * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
+ * This object extends Node.js&#x27;
  * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
  * See that object&#x27;s documentation for inherited methods.
  *
@@ -150,7 +153,8 @@ var Phidget = function(type) {
       &#x27;PhidgetInterfaceKit&#x27;,
       &#x27;PhidgetBridge&#x27;,
       &#x27;PhidgetLED&#x27;,
-      &#x27;PhidgetRFID&#x27;
+      &#x27;PhidgetRFID&#x27;,
+      &#x27;PhidgetStepper&#x27;
     ]
   });
 
@@ -338,6 +342,76 @@ var Phidget = function(type) {
 
 };
 
+
+/**
+ * This is an alias for the &#x60;on()&#x60; method.
+ * @method addListener
+ * @param event {String} The event to add the listener for.
+ * @param listener {Function} The callback function to execute when the event is
+ * triggered.
+ * @chainable
+ */
+
+/**
+ * Adds a listener to the end of the listeners array for the specified event. No checks
+ * are made to see if the listener has already been added. Multiple calls passing the same
+ * combination of event and listener will result in the listener being added multiple
+ * times.
+ *
+ * This method is inherited from Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for more details methods.
+ *
+ * @method on
+ * @param event {String} The event to add the listener for.
+ * @param listener {Function} The callback function to execute when the event is
+ * triggered.
+ * @chainable
+ */
+
+/**
+ * Adds a one time listener for the event. This listener is invoked only the next time the
+ * event is fired, after which it is removed.
+ *
+ * This method is inherited from Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for more details methods.
+ *
+ * @method once
+ * @param event {String} The event to add the listener for.
+ * @param listener {Function} The callback function to execute when the event is
+ * triggered.
+ * @chainable
+ */
+
+/**
+ * Removes all listeners, or those of the specified event.
+ *
+ * This method is inherited from Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for more details methods.
+ *
+ * @method removeAllListeners
+ * @param [event] {String} The event to remove the listeners for.
+ * @chainable
+ */
+
+/**
+ * Removes a listener from the listener array for the specified event. &#x60;removeListener()&#x60;
+ * will remove, at most, one instance of a listener from the listener array. If any single
+ * listener has been added multiple times to the listener array for the specified event,
+ * then &#x60;removeListener()&#x60; must be called multiple times to remove each instance.
+ *
+ * This method is inherited from Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for more details methods.
+ *
+ * @method removeListener
+ * @param [event] {String} The event to remove the listeners for.
+ * @param listener {Function} The callback function to execute when the event is
+ * triggered.
+ * @chainable
+ */
 util.inherits(Phidget, EventEmitter);
 
 /**
@@ -1418,9 +1492,9 @@ module.exports.PhidgetLED = PhidgetLED;
 /****************************************************************************************/
 
 /**
- * The &#x60;PhidgetBridge&#x60; class allows you to receive data from PhidgetBridge modules. Beware
+ * The &#x60;PhidgetBridge&#x60; class allows you to receive data from PhidgetBridge boards. Beware
  * that each input&#x27;s enabled/disabled status remains even when the device is powered off.
- * As a precaution, you can call setEnabled() each time your code starts:
+ * As a precaution, you can call &#x60;setEnabled()&#x60; each time your code starts:
  *
  *       phidgets = require(&#x27;phidgets&#x27;),
  *       bridge = new phidgets.PhidgetBridge();
@@ -1632,6 +1706,708 @@ PhidgetBridge.prototype._parsePhidgetSpecificData = function (data) {
 };
 
 module.exports.PhidgetBridge = PhidgetBridge;
+
+
+
+
+
+
+
+
+
+
+/****************************************************************************************/
+/************************************  PhidgetStepper  **********************************/
+/****************************************************************************************/
+
+/**
+ * The &#x60;PhidgetStepper&#x60; class is used to control the stepper motors connected to a
+ * PhidgetStepper board. It can be used to set a target position for the motors while
+ * controlling their maximum velocity and acceleration.
+ *
+ * Here is a simple example that moves the motor connected to output 0 to its 200 position
+ * and then brings it back to position 0. Before making it move, you must first &quot;engage&quot;
+ * the motor. Also, you should always explicitely set the desired acceleration and
+ * velocity (speed).
+ *
+ *     var phidgets = require(&#x27;phidgets&#x27;);
+ *     var ps = new phidgets.PhidgetStepper();
+ *
+ *     ps.addListener(&quot;opened&quot;, onReady);
+ *
+ *     function onReady() {
+ *
+ *        // Engage motor and set desired properties
+ *        ps.engageMotor(0, true);
+ *        ps.setAcceleration(0, ps.maximumAcceleration);
+ *        ps.setTargetVelocity(0, ps.maximumVelocity);
+ *
+ *        // Makes the motor move
+ *        ps.setTargetPosition(0, 200);
+ *
+ *        // Triggered when the target position is reached
+ *        ps.once(&quot;target&quot;, function(e, data) {
+ *          ps.setTargetPosition(0, 0);
+ *        });
+ *
+ *     }
+ *
+ *     ps.open();
+ *
+ * The &#x60;PhidgetStepper&#x60; object adds 4 events to the basic ones inherited by all Phidgets.
+ * They are:
+ *
+ *  * &#x60;position&#x60;: triggered each time the motor&#x27;s position changes
+ *  * &#x60;start&#x60;: triggered when a motor starts moving
+ *  * &#x60;stop&#x60;: triggered when a motor stops moving
+ *  * &#x60;target&#x60;: triggered when the motor has reached its target position
+ *  * &#x60;input&#x60;: triggered when a digital input changes (not available on all boards)
+ *
+ * This object extends the &#x60;Phidget&#x60; object which extends Node.js&#x27; [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for inherited methods.
+ *
+ * @class PhidgetStepper
+ * @constructor
+ * @extends Phidget
+ */
+var PhidgetStepper = function() {
+  PhidgetStepper.super_.call(this, &#x27;PhidgetStepper&#x27;);
+
+  var self = this;
+
+  /**
+   * The duration (in milliseconds) between update notifications (must be multiple of 8).
+   * The shorter the interval is, the more frequent the updates will be sent by the
+   * device.
+   *
+   * @property updateInterval {int}
+   * @default 16
+   */
+  Object.defineProperty(this, &#x27;updateInterval&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._updateInterval);
+    },
+    set: function (value) {
+
+      if (value % 8 !== 0) { value = 16; }
+
+      self._updateInterval = parseInt(value);
+      if (self.ready) {
+        self._sendPck(self._makePckString(&#x27;DataRate&#x27;), self._updateInterval, true);
+      }
+    }
+  });
+
+  /**
+   * [Read-only] The minimum acceleration value that can be set on outputs
+   * @property minimumAcceleration {Number}
+   */
+  Object.defineProperty(this, &#x27;minimumAcceleration&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._accelerationMin);
+    }
+  });
+
+  /**
+   * [Read-only] The maximum acceleration value that can be set on outputs
+   * @property maximumAcceleration {Number}
+   */
+  Object.defineProperty(this, &#x27;maximumAcceleration&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._accelerationMax);
+    }
+  });
+
+  /**
+   * [Read-only] The minimum position that an output can travel to.
+   * @property minimumPosition {Number}
+   */
+  Object.defineProperty(this, &#x27;minimumPosition&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._positionMin);
+    }
+  });
+
+  /**
+   * [Read-only] The maximum position that an output can travel to.
+   * @property maximumPosition {Number}
+   */
+  Object.defineProperty(this, &#x27;maximumPosition&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._positionMax);
+    }
+  });
+
+  /**
+   * [Read-only] The minimum velocity that an output can be set to.
+   * @property minimumVelocity {Number}
+   */
+  Object.defineProperty(this, &#x27;minimumVelocity&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._velocityMin);
+    }
+  });
+
+  /**
+   * [Read-only] The maximum velocity that an output can be set to.
+   * @property maximumVelocity {Number}
+   */
+  Object.defineProperty(this, &#x27;maximumVelocity&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._velocityMax);
+    }
+  });
+
+  /**
+   * [Read-only] The minimum current that an output can be set to. Current limits are not
+   * supported by all stepper controllers.
+   *
+   * @property minimumCurrent {Number}
+   */
+  Object.defineProperty(this, &#x27;minimumCurrent&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._currentMin);
+    }
+  });
+
+  /**
+   * [Read-only] The maximum current that an output can be set to. Current limits are not
+   * supported by all stepper controllers.
+   *
+   * @property maximumCurrent {Number}
+   */
+  Object.defineProperty(this, &#x27;maximumCurrent&#x27;, {
+    enumerable: true,
+    get: function () {
+      return (self._currentMax);
+    }
+  });
+
+  /**
+   * [read-only] An object containing information about the motor outputs of the device.
+   * Here are a few examples of how to retrieve information in that object:
+   *
+   *     PhidgetStepper.outputs[5].currentPosition  // Motor 5&#x27;s current position
+   *     PhidgetStepper.outputs[5].stopped          // Is motor 5 stopped?
+   *     PhidgetStepper.outputs.count               // Total number of outputs on the device
+   *
+   * @property outputs {Object}
+   *
+   * @property outputs.count {int} The total number of outputs on the device.
+   *
+   * @property outputs[int].position {Number} The position of the motor hooked up to that
+   * output. This value remains between sessions. It is used when calculating the movement
+   * needed to reach the target position. It can be manually set with &#x60;setPosition()&#x60;.
+   *
+   * @property outputs[int].targetPosition {Number} The last set target position.
+   *
+   * @property outputs[int].acceleration {Number} The last set acceleration value (also
+   * used as deceleration value). This property should be set as part of initialization
+   * because otherwise, it will remain unknown.
+   *
+   * @property outputs[int].currentLimit {Number} The last set current limit. Current
+   * limit is not supported by all stepper controllers.
+   *
+   * @property outputs[int].current {Number} The actual current draw for the motor
+   * connected to that output. Current sense is not supported by all stepper controllers.
+   *
+   * @property outputs[int].targetVelocity {Number} The desired velocity (speed) for the
+   * motor on that output. Sometimes referred to as the &quot;velocity limit&quot;.
+   *
+   * @property outputs[int].velocity {Number} The actual current velocity for the motor
+   * on that output.
+   *
+   * @property outputs[int].engaged {Boolean} The engaged state. This is whether or not
+   * the motor connected to the output is currently powered.
+   *
+   * @property outputs[int].stopped {Boolean} Whether the motor connected to that output
+   * is currently stopped. If this is true, it indicates that the motor is not moving, and
+   * there are no outstanding commands.
+   *
+   */
+  this.outputs = {};
+
+  /**
+   * [read-only] An object containing information about the digital inputs of the
+   * PhidgetStepper board. If &#x60;PhidgetStepper.inputs.count&#x60; equals 0, it simply means that
+   * your board does not have any digital inputs.
+   *
+   *     PhidgetStepper.inputs[0].value  // Digital input 0&#x27;s boolean value
+   *     PhidgetStepper.outputs.count    // Number of digital inputs on the device
+   *
+   * @property inputs {Object}
+   *
+   * @property inputs.count {int} The total number of digital inputs on the device.
+   *
+   * @property outputs[int].value {Boolean} The current boolean value of the input.
+   */
+  this.inputs = {};
+
+  /** @private */
+  this._updateInterval = 8;
+
+  /** @private */
+  this._positionMin = undefined;
+
+  /** @private */
+  this._positionMax = undefined;
+
+  /** @private */
+  this._accelerationMin = undefined;
+
+  /** @private */
+  this._accelerationMax = undefined;
+
+  /** @private */
+  this._velocityMin = undefined;
+
+  /** @private */
+  this._velocityMax = undefined;
+
+  /** @private */
+  this._currentMin = undefined;
+
+  /** @private */
+  this._currentMax = undefined;
+
+};
+
+util.inherits(PhidgetStepper, Phidget);
+
+/**
+ * Starts or stops power from being sent to the motor connected to a specific output (or
+ * array of outputs). By default, outputs do not power connected motors. Before moving
+ * the motor, you must therefore engage the motor first.
+ *
+ * To reduce the motor&#x27;s power consumption, you can disengage it once it&#x27;s reached its
+ * target position. If you are concerned about keeping accurate track of position, the
+ * motor should not be disengaged until the motor is stopped.
+ *
+ * @method engageMotor
+ *
+ * @param index {int|Array} The motor&#x27;s index number (or an array of motor numbers)
+ * @param value {Boolean} The boolean status to use.
+ *
+ * @returns {PhidgetStepper} Returns the PhidgetStepper object to allow method chaining.
+ *
+ * @chainable
+ */
+PhidgetStepper.prototype.engageMotor = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  index = [].concat(index);
+  value = (value === true);
+
+  for (var i = 0; i &lt; index.length; i++) {
+
+    var pos = parseInt(index[i]);
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[pos].engaged = value;
+    self._sendPck(self._makePckString(&#x27;Engaged&#x27;, pos), value ? 1 : 0, true);
+
+  }
+
+  return self;
+
+};
+
+/**
+ * Sets the acceleration for the motor connected to the specified output. The motor will
+ * both accelerate and decelarate at this rate. For the 1062 board, this is specified in
+ * half-steps.
+ *
+ * The minimum and maximum acceleration values can be viewed in the &#x60;minimumAcceleration&#x60;
+ * and &#x60;maximumAcceleration&#x60; properties.
+ *
+ * The acceleration should be explicitely set as part of initialization because otherwise
+ * it will remain unknown.
+ *
+ * @method setAcceleration
+ *
+ * @param index {int|Array} The output&#x27;s index number (or an array of output numbers)
+ * @param [value] {Number} The desired acceleration specified in half-steps. If not
+ * specified (or invalid), the maximum acceleration will be used.
+ *
+ * @returns {PhidgetStepper} Returns the PhidgetStepper to allow method chaining.
+ *
+ * @chainable
+ */
+PhidgetStepper.prototype.setAcceleration = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  index = [].concat(index);
+  value = parseFloat(value) || self._accelerationMax;
+
+  for (var i = 0; i &lt; index.length; i++) {
+
+    var pos = parseInt(index[i]);
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[pos].acceleration = value;
+    self._sendPck(self._makePckString(&#x27;Acceleration&#x27;, pos), value, true);
+
+  }
+
+  return self;
+
+};
+
+/**
+ * Sets the target speed (velocity) for the motor connected to the specified output (or
+ * array of outputs). If the &#x60;targetVelocity&#x60; is set to 0, the motor will not move.
+ *
+ * Note that this is not necessarily the speed that the motor is being turned at. The
+ * motor is accelerated towards the target velocity and then decelerated as it approaches
+ * the target position. If the target position is close enough, it may never reach the
+ * target velocity.
+ *
+ * @method setTargetVelocity
+ *
+ * @param index {int|Array} The output&#x27;s index number (or an array of output numbers)
+ * @param [value] {Number} The desired velocity specified in half-steps. If not specified
+ * (or invalid), the maximum velocity will be used.
+ *
+ * @returns {PhidgetStepper} Returns the PhidgetStepper to allow method chaining.
+ * @chainable
+ */
+PhidgetStepper.prototype.setTargetVelocity = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  index = [].concat(index);
+  value = parseFloat(value);
+  if (isNaN(value)) { value =  self._velocityMax; }
+
+  for (var i = 0; i &lt; index.length; i++) {
+
+    var pos = parseInt(index[i]);
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[pos].targetVelocity = value;
+    self._sendPck(self._makePckString(&#x27;VelocityLimit&#x27;, pos), value, true);
+
+  }
+
+  return self;
+
+};
+
+/**
+ * Sets the current position of the motor connected to the specified output (or array of
+ * outputs). Setting the position does not actually move the motor, it merely sets the
+ * reference that will be used when moving to a target position.
+ *
+ * @method setPosition
+ *
+ * @param index {int|Array} The output&#x27;s index number (or an array of output numbers).
+ *
+ * @param [value] {Number} The desired velocity specified in half-steps. If not specified
+ * (or invalid), the maximum velocity will be used.
+ *
+ * @returns {PhidgetStepper} Returns the PhidgetStepper to allow method chaining.
+ *
+ * @chainable
+ */
+PhidgetStepper.prototype.setPosition = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  index = [].concat(index);
+  if (index &lt; 0 || index &gt;= self.outputs.count) {
+    throw new Error(&quot;No such output.&quot;);
+  }
+
+  value = parseFloat(value);
+  if (isNaN(value)) { value =  self._velocityMax; }
+
+  for (var i = 0; i &lt; index.length; i++) {
+
+    var pos = parseInt(index[i]);
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[pos].position = value;
+    self._sendPck(self._makePckString(&#x27;CurrentPosition&#x27;, pos), value, true);
+
+  }
+
+  return self;
+
+};
+
+/**
+ * Sets a new target position for the motor connected to the specified output. The motor
+ * will immediately start moving towards this position.
+ *
+ * Note that calling &#x60;setTargetPosition()&#x60; will override a previous call to
+ * &#x60;setTargetPosition()&#x60; and the motor will begin tracking to the new position
+ * immediately. The velocity of the motor will be ramped appropriately.
+ *
+ * @method setTargetPosition
+ * @param index {int|Array} The output&#x27;s index number (or an array of output numbers)
+ * @param [value=1000] {Number} The target position specified in half-steps.
+ * @returns {PhidgetStepper} Returns the PhidgetStepper to allow method chaining.
+ * @chainable
+ */
+PhidgetStepper.prototype.setTargetPosition = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  index = [].concat(index);
+  value = parseFloat(value);
+  if (isNaN(value)) { value =  1000; }
+
+  for (var i = 0; i &lt; index.length; i++) {
+
+    var pos = parseInt(index[i]);
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[pos].targetPosition = value;
+    self._sendPck(self._makePckString(&#x27;TargetPosition&#x27;, pos), value, true);
+
+  }
+
+  return self;
+
+};
+
+/**
+ * Sets the upper current limit for the motor connected to the specified output. Note that
+ * not all stepper controllers support current limiting.
+ *
+ * @method setCurrentLimit
+ * @param index {int|Array} The output&#x27;s index number (or an array of output numbers)
+ * @param value {Number} The target position specified in half-steps.
+ * @returns {PhidgetStepper} Returns the PhidgetStepper to allow method chaining.
+ * @chainable
+ */
+PhidgetStepper.prototype.setCurrentLimit = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  index = [].concat(index);
+  value = parseFloat(value);
+
+  for (var i = 0; i &lt; index.length; i++) {
+
+    var pos = parseInt(index[i]);
+    if (!self.outputs[pos]) { self.outputs[pos] = {}; }
+    self.outputs[pos].currentLimit = value;
+    self._sendPck(self._makePckString(&#x27;CurrentLimit&#x27;, pos), value, true);
+
+  }
+
+  return self;
+
+};
+
+PhidgetStepper.prototype._setPhidgetSpecificInitialState = function () {};
+
+/** @private See overridden method for details. */
+PhidgetStepper.prototype._parsePhidgetSpecificData = function (data) {
+
+  var self = this;
+
+  if (data.keyword === &#x27;AccelerationMin&#x27;) {
+    self._accelerationMin = parseFloat(data.value);
+  } else if (data.keyword === &#x27;AccelerationMax&#x27;) {
+    self._accelerationMax = parseFloat(data.value);
+  } else if (data.keyword === &#x27;CurrentMin&#x27;) {
+    self._currentMin = parseFloat(data.value);
+  } else if (data.keyword === &#x27;CurrentMax&#x27;) {
+    self._currentMax = parseFloat(data.value);
+  } else if (data.keyword === &#x27;PositionMin&#x27;) {
+    self._positionMin = parseFloat(data.value);
+  } else if (data.keyword === &#x27;PositionMax&#x27;) {
+    self._positionMax = parseFloat(data.value);
+  } else if (data.keyword === &#x27;VelocityMin&#x27;) {
+    self._velocityMin = parseFloat(data.value);
+  } else if (data.keyword === &#x27;VelocityMax&#x27;) {
+    self._velocityMax = parseFloat(data.value);
+
+  } else if (data.keyword === &#x27;NumberOfInputs&#x27;) {
+    self.inputs.count = parseInt(data.value);
+
+  } else if (data.keyword === &#x27;Input&#x27;) {
+
+    if (!self.inputs[data.index]) { self.inputs[data.index] = {}; }
+    self.inputs[data.index].value = (data.value === &#x27;1&#x27;);
+
+    /**
+     * Event emitted when digital input data is received.
+     *
+     * @event input
+     * @param {PhidgetStepper} emitter The actual PhidgetStepper object that emitted the
+     * event.
+     * @param {Object} data An object containing the input data and related information
+     * @param {int} data.index The input&#x27;s index number
+     * @param {Boolean} data.value The input&#x27;s received value
+     */
+    self.ready &amp;&amp; self.emit(
+        &quot;input&quot;,
+        self,
+        {
+          &quot;index&quot;: data.index,
+          &quot;value&quot;: self.inputs[data.index].value
+        }
+    );
+
+  } else if (data.keyword === &#x27;NumberOfMotors&#x27;) {
+    self.outputs.count = parseInt(data.value);
+
+    // Reset reference position and (by the same token) target position. Also set &#x27;engage&#x27;
+    // status to false.
+    for (var i = 0; i &lt; data.value; i++) {
+      self._sendPck(self._makePckString(&#x27;CurrentPosition&#x27;, i), 0, true);
+      self._sendPck(self._makePckString(&#x27;TargetPosition&#x27;, i), 0, true);
+      self._sendPck(self._makePckString(&#x27;Engaged&#x27;, i), 0, true);
+    }
+
+  } else if (data.keyword === &#x27;CurrentPosition&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].position = parseInt(data.value);
+
+    /**
+     * Event emitted to report that the position of a motor connected to one of the
+     * board&#x27;s outputs has changed.
+     *
+     * @event position
+     * @param {PhidgetStepper} emitter The actual PhidgetStepper object that emitted the
+     * event.
+     * @param {Object} data An object containing information about the event.
+     * @param {int} data.index The output&#x27;s index number.
+     * @param {Number} data.index The motor&#x27;s new position.
+     */
+    self.ready &amp;&amp; self.emit(
+        &quot;position&quot;,
+        self,
+        {
+          &quot;index&quot;: data.index,
+          &quot;position&quot;: self.outputs[data.index].position
+        }
+    );
+
+  } else if (data.keyword === &#x27;TargetPosition&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].targetPosition = parseInt(data.value);
+
+  } else if (data.keyword === &#x27;Acceleration&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].acceleration = parseFloat(data.value);
+
+  } else if (data.keyword === &#x27;CurrentLimit&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].currentLimit = parseFloat(data.value); // value larger than int&#x27;s maximum
+
+  } else if (data.keyword === &#x27;Current&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].current = parseFloat(data.value);
+    // dispatch event ?!
+
+  } else if (data.keyword === &#x27;VelocityLimit&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].targetVelocity = parseFloat(data.value);
+
+  } else if (data.keyword === &#x27;Velocity&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].velocity = parseFloat(data.value);
+    // dispatch event ?!
+
+  } else if (data.keyword === &#x27;Engaged&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+    self.outputs[data.index].engaged = (parseInt(data.value) === 1);
+
+  } else if (data.keyword === &#x27;Stopped&#x27;) {
+    if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+
+    // The board continuously reports that the board is NOT stopped. To trigger the event
+    // the last time only, we must check if the value is different
+    if (self.outputs[data.index].stopped === (parseInt(data.value) === 1)) {
+      return;
+    }
+
+    self.outputs[data.index].stopped = (parseInt(data.value) === 1);
+
+    // The order is important. &quot;target&quot; event must be dispatched before start and stop
+    // events.
+    if (
+        self.outputs[data.index].stopped &amp;&amp;
+        self.outputs[data.index].position ===
+        self.outputs[data.index].targetPosition
+    ) {
+
+      /**
+       * Event emitted when a motor connected to one of the board&#x27;s outputs has reached
+       * its target position.
+       *
+       * @event target
+       * @param {PhidgetStepper} emitter The actual PhidgetStepper object that emitted the
+       * event.
+       * @param {Object} data An object containing information about the event.
+       * @param {int} data.index The output&#x27;s index number.
+       * @param {int} data.position The motor&#x27;s position
+       */
+      self.ready &amp;&amp; self.emit(
+          &quot;target&quot;,
+          self,
+          {
+            &quot;index&quot;: data.index,
+            &quot;position&quot;: self.outputs[data.index].position
+          }
+      );
+
+    }
+
+    /**
+     * Event emitted when a motor connected to one of the board&#x27;s outputs starts moving.
+     *
+     * @event start
+     * @param {PhidgetStepper} emitter The actual PhidgetStepper object that emitted the
+     * event.
+     * @param {Object} data An object containing information about the event.
+     * @param {int} data.index The output&#x27;s index number.
+     */
+    /**
+     * Event emitted when a motor connected to one of the board&#x27;s outputs stops moving.
+     *
+     * @event stop
+     * @param {PhidgetStepper} emitter The actual PhidgetStepper object that emitted the
+     * event.
+     * @param {Object} data An object containing information about the event.
+     * @param {int} data.index The output&#x27;s index number.
+     */
+    self.ready &amp;&amp; self.emit(
+        self.outputs[data.index].stopped ? &quot;stop&quot; : &quot;start&quot;,
+        self,
+        {
+          &quot;index&quot;: data.index,
+          &quot;position&quot;: self.outputs[data.index].position
+        }
+    );
+
+  }
+
+};
+
+module.exports.PhidgetStepper = PhidgetStepper;
+
+
+
+
+
+
+
 
 
 /****************************************************************************************/
