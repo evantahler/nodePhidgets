@@ -1,6 +1,6 @@
 {
   "name": "phidgets",
-  "version": "0.5.1",
+  "version": "0.5.2-0",
   "description": "A Node.js library enabling the use of various Phidgets interface boards.",
   "author": "Evan Tahler <evantahler@gmail.com>",
   "contributors": [
