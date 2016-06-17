@@ -175,8 +175,9 @@ object. This includes boards such as:
 
 Also included in the library is full support for the following boards:
 
- * PhidgetLED
  * PhidgetBridge
+ * PhidgetLED
+ * PhidgetRFID
  * PhidgetStepper
 
 Other boards will be added in the future. Help from contributors is always welcomed.
