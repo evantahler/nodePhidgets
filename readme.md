@@ -1,5 +1,4 @@
 # phidgets
-_A [Node.js](http://www.nodejs.org/)-compatible JavaScript library to interface with the Phidgets line of hardware boards._
 
 [![npm](https://img.shields.io/npm/v/phidgets.svg)](https://www.npmjs.com/package/phidgets)
 [![npm](https://img.shields.io/npm/dt/phidgets.svg)](https://www.npmjs.com/package/phidgets)
