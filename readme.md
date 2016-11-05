@@ -1,8 +1,7 @@
 # phidgets
-_A [Node.js](http://www.nodejs.org/) and [iojs.org](http://www.iojs.org/)-compatible
-JavaScript library to interface with the Phidgets line of hardware boards._
 
-[![NPM](https://nodei.co/npm/phidgets.png?downloads=true)](https://nodei.co/npm/phidgets/) [![NPM](https://nodei.co/npm-dl/phidgets.png?months=6&height=2)](https://nodei.co/npm/phidgets/)
+[![npm](https://img.shields.io/npm/v/phidgets.svg)](https://www.npmjs.com/package/phidgets)
+[![npm](https://img.shields.io/npm/dt/phidgets.svg)](https://www.npmjs.com/package/phidgets)
 
 [Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle
 digital inputs and outputs, along with a great array of analog sensors (RFID, temperature,
