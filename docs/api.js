@@ -5,7 +5,9 @@ YUI.add("yuidoc-meta", function(Y) {
         "PhidgetBridge",
         "PhidgetInterfaceKit",
         "PhidgetLED",
-        "PhidgetStepper"
+        "PhidgetRFID",
+        "PhidgetStepper",
+        "PhidgetTemperatureSensor"
     ],
     "modules": [
         "phidgets"
