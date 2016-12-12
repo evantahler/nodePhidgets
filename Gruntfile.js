@@ -29,6 +29,20 @@ module.exports = function (grunt) {
       }
     },
 
+    // Files that are copied or written over must be re-committed.
+    gitcommit: {
+      "commitupdated": {
+        options: {
+          message: 'Release <%= pkg.version %>.',
+          noVerify: true,
+          noStatus: false
+        },
+        files: {
+          src: ['docs']
+        }
+      }
+    },
+
     // Push documentation to GitHub pages
     'gh-pages': {
       options: {
