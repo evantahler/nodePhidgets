@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.1-alpha.2</em>
+            <em>API Docs for: 0.5.7</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -42,7 +42,9 @@
                                 <li><a href="../classes/PhidgetBridge.html">PhidgetBridge</a></li>
                                 <li><a href="../classes/PhidgetInterfaceKit.html">PhidgetInterfaceKit</a></li>
                                 <li><a href="../classes/PhidgetLED.html">PhidgetLED</a></li>
+                                <li><a href="../classes/PhidgetRFID.html">PhidgetRFID</a></li>
                                 <li><a href="../classes/PhidgetStepper.html">PhidgetStepper</a></li>
+                                <li><a href="../classes/PhidgetTemperatureSensor.html">PhidgetTemperatureSensor</a></li>
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
@@ -121,6 +123,7 @@ module.exports = {};
  *    * {{#crossLink &quot;PhidgetLED&quot;}}{{/crossLink}}
  *    * {{#crossLink &quot;PhidgetBridge&quot;}}{{/crossLink}}
  *    * {{#crossLink &quot;PhidgetStepper&quot;}}{{/crossLink}}
+ *    * {{#crossLink &quot;PhidgetTemperatureSensor&quot;}}{{/crossLink}}
  *
  * This object extends Node.js&#x27;
  * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
@@ -154,7 +157,8 @@ var Phidget = function(type) {
       &#x27;PhidgetBridge&#x27;,
       &#x27;PhidgetLED&#x27;,
       &#x27;PhidgetRFID&#x27;,
-      &#x27;PhidgetStepper&#x27;
+      &#x27;PhidgetStepper&#x27;,
+      &#x27;PhidgetTemperatureSensor&#x27;
     ]
   });
 
@@ -787,12 +791,16 @@ Phidget.prototype._parsePskKey = function(oPsk, self) {
   var value   = psk.split(&#x27;&quot;&#x27;)[1];                    // 69, PhidgetLED, label, 904, etc.
   var status  = psk.split(&#x27;&quot; (&#x27;)[1].replace(&quot;)&quot;, &#x27;&#x27;); // added, changed, removing, etc.
 
-  // Grab the serial as soon as we see it. This is also our first chance to initialize
-  // the board with desired phidget-specific initial settings.
+  // Grab the serial as soon as we see it. This is also our first chance to initialize the board
+  // with desired phidget-specific initial settings.
   if ( !self.serial &amp;&amp; parseInt(parts[2]) &gt; 0 ) {
     self.serial = parseInt(parts[2]);
     self._setPhidgetSpecificInitialState();
   }
+
+  // Make sure to dispatch the incoming data only if its meant for this device (because there could
+  // be more than one).
+  if (serial !== this.serial) { return; }
 
   if ( keyword === &#x27;Status&#x27; &amp;&amp; status === &#x27;removing&#x27;) {
 
@@ -1754,7 +1762,7 @@ module.exports.PhidgetBridge = PhidgetBridge;
  *
  *     ps.open();
  *
- * The &#x60;PhidgetStepper&#x60; object adds 4 events to the basic ones inherited by all Phidgets.
+ * The &#x60;PhidgetStepper&#x60; object adds 5 events to the basic ones inherited by all Phidgets.
  * They are:
  *
  *  * &#x60;position&#x60;: triggered each time the motor&#x27;s position changes
@@ -1763,8 +1771,9 @@ module.exports.PhidgetBridge = PhidgetBridge;
  *  * &#x60;target&#x60;: triggered when the motor has reached its target position
  *  * &#x60;input&#x60;: triggered when a digital input changes (not available on all boards)
  *
- * This object extends the &#x60;Phidget&#x60; object which extends Node.js&#x27; [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
- * See that object&#x27;s documentation for inherited methods.
+ * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for more inherited methods and properties.
  *
  * @class PhidgetStepper
  * @constructor
@@ -2414,106 +2423,705 @@ module.exports.PhidgetStepper = PhidgetStepper;
 /************************************  PhidgetRFID  *************************************/
 /****************************************************************************************/
 
-///**
-// * The PhidgetRFID class allows you to control a PhidgetRFID board.
-// *
-// * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
-// * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
-// * See that object&#x27;s documentation for inherited methods.
-// *
-// * @class PhidgetRFID
-// * @constructorÈ
-// * @extends Phidget
-// */
-//var PhidgetRFID = function() {
-//
-//  PhidgetRFID.super_.call(this, &quot;PhidgetRFID&quot;);
-//
-//  var self = this;
-//
-//  /**
-//   * [read-only] An object containing information about the digital outputs of the device.
-//   * Output 0 is also labeled on the board as &quot;+5V&quot;. Output 1 is also labeled on the board
-//   * as &quot;LED&quot;. This is not to be confused with the onboard LED. To control the onboard
-//   * LED, please use the &#x60;PhidgetRFID.led&#x60; property.
-//   *
-//   * Here is how to retrieve an outputs value or the total number of outputs:
-//   *
-//   *     PhidgetRFID.outputs[1].value     // Output 1 current value
-//   *     PhidgetRFID.outputs.count        // Total number of outputs on the device
-//   *
-//   * @property outputs {Object}
-//   * @property outputs.count {int} The total number of outputs on the device.
-//   * @property outputs[int].value {int} The current value of the specified output.
-//   */
-//  this.outputs = {};
-//
-//  /**
-//   * The status of the onboard LED (not to be confused with the LED output). Setting this
-//   * property to true will turn on the onboard LED while setting it to false will turn it
-//   * off.
-//   *
-//   * @property led {Boolean}
-//   */
-//  Object.defineProperty(this, &#x27;led&#x27;, {
-//    enumerable: true,
-//    get: function () {
-//      return (self._led);
-//    },
-//    set: function(value) {
-//      self._sendPck(self._makePckString(&#x27;LEDOn&#x27;), value ? 1:0, true);
-//      self._antenna = value ? true : false;
-//    }
-//  });
-//
-//  /**
-//   * The activity status of the RFID antenna. The antenna must be activated in order for
-//   * the reader to work properly. Setting this property to &#x60;true&#x60; activates the antenna
-//   * while setting it to false deactivates it.
-//   *
-//   * @property antenna {Boolean}
-//   */
-//  Object.defineProperty(this, &#x27;antenna&#x27;, {
-//    enumerable: true,
-//    get: function () {
-//      return (self._antenna);
-//    },
-//    set: function(value) {
-//      self._sendPck(self._makePckString(&#x27;AntennaOn&#x27;), value ? 1 : 0, true);
-//      self._antenna = value ? true : false;
-//    }
-//  });
-//
-//  this._led = false;
-//  this._antenna = false;
-//
-//};
-//
-//util.inherits(PhidgetRFID, Phidget);
+/**
+ * The &#x60;PhidgetRFID&#x60; class allows you to use a PhidgetRFID board to read and write (if the board
+ * supports if) RFID tags. The PhidgetRFID board supports 3 protocols:
+ *
+ *  - EM4100/EM4102 40-bit
+ *  - ISO11785 FDX-B encoding, Animal ID
+ *  - PhidgetsTAG Protocol 24 character ASCII
+ *
+ * Please note that the antenna must be activated for the &#x60;PhidgetRFID&#x60; to report tag reads. Here&#x27;s
+ * an example of how to use this object to read from a tag:
+ *
+ *     var phidgets = require(&quot;Phidgets&quot;);
+ *
+ *     var pRFID = new phidgets.PhidgetRFID()
+ *         .on(&#x27;opened&#x27;, function(emitter, data) {
+ *             emitter.antenna = true;
+ *             console.log(&quot;Device ready. Antenna activated.&quot;);
+ *         })
+ *         .open();
+ *
+ * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for inherited methods.
+ *
+ * @class PhidgetRFID
+ * @constructor
+ * @extends Phidget
+*/
+var PhidgetRFID = function() {
+
+ PhidgetRFID.super_.call(this, &quot;PhidgetRFID&quot;);
+
+ var self = this;
+
+  // Define some &quot;static&quot; properties
+  Object.defineProperties(this, {
+
+    /**
+     * [read-only] Array of all protocols supported by the device.
+     *
+     * @property SUPPORTED_PROTOCOLS
+     * @type Array
+     * @static
+     */
+    SUPPORTED_PROTOCOLS: {
+      value: [undefined, &quot;EM4100&quot;, &quot;ISO11785 FDX-B&quot;, &quot;PhidgetTag&quot;],
+      writable: false,
+      enumerable: true,
+      configurable: false
+    }
+
+  });
+
+ /**
+  * [read-only] An object containing information about the digital outputs of the device.
+  * Output 0 is also labeled on the board as &quot;+5V&quot;. Output 1 is also labeled on the board
+  * as &quot;LED&quot;. This is not to be confused with the onboard LED. To control the onboard
+  * LED, please use the &#x60;PhidgetRFID.led&#x60; property.
+  *
+  * Here is how to retrieve an output&#x27;s value or the total number of outputs:
+  *
+  *     PhidgetRFID.outputs[1].value     // Output 1 current value
+  *     PhidgetRFID.outputs.count        // Total number of outputs on the device
+  *
+  * @property outputs {Object}
+  * @property outputs.count {int} The total number of outputs on the device.
+  * @property outputs[int].value {int} The current value of the specified output.
+  */
+ this.outputs = {};
+
+ /**
+  * [read-only] Status of the reader. The two possible statuses are:
+  *
+  *   - waiting: no tag is being detected because none are present or because the antenna is off
+  *   - detecting: a tag is currently being detected
+  *
+  * @property status {String}
+  */
+ this.status = &quot;waiting&quot;;
+
+ /**
+  * [read-only] An object containing information about the last tag that was read.
+  *
+  * @property tag {Object}
+  * @property tag.value {int} The tag&#x27;s value.
+  * @property tag.protocol {int} The tag&#x27;s protocol.
+  * @property tag.detectedAt {Date} A &#x60;Date&#x60; object representing the moment when the tag was read.
+  * @property tag.lostAt {Date} A &#x60;Date&#x60; object representing the moment when the previously read
+  * tag was lost.
+  */
+ this.tag = {
+   value: 0,
+   protocol: 0,
+   detectedAt: undefined,
+   lostAt: undefined
+ };
+
+ /**
+  * The status of the onboard LED (not to be confused with the LED output). Setting this
+  * property to &#x60;true&#x60; will turn on the onboard LED while setting it to &#x60;false&#x60; will turn it
+  * off.
+  *
+  * @property led {Boolean}
+  */
+ Object.defineProperty(this, &#x27;led&#x27;, {
+   enumerable: true,
+   get: function () {
+     return (self._led);
+   },
+   set: function(value) {
+     self._sendPck(self._makePckString(&#x27;LEDOn&#x27;), value ? 1 : 0, true);
+     self._led = !!value;
+   }
+ });
+
+ /**
+  * The activity status of the RFID antenna. The antenna must be activated in order for
+  * the device to work properly. Setting this property to &#x60;true&#x60; activates the antenna
+  * while setting it to &#x60;false&#x60; deactivates it.
+  *
+  * @property antenna {Boolean}
+  */
+ Object.defineProperty(this, &#x27;antenna&#x27;, {
+   enumerable: true,
+   get: function () {
+     return (self._antenna);
+   },
+   set: function(value) {
+     self._sendPck(self._makePckString(&#x27;AntennaOn&#x27;), value ? 1 : 0, true);
+     self._antenna = !!value;
+   }
+
+ });
+
+ this._led = false;
+ this._antenna = false;
+
+};
+
+util.inherits(PhidgetRFID, Phidget);
 
 
-//PhidgetRFID.prototype._parsePhidgetSpecificData = function (data) {
-//
-//  //var self = this;
-//
-//  //if (data.keyword === &quot;NumberOfLEDs&quot;) {
-//  //  self.leds.count = parseInt(data.value);
-//  //} else if (data.keyword === &quot;Voltage&quot;) {
-//  //  var v = self._forceBetween(data.value, 1, 4);
-//  //  self._voltage = self.supportedVoltages[v - 1];
-//  //} else if (data.keyword === &quot;CurrentLimit&quot;) {
-//  //  self._currentLimit = self.supportedGlobalCurrentLimits[data.value - 1];
-//  //} else if (data.keyword === &quot;Brightness&quot;) {
-//  //  if (!self.leds[data.index]) { self.leds[data.index] = {}; }
-//  //  self.leds[data.index].value = parseInt(data.value);
-//  //} else if (data.keyword === &quot;CurrentLimitIndexed&quot;) {
-//  //  if (!self.leds[data.index]) { self.leds[data.index] = {}; }
-//  //  self.leds[data.index].currentLimit = parseInt(data.value);
-//  //}
-//
-//};
-//
-//module.exports.PhidgetRFID = PhidgetRFID;
+PhidgetRFID.prototype._parsePhidgetSpecificData = function (data) {
+
+ var self = this;
+
+ if (data.keyword === &quot;NumberOfOutputs&quot;) {
+
+   self.outputs.count = parseInt(data.value);
+
+ } else if (data.keyword === &quot;LastTag&quot;) {
+
+   self.tag.protocol = self.SUPPORTED_PROTOCOLS[data.value.split(&quot;/&quot;, 2)[0]];
+   self.tag.value = data.value.split(&quot;/&quot;, 2)[1];
+   self.tag.detectedAt = undefined;
+   self.tag.lostAt = undefined;
+
+ } else if (data.keyword === &quot;Tag2&quot;) {
+
+   self.tag.protocol = self.SUPPORTED_PROTOCOLS[data.value.split(&quot;/&quot;, 2)[0]];
+   self.tag.value = data.value.split(&quot;/&quot;, 2)[1];
+   self.tag.detectedAt = new Date();
+   self.tag.lostAt = undefined;
+
+   /**
+    * Event emitted when a tag has been detected.
+    *
+    * @event detected
+    * @param {PhidgetRFID} emitter The actual PhidgetRFID object that emitted the event.
+    * @param {Object} tag
+    * @param {Number} tag.protocol The tag&#x27;s protocol. Supported protocols are: &#x60;ISO11785 FDX-B&#x60;,
+    * &#x60;EM4100&#x60; and &#x60;PhidgetTag&#x60;.
+    * @param {String} tag.value The tag&#x27;s value.
+    * @param {Date} tag.detectedAt The date and time when the tag was detected.
+    * @param {Date} tag.lostAt The date and time when the tag was lost.
+    */
+   self.ready &amp;&amp; self.emit(&quot;detected&quot;, self, self.tag);
+
+
+ } else if (data.keyword === &quot;TagLoss2&quot;) {
+
+   self.tag.protocol = self.SUPPORTED_PROTOCOLS[data.value.split(&quot;/&quot;, 2)[0]];
+   self.tag.value = data.value.split(&quot;/&quot;, 2)[1];
+   self.tag.lostAt = new Date();
+
+   /**
+    * Event emitted when a previously detected tag is now lost
+    *
+    * @event lost
+    * @param {PhidgetRFID} emitter The actual PhidgetRFID object that emitted the event.
+    * @param {Object} tag
+    * @param {Number} tag.protocol The tag&#x27;s protocol. Supported protocols are: &#x60;ISO11785 FDX-B&#x60;,
+    * &#x60;EM4100&#x60; and &#x60;PhidgetTag&#x60;.
+    * @param {String} tag.value The tag&#x27;s value.
+    * @param {Date} tag.detectedAt The date and time when the tag was detected.
+    * @param {Date} tag.lostAt The date and time when the tag was lost.
+    */
+   self.ready &amp;&amp; self.emit(&quot;lost&quot;, self, self.tag);
+
+ } else if (data.keyword === &quot;TagState&quot;) {
+
+   self.status = (data.value === &#x27;1&#x27;) ? &quot;detecting&quot; : &quot;waiting&quot;;
+
+   /**
+    * Event emitted when the device&#x27;s status changes.
+    *
+    * @event status
+    * @param {PhidgetRFID} emitter The actual PhidgetRFID object that emitted the event.
+    * @param {String} status Status of the device (&#x60;detecting&#x60; or &#x60;waiting&#x60;).
+    */
+   self.emit(
+     &quot;status&quot;,
+     self,
+     self.status
+   );
+
+ } else if (data.keyword === &quot;AntennaOn&quot;) {
+
+   self._antenna = (data.value === &#x27;1&#x27;);
+
+   /**
+    * Event emitted when the antenna&#x27;s status changes.
+    *
+    * @event antenna
+    * @param {PhidgetRFID} emitter The actual PhidgetRFID object that emitted the event.
+    * @param {Boolean} status Status of the antenna. &#x60;true&#x60; means it is now &quot;on&quot; and &#x60;false&#x60; means
+    * it is now &quot;off&quot;.
+    */
+   self.emit(
+     &quot;antenna&quot;,
+     self,
+     self._led
+   );
+
+ } else if (data.keyword === &quot;LEDOn&quot;) {
+
+   self._led = (data.value === &#x27;1&#x27;);
+
+   /**
+    * Event emitted when the onboard LED&#x27;s status changes.
+    *
+    * @event led
+    * @param {PhidgetRFID} emitter The actual PhidgetRFID object that emitted the event.
+    * @param {Boolean} status Status of the LED. &#x60;true&#x60; means it is now &quot;on&quot; and &#x60;false&#x60; means it is
+    * now &quot;off&quot;.
+    */
+   self.emit(
+     &quot;led&quot;,
+     self,
+     self._led
+   );
+
+ } else if (data.keyword === &quot;Output&quot;) {
+
+   if (!self.outputs[data.index]) { self.outputs[data.index] = {}; }
+   self.outputs[data.index].value = (data.value === &#x27;1&#x27;);
+
+   /**
+    * Event emitted when an output&#x27;s status has changed.
+    *
+    * @event output
+    * @param {PhidgetRFID} emitter The actual PhidgetRFID object that emitted the event.
+    * @param {Object} data An object containing the output data and related information
+    * @param {int} data.index The output&#x27;s index number
+    * @param {int} data.value The output&#x27;s new value
+    */
+   self.emit(
+     &quot;output&quot;,
+     self,
+     { &quot;index&quot;: data.index, &quot;value&quot;: self.outputs[data.index].value }
+   );
+
+ }
+
+};
+
+/**
+ * Sets the specified output to active (&#x60;true&#x60;) or inactive (&#x60;false&#x60;). This method should only
+ * be used after the board is &#x27;opened&#x27;. Calling it before will fail silently.
+ *
+ * @method setOutput
+ * @param index {int|Array} The output number to set (or array of output numbers)
+ * @param [value=false] {Boolean} The value you wish to set the output to.
+ * @returns {PhidgetRFID} Returns the &#x60;PhidgetRFID&#x60; object to allow method chaining.
+ * @chainable
+ */
+PhidgetRFID.prototype.setOutput = function(index, value) {
+
+  // var self = this;
+  if (this.ready !== true) { return this; }
+
+  index = [].concat(index);
+  value = (value === true);
+  var vOut = (value === true) ? 1 : 0;
+
+  for (var i = 0; i &lt; index.length; i++) {
+    var pos = parseInt(index[i]);
+    if (!this.outputs[pos]) { this.outputs[pos] = {}; }
+    this.outputs[pos].value = value;
+    this._sendPck(this._makePckString(&#x27;Output&#x27;, pos), vOut, true);
+  }
+
+  return this;
+
+};
+
+/**
+ * Writes a tag. Please note that not all devices have write capacity. This method will be silently
+ *
+ * @method write
+ * @param tag {String} The value that should be written to the card.
+ * @param protocol {Number=1} An integer identifying the protocol to be used. 1 is EM4100, 2 is
+ * ISO11785 FDX-B and 3 is PhidgetTag. Default is EM4100.
+ * @param lock {Boolean=false} Whether the card should be prevented from being written again.
+ * Default is false.
+ *
+ * @returns {PhidgetRFID} Returns the &#x60;PhidgetRFID&#x60; object to allow method chaining.
+ * @chainable
+ */
+PhidgetRFID.prototype.write = function(tag, protocol, lock) {
+
+  var intLock = (lock === true) ? 1 : 0;
+  protocol = parseInt(protocol);
+  if ( !(protocol &gt;= 1 &amp;&amp; protocol &lt;= 3) ) { protocol = 1; }
+
+  var write = protocol + &quot;/&quot; + intLock + &quot;/&quot; + tag;
+  this._sendPck(this._makePckString(&#x27;WriteTag&#x27;), write, true);
+
+  return this;
+
+};
+
+module.exports.PhidgetRFID = PhidgetRFID;
+
+
+
+
+
+
+
+
+
+/****************************************************************************************/
+/*****************************  PhidgetTemperatureSensor  *******************************/
+/****************************************************************************************/
+
+/**
+ * The &#x60;PhidgetTemperatureSensor&#x60; class allows you receive data from PhidgetTemperatureSensor
+ * boards.
+ *
+ * As of this writing, this class has only been tested with a
+ * [1048_0 - PhidgetTemperatureSensor 4-input](http://www.phidgets.com/products.php?product_id=1048),
+ * but should be compatible with any PhidgetTemperatureSensor board.
+ * 
+ * &#x60;&#x60;&#x60;JavaScript
+ * var PhidgetTemperatureSensor = require(&#x27;phidgets&#x27;).PhidgetTemperatureSensor;
+ * 
+ * var pts = new PhidgetTemperatureSensor();
+ * 
+ * function onReady() {
+ * 
+ *    var inputIndex = 0;
+ *    
+ *    // set the ThermocoupleType to K
+ *    pts.setThermocoupleType(inputIndex, PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.TYPE_K);
+ * 
+ *    // receive temperature events when the temperature changes by at least 2 degrees Celsius
+ *    // (default is 0.5)
+ *    pts.setTemperatureChangeTrigger(inputIndex, 2);
+ *    
+ *    pts.on(&#x27;temperature&#x27;, function (emitter, data) {
+ *      if (data.index === inputIndex) {
+ *        console.log(&#x27;Temperature: &#x27; + data.value);
+ *      }
+ *    });
+ * 
+ * }
+ * 
+ * pts.addListener(&#x27;opened&#x27;, onReady);
+ * 
+ * pts.open();
+ * &#x60;&#x60;&#x60;
+ * 
+ * This object extends the &#x60;Phidget&#x60; object which itself extends Node.js&#x27;
+ * [&#x60;events.EventEmitter&#x60; object](https://nodejs.org/api/events.html#events_class_events_eventemitter).
+ * See that object&#x27;s documentation for more inherited methods and properties.
+ *
+ * @class PhidgetTemperatureSensor
+ * @constructor
+ * @extends Phidget
+ * @author Andrew Berger &lt;andrew@andrewberger.net&gt;
+ */
+var PhidgetTemperatureSensor = function() {
+  PhidgetTemperatureSensor.super_.call(this, &#x27;PhidgetTemperatureSensor&#x27;);
+
+  var self = this;
+
+  /**
+   * [read-only] The last known ambient temperature of the sensor (where the inputs connect to the
+   * board), in degrees celsius.
+   * 
+   * @property ambientTemperature {Number}
+   * @instance
+   */
+  Object.defineProperty(this, &#x27;ambientTemperature&#x27;, {
+    enumerable: true,
+    get: function() {
+      return self._ambientTemperature;
+    }
+  });
+
+  /**
+   * [read-only] The highest possible ambient temperature value which can be returned by the sensor,
+   * in degrees celsius.
+   * 
+   * @property ambientTemperatureMax {Number}
+   * @instance
+   */
+  Object.defineProperty(this, &#x27;ambientTemperatureMax&#x27;, {
+    enumerable: true,
+    get: function() {
+      return self._ambientTemperatureMax;
+    }
+  });
+
+  /**
+   * [read-only] The lowest possible ambient temperature value which can be returned by the sensor,
+   * in degrees celsius.
+   * 
+   * @property ambientTemperatureMin {Number}
+   * @instance
+   */
+  Object.defineProperty(this, &#x27;ambientTemperatureMin&#x27;, {
+    enumerable: true,
+    get: function() {
+      return self._ambientTemperatureMin;
+    }
+  });
+
+  /**
+   * [read-only] An object containing data about each input on the device.
+   *
+   * @property inputs {Object}
+   * 
+   * @property inputs.count {int} The number of inputs available on the device.
+   * 
+   * @property inputs[int].temperature {Number} The input&#x27;s last known temperature in degrees
+   * celsius.
+   * 
+   * @property inputs[int].temperatureMax {Number} The highest temperature possible for the given
+   * input, based on thermocouple type.
+   * 
+   * @property inputs[int].temperatureMin {Number} The lowest temperature possible for the given
+   * input, based on thermocouple type.
+   * 
+   * @property inputs[int].trigger {Number} The input&#x27;s temperature change trigger, in
+   * degrees celsius.
+   * 
+   * @property inputs[int].potential {Number} The input&#x27;s last known voltage.
+   * 
+   * @property inputs[int].potentialMax {Number} The highest voltage possible for the given input,
+   * based on thermocouple type.
+   * 
+   * @property inputs[int].potentialMin {Number} The lowest voltage possible for the given input,
+   * based on thermocouple type.
+   * 
+   * @property inputs[int].thermocoupleType {int} The type of thermocouple attached to the given
+   * input. Value corresponds to a value from PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.
+   */
+  this.inputs = {};
+
+  /** @private */
+  this._ambientTemperature = undefined;
+
+  /** @private */
+  this._ambientTemperatureMax = undefined;
+
+  /** @private */
+  this._ambientTemperatureMin = undefined;
+
+};
+
+util.inherits(PhidgetTemperatureSensor, Phidget);
+
+
+/**
+ * [read-only] An enum of supported thermocouple types. Support for other thermocouple types, and
+ * voltage sources other than thermocouples in the valid range (between potentialMin and
+ * potentialMax) can be achieved using potential.
+ * 
+ * @property THERMOCOUPLE_TYPES {Object}
+ * @property THERMOCOUPLE_TYPES.TYPE_K {int} Integer value represent a K-type thermocouple.
+ * @property THERMOCOUPLE_TYPES.TYPE_J {int} Integer value represent a J-type thermocouple.
+ * @property THERMOCOUPLE_TYPES.TYPE_E {int} Integer value represent a E-type thermocouple.
+ * @property THERMOCOUPLE_TYPES.TYPE_T {int} Integer value represent a T-type thermocouple.
+ */
+Object.defineProperty(PhidgetTemperatureSensor, &#x27;THERMOCOUPLE_TYPES&#x27;, {
+  enumerable: true,
+  writable: false,
+  value: {
+    TYPE_K: 1,
+    TYPE_J: 2,
+    TYPE_E: 3,
+    TYPE_T: 4
+  }
+});
+
+/** @private */
+Object.defineProperty(PhidgetTemperatureSensor, &#x27;_thermocoupleTypesArray&#x27;, {
+  writable: false,
+  value: [
+    PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.TYPE_J,
+    PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.TYPE_K,
+    PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.TYPE_E,
+    PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.TYPE_T
+  ]
+});
+
+/**
+ * Sets the change trigger for an input. This is the amount by which the sensed temperature must
+ * change between temperature change events. By default this is set to 0.5. Setting trigger
+ * to 0 will cause all temperature updates to fire events. This is helpful for applications that are
+ * implementing their own filtering.
+ * 
+ * @method setTemperatureChangeTrigger
+ * @param index {int|Array} The input&#x27;s number (or an array of input numbers)
+ * @param value {Number} The TemperatureChangeTigger value to set
+ * @returns {PhidgetTemperatureSensor} Returns the PhidgetTemperatureSensor to allow method
+ * chaining.
+ * @chainable
+ */
+PhidgetTemperatureSensor.prototype.setTemperatureChangeTrigger = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  value = Number(value);
+
+  if (isNaN(value) || value &lt; 0) {
+    throw new Error(&#x27;Trigger must be a floating-point number greater than or equal to 0&#x27;);
+  }
+
+  index = [].concat(index);
+
+  for (var i = 0; i &lt; index.length; i++) {
+    var pos = Number(index[i]);
+    if (!self.inputs[pos]) { self.inputs[pos] = {}; }
+    self.inputs[pos].temperatureChangeTrigger = value;
+    self._sendPck(self._makePckString(&#x27;Trigger&#x27;, pos), value, true);
+  }
+
+  return self;
+};
+
+
+/**
+ * Sets the thermocouple type for an input. The possible values are &#x27;J&#x27;, &#x27;K&#x27;, &#x27;E&#x27;, and &#x27;T&#x27;, or one
+ * of the values in the PhidgetTemperatureSensor.THERMOCOUPLE_TYPES enum. Support for other
+ * thermocouple types, and voltage sources other than thermocouples in the valid range (between
+ * potentialMin and potentialMax) can be achieved using potential.
+ * 
+ * @method setThermocoupleType
+ * @param index {int|Array} The input&#x27;s index (or an array of input indices)
+ * @param value {string|Number} The ThermocoupleType to set
+ * @returns {PhidgetTemperatureSensor} Returns the PhidgetTemperatureSensor to allow method
+ * chaining.
+ * @chainable
+ */
+PhidgetTemperatureSensor.prototype.setThermocoupleType = function(index, value) {
+
+  var self = this;
+  if (self.ready !== true) { return self; }
+
+  if (typeof value === &#x27;string&#x27;) {
+    var propName = &#x27;TYPE_&#x27; + value.toUpperCase();
+    if (!PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.hasOwnProperty(propName)) {
+      throw new Error(&#x27;Unsupported thermocouple type: &#x60;&#x27; + value + &#x27;&#x60;&#x27;);
+    }
+
+    value = PhidgetTemperatureSensor.THERMOCOUPLE_TYPES[propName];
+  } else {
+    value = Number(value);
+
+    if (isNaN(value) || (PhidgetTemperatureSensor._thermocoupleTypesArray.indexOf(value) &lt; 0)) {
+      throw new Error(&#x27;ThermocoupleType must be one of PhidgetTemperatureSensor.THERMOCOUPLE_TYPES&#x27;);
+    }
+  }
+
+  index = [].concat(index);
+
+  for (var i = 0; i &lt; index.length; i++) {
+    var pos = Number(index[i]);
+    if (!self.inputs[pos]) { self.inputs[pos] = {}; }
+    self.inputs[pos].thermocoupleType = value;
+    self._sendPck(self._makePckString(&#x27;ThermocoupleType&#x27;, pos), value, true);
+  }
+
+  return self;
+};
+
+/** @private See overridden method for details. */
+PhidgetTemperatureSensor.prototype._parsePhidgetSpecificData = function (data) {
+  
+  var self = this;
+
+  // keywords which should result in an emitted event
+  var emittableEvents = [
+
+    // @TODO is this event necessary?
+    /**
+     * The sensor&#x27;s ambient temperature has changed.
+     *
+     * @event ambientTemperature
+     * @param {PhidgetTemperatureSensor} emitter The actual PhidgetTemperatureSensor object that
+     * emitted the event.
+     * @param {Object} data An object containing the sensor data and related information
+     * @param {Number} data.value The sensor&#x27;s new ambient temperature.
+     */
+    &#x27;AmbientTemperature&#x27;,
+
+    /**
+     * The calculated temperature of the given input has changed by more than
+     * temperatureChangeTrigger. This value is dependent on the sensor&#x27;s ambient temperature, the
+     * input&#x27;s thermocouple type, and the input&#x27;s potential.
+     *
+     * @event temperature
+     * @param {PhidgetTemperatureSensor} emitter The actual PhidgetTemperatureSensor object that
+     * emitted the event.
+     * @param {Object} data An object containing the sensor data and related information
+     * @param {int} data.index The input&#x27;s index number
+     * @param {Number} data.value The input&#x27;s new temperature.
+     */
+    &#x27;Temperature&#x27;,
+
+    // @TODO it may be useful to return the last known AmbientTemperature with this event, as its
+    // most likely use is in calculating temperature from a voltage source other than a J K E or T thermocouple.
+    /**
+     * The potential (voltage) of the given input has changed.
+     *
+     * @event potential
+     * @param {PhidgetTemperatureSensor} emitter The actual PhidgetTemperatureSensor object that
+     * emitted the event.
+     * @param {Object} data An object containing the sensor data and related information
+     * @param {int} data.index The input&#x27;s index number
+     * @param {Number} data.value The input&#x27;s new potential.
+     */
+    &#x27;Potential&#x27;
+  ];
+
+  // keywords which relate to a specific input, and have a useful data.index value
+  var inputSpecificEvents = [
+    &#x27;Temperature&#x27;,
+    &#x27;TemperatureMax&#x27;,
+    &#x27;TemperatureMin&#x27;,
+    &#x27;Potential&#x27;,
+    &#x27;PotentialMax&#x27;,
+    &#x27;PotentialMin&#x27;,
+    &#x27;ThermocoupleType&#x27;,
+    &#x27;Trigger&#x27;
+  ];
+
+  // emitted event names and properties on each input must be camelCase
+  var camelizedKeyword = data.keyword.charAt(0).toLowerCase() + data.keyword.slice(1);
+
+  // the value emitted by an emittableEvent
+  var eventData = {
+    value: Number(data.value)
+  };
+
+  if (data.keyword === &#x27;AmbientTemperature&#x27;) {
+    self._ambientTemperature = eventData.value;
+
+  } else if (data.keyword === &#x27;AmbientTemperatureMax&#x27;) {
+    self._ambientTemperatureMax = eventData.value;
+
+  } else if (data.keyword === &#x27;AmbientTemperatureMin&#x27;) {
+    self._ambientTemperatureMin = eventData.value;
+
+  } else if (data.keyword === &#x27;NumberOfSensors&#x27;) {
+    self.inputs.count = eventData.value;
+
+  } else if (inputSpecificEvents.indexOf(data.keyword) &gt;= 0) {
+    if (!self.inputs[data.index]) { self.inputs[data.index] = {}; }
+
+    eventData.index = data.index;
+
+    self.inputs[data.index][camelizedKeyword] = eventData.value;
+
+  } else {
+    // unhandled event
+    return;
+  }
+
+  if (self.ready &amp;&amp; (emittableEvents.indexOf(data.keyword) &gt;= 0)) {
+    self.emit(camelizedKeyword, self, eventData);
+  }
+};
+
+module.exports.PhidgetTemperatureSensor = PhidgetTemperatureSensor;
 
     </pre>
 </div>
