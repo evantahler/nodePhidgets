@@ -178,6 +178,7 @@ Also included in the library is full support for the following boards:
  * PhidgetLED
  * PhidgetRFID
  * PhidgetStepper
+ * PhidgetTemperatureSensor
 
 Other boards will be added in the future. Help from contributors is always welcomed.
 Addding support for a specific board is relatively straightforward. If you are in a hurry,
