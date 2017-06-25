@@ -66,9 +66,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-release');
 
   grunt.registerTask('publish', ['publish:patch']);
-  grunt.registerTask("publish:prerelease", ['bumpup:prerelease', 'yuidoc', 'gh-pages', 'release']);
-  grunt.registerTask("publish:patch", ['bumpup:patch', 'yuidoc', 'gh-pages', 'release']);
-  grunt.registerTask('publish:minor', ['bumpup:minor', 'yuidoc', 'gh-pages', 'release']);
-  grunt.registerTask('publish:major', ['bumpup:major', 'yuidoc', 'gh-pages', 'release']);
+  grunt.registerTask("publish:prerelease", ['bumpup:prerelease', 'yuidoc', 'gitcommit:commitupdated', 'gh-pages', 'release']);
+  grunt.registerTask("publish:patch", ['bumpup:patch', 'yuidoc', 'gitcommit:commitupdated', 'gh-pages', 'release']);
+  grunt.registerTask('publish:minor', ['bumpup:minor', 'yuidoc', 'gitcommit:commitupdated', 'gh-pages', 'release']);
+  grunt.registerTask('publish:major', ['bumpup:major', 'yuidoc', 'gitcommit:commitupdated', 'gh-pages', 'release']);
 
 };
