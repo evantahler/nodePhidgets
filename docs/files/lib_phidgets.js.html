@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="phidgets" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.5.7</em>
+            <em>API Docs for: 0.5.8</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -46,6 +46,7 @@
                                 <li><a href="../classes/PhidgetStepper.html">PhidgetStepper</a></li>
                                 <li><a href="../classes/PhidgetTemperatureSensor.html">PhidgetTemperatureSensor</a></li>
                             </ul>
+                
                 
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/phidgets.html">phidgets</a></li>
@@ -1586,22 +1587,28 @@ var PhidgetBridge = function() {
   this._updateInterval = 8;
 
   /** @private */
-  this._validGains = [1, 8, 16, 32, 64, 128];
+  this._validGains = {
+    &quot;1&quot;: 1,
+    &quot;8&quot;: 2,
+    &quot;16&quot;: 3,
+    &quot;32&quot;: 4,
+    &quot;64&quot;: 5,
+    &quot;128&quot;: 6
+  }
 
 };
 
 util.inherits(PhidgetBridge, Phidget);
 
 /**
- *
  * Sets the gain of a specific sensor (or array of sensors). Valid values are 1, 8, 16,
  * 32, 64 or 128. The highest the gain, the better the resolution. For that reason, it’s
  * best to use the highest gain possible that can still measure the full range of your
  * sensor.
  *
  * @method setGain
- * @param index {int|Array} The sensor&#x27;s number (or an array of sensor numbers)
- * @param [value=1] {int} The gain to assign (1, 8, 16, 32, 64 or 128)
+ * @param index {Number|Array} The sensor&#x27;s number (or an array of sensor numbers)
+ * @param [value=1] {Number} The gain to assign (1, 8, 16, 32, 64 or 128)
  * @returns {PhidgetBridge} Returns the PhidgetBridge to allow method chaining.
  * @chainable
  */
@@ -1610,14 +1617,20 @@ PhidgetBridge.prototype.setGain = function(index, value) {
   var self = this;
   if (self.ready !== true) { return self; }
 
+  var normalized = 7; // 7 means unknown according to the API
   index = [].concat(index);
-  if (self._validGains.indexOf(value) &lt; 0) { value = 1; }
+
+  if (self._validGains[value]) {
+    normalized = self._validGains[value];
+  } else {
+    value = undefined;
+  }
 
   for (var i = 0; i &lt; index.length; i++) {
     var pos = parseInt(index[i]);
     if (!self.sensors[pos]) { self.sensors[pos] = {}; }
     self.sensors[pos].gain = value;
-    self._sendPck(self._makePckString(&#x27;Gain&#x27;, pos), value, true);
+    self._sendPck(self._makePckString(&#x27;Gain&#x27;, pos), normalized, true);
   }
 
   return self;
