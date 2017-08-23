@@ -3,19 +3,29 @@
 [![npm](https://img.shields.io/npm/v/phidgets.svg)](https://www.npmjs.com/package/phidgets)
 [![npm](https://img.shields.io/npm/dt/phidgets.svg)](https://www.npmjs.com/package/phidgets)
 
+## Discontinuation notice
+
+>In 2017, Phidgets Inc. released [version 22 of their API](https://www.phidgets.com/docs/Phidget22). 
+>This version of the API bears very little resemblance to version 21 which this module was 
+>written for. Furthermore, the new API was **finally** ported to 
+>[JavaScript](https://www.phidgets.com/docs/Language_-_JavaScript) (both browser and Node.js). 
+>Given these changes, continuing to develop this module makes very little sense. So, it has 
+>been decided to discontinue its development.
+
+>The code will remain here should you want to continue using it. You are welcome to fork it
+>and use it in any way you please.
+
+>[Evan](https://github.com/evantahler) and [Jean-Philippe](https://github.com/cotejp) were 
+>happy to provide a solution for the JavaScript world when none  existed. Now that it's no 
+>longer the case, it's time to move on. Farewell...
+
+## About Phidgets
+
 [Phidget boards](http://www.phidgets.com/) are a great prototyping tool which can handle
 digital inputs and outputs, along with a great array of analog sensors (RFID, temperature,
 distance, etc.).  [Node.js](http://nodejs.org) and [io.js](http://iojs.org) are fantastic
 networking library which makes it easy to create fast networked applications.  This
 project aims to make it simple for them to interact. Synergy!
-
->#### Warning to users of version <= 0.4.0
->
->The API in version 0.5.0 and above has changed and is not backwards-compatible. We had to
->make this change in order to support more than just the PhidgetInterfaceKit boards. An
->archived copy of
-> [version 0.4.0](https://github.com/evantahler/nodePhidgets/archive/v0.4.0.zip)
->is being kept around for those needing to maintain older projects.
 
 ## Getting started
 This project assumes you have the
@@ -180,16 +190,13 @@ Also included in the library is full support for the following boards:
  * PhidgetStepper
  * PhidgetTemperatureSensor
 
-Other boards will be added in the future. Help from contributors is always welcomed.
-Addding support for a specific board is relatively straightforward. If you are in a hurry,
-and can support the development effort, please contact one of the
-[project contributors](https://github.com/evantahler/nodePhidgets/graphs/contributors).
-
 ### API Documentation
 
 If this primer wasn't enough, the full **API documentation** is available for download in
-the *docs* folder. You can also
-**[view it online](http://cotejp.github.io/node-phidgets/)**.
+the *docs* folder. You can also **[view it online](http://cotejp.github.io/node-phidgets/)**.
 
-### Things to do:
-* Add support for missing boards.
+### A note about version 0.4.0
+
+The API in version 0.5.0 and above has changed significantly and is not backwards-compatible 
+with version 0.4.0. If you need to maintain projects using the older version, you can still 
+download an [archive of version 0.4.0](https://github.com/evantahler/nodePhidgets/archive/v0.4.0.zip).

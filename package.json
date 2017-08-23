@@ -1,6 +1,6 @@
 {
   "name": "phidgets",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "A Node.js library enabling the use of various Phidgets interface boards.",
   "author": "Evan Tahler <evantahler@gmail.com>",
   "contributors": [
@@ -32,10 +32,10 @@
     "node": ">0.6.x"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
+    "grunt": "^1.0.1",
     "grunt-bumpup": "^0.6.2",
-    "grunt-contrib-yuidoc": "^0.7.0",
+    "grunt-contrib-yuidoc": "^1.0.0",
     "grunt-gh-pages": "^1.0.0",
-    "grunt-release": "^0.11.0"
+    "grunt-git": "^1.0.3"
   }
 }

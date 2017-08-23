@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "phidgets",
-        "version": "0.5.7",
+        "version": "0.5.8",
         "description": "A Node.js library enabling the use of various Phidgets interface boards.",
         "url": ""
     },
@@ -28,6 +28,7 @@
         "phidgets": {
             "name": "phidgets",
             "submodules": {},
+            "elements": {},
             "classes": {
                 "Phidget": 1,
                 "PhidgetInterfaceKit": 1,
@@ -41,7 +42,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "lib/phidgets.js",
-            "line": 2684,
+            "line": 2696,
             "description": "The `Phidgets` library module makes it easy to connect to various sensor and controller\nboards made by [Phidgets Inc.](http://www.phidgets.com) This library works under\n[Node.js](http://www.nodejs.org) and other compatible frameworks such as\n[io.js](http://www.iojs.org)\n\nFor support, go to the GitHub [project page](https://github.com/evantahler/nodePhidgets).\n\nPlease note that this library is an open source project that is not affiliated with\nPhidgets Inc.",
             "todo": [
                 "Add support for more Phidget boards"
@@ -128,7 +129,7 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 1643,
+            "line": 1655,
             "description": "The `PhidgetStepper` class is used to control the stepper motors connected to a\nPhidgetStepper board. It can be used to set a target position for the motors while\ncontrolling their maximum velocity and acceleration.\n\nHere is a simple example that moves the motor connected to output 0 to its 200 position\nand then brings it back to position 0. Before making it move, you must first \"engage\"\nthe motor. Also, you should always explicitely set the desired acceleration and\nvelocity (speed).\n\n    var phidgets = require('phidgets');\n    var ps = new phidgets.PhidgetStepper();\n\n    ps.addListener(\"opened\", onReady);\n\n    function onReady() {\n\n       // Engage motor and set desired properties\n       ps.engageMotor(0, true);\n       ps.setAcceleration(0, ps.maximumAcceleration);\n       ps.setTargetVelocity(0, ps.maximumVelocity);\n\n       // Makes the motor move\n       ps.setTargetPosition(0, 200);\n\n       // Triggered when the target position is reached\n       ps.once(\"target\", function(e, data) {\n         ps.setTargetPosition(0, 0);\n       });\n\n    }\n\n    ps.open();\n\nThe `PhidgetStepper` object adds 5 events to the basic ones inherited by all Phidgets.\nThey are:\n\n * `position`: triggered each time the motor's position changes\n * `start`: triggered when a motor starts moving\n * `stop`: triggered when a motor stops moving\n * `target`: triggered when the motor has reached its target position\n * `input`: triggered when a digital input changes (not available on all boards)\n\nThis object extends the `Phidget` object which itself extends Node.js'\n[`events.EventEmitter` object](https://nodejs.org/api/events.html#events_class_events_eventemitter).\nSee that object's documentation for more inherited methods and properties.",
             "is_constructor": 1,
             "extends": "Phidget"
@@ -144,7 +145,7 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 2338,
+            "line": 2350,
             "description": "The `PhidgetRFID` class allows you to use a PhidgetRFID board to read and write (if the board\nsupports if) RFID tags. The PhidgetRFID board supports 3 protocols:\n\n - EM4100/EM4102 40-bit\n - ISO11785 FDX-B encoding, Animal ID\n - PhidgetsTAG Protocol 24 character ASCII\n\nPlease note that the antenna must be activated for the `PhidgetRFID` to report tag reads. Here's\nan example of how to use this object to read from a tag:\n\n    var phidgets = require(\"Phidgets\");\n\n    var pRFID = new phidgets.PhidgetRFID()\n        .on('opened', function(emitter, data) {\n            emitter.antenna = true;\n            console.log(\"Device ready. Antenna activated.\");\n        })\n        .open();\n\nThis object extends the `Phidget` object which itself extends Node.js'\n[`events.EventEmitter` object](https://nodejs.org/api/events.html#events_class_events_eventemitter).\nSee that object's documentation for inherited methods.",
             "is_constructor": 1,
             "extends": "Phidget"
@@ -160,13 +161,14 @@
             "module": "phidgets",
             "namespace": "",
             "file": "lib/phidgets.js",
-            "line": 2684,
+            "line": 2696,
             "description": "The `PhidgetTemperatureSensor` class allows you receive data from PhidgetTemperatureSensor\nboards.\n\nAs of this writing, this class has only been tested with a\n[1048_0 - PhidgetTemperatureSensor 4-input](http://www.phidgets.com/products.php?product_id=1048),\nbut should be compatible with any PhidgetTemperatureSensor board.\n\n```JavaScript\nvar PhidgetTemperatureSensor = require('phidgets').PhidgetTemperatureSensor;\n\nvar pts = new PhidgetTemperatureSensor();\n\nfunction onReady() {\n\n   var inputIndex = 0;\n   \n   // set the ThermocoupleType to K\n   pts.setThermocoupleType(inputIndex, PhidgetTemperatureSensor.THERMOCOUPLE_TYPES.TYPE_K);\n\n   // receive temperature events when the temperature changes by at least 2 degrees Celsius\n   // (default is 0.5)\n   pts.setTemperatureChangeTrigger(inputIndex, 2);\n   \n   pts.on('temperature', function (emitter, data) {\n     if (data.index === inputIndex) {\n       console.log('Temperature: ' + data.value);\n     }\n   });\n\n}\n\npts.addListener('opened', onReady);\n\npts.open();\n```\n\nThis object extends the `Phidget` object which itself extends Node.js'\n[`events.EventEmitter` object](https://nodejs.org/api/events.html#events_class_events_eventemitter).\nSee that object's documentation for more inherited methods and properties.",
             "is_constructor": 1,
             "extends": "Phidget",
             "author": "Andrew Berger <andrew@andrewberger.net>"
         }
     },
+    "elements": {},
     "classitems": [
         {
             "file": "lib/phidgets.js",
@@ -1498,20 +1500,20 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1507,
-            "description": "Sets the gain of a specific sensor (or array of sensors). Valid values are 1, 8, 16,\n 32, 64 or 128. The highest the gain, the better the resolution. For that reason, it’s\n best to use the highest gain possible that can still measure the full range of your\n sensor.",
+            "line": 1514,
+            "description": "Sets the gain of a specific sensor (or array of sensors). Valid values are 1, 8, 16,\n32, 64 or 128. The highest the gain, the better the resolution. For that reason, it’s\nbest to use the highest gain possible that can still measure the full range of your\nsensor.",
             "itemtype": "method",
             "name": "setGain",
             "params": [
                 {
                     "name": "index",
                     "description": "The sensor's number (or an array of sensor numbers)",
-                    "type": "Int|Array"
+                    "type": "Number|Array"
                 },
                 {
                     "name": "value",
                     "description": "The gain to assign (1, 8, 16, 32, 64 or 128)",
-                    "type": "Int",
+                    "type": "Number",
                     "optional": true,
                     "optdefault": "1"
                 }
@@ -1526,7 +1528,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1539,
+            "line": 1551,
             "description": "Enables or disables a sensor. Beware that this setting remains even when the bridge is\n powered off.",
             "itemtype": "method",
             "name": "setEnabled",
@@ -1554,13 +1556,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1575,
+            "line": 1587,
             "class": "PhidgetBridge",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1582,
+            "line": 1594,
             "description": "Event emitted when sensor data is received.",
             "itemtype": "event",
             "name": "sensor",
@@ -1593,25 +1595,25 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1639,
+            "line": 1651,
             "class": "PhidgetBridge",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1640,
+            "line": 1652,
             "class": "PhidgetBridge",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1641,
+            "line": 1653,
             "class": "PhidgetBridge",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1699,
+            "line": 1711,
             "description": "The duration (in milliseconds) between update notifications (must be multiple of 8).\nThe shorter the interval is, the more frequent the updates will be sent by the\ndevice.",
             "itemtype": "property",
             "name": "updateInterval",
@@ -1622,7 +1624,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1723,
+            "line": 1735,
             "description": "[Read-only] The minimum acceleration value that can be set on outputs",
             "itemtype": "property",
             "name": "minimumAcceleration",
@@ -1632,7 +1634,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1734,
+            "line": 1746,
             "description": "[Read-only] The maximum acceleration value that can be set on outputs",
             "itemtype": "property",
             "name": "maximumAcceleration",
@@ -1642,7 +1644,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1745,
+            "line": 1757,
             "description": "[Read-only] The minimum position that an output can travel to.",
             "itemtype": "property",
             "name": "minimumPosition",
@@ -1652,7 +1654,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1756,
+            "line": 1768,
             "description": "[Read-only] The maximum position that an output can travel to.",
             "itemtype": "property",
             "name": "maximumPosition",
@@ -1662,7 +1664,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1767,
+            "line": 1779,
             "description": "[Read-only] The minimum velocity that an output can be set to.",
             "itemtype": "property",
             "name": "minimumVelocity",
@@ -1672,7 +1674,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1778,
+            "line": 1790,
             "description": "[Read-only] The maximum velocity that an output can be set to.",
             "itemtype": "property",
             "name": "maximumVelocity",
@@ -1682,7 +1684,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1789,
+            "line": 1801,
             "description": "[Read-only] The minimum current that an output can be set to. Current limits are not\nsupported by all stepper controllers.",
             "itemtype": "property",
             "name": "minimumCurrent",
@@ -1692,7 +1694,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1802,
+            "line": 1814,
             "description": "[Read-only] The maximum current that an output can be set to. Current limits are not\nsupported by all stepper controllers.",
             "itemtype": "property",
             "name": "maximumCurrent",
@@ -1702,7 +1704,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1815,
+            "line": 1827,
             "description": "[read-only] An object containing information about the motor outputs of the device.\nHere are a few examples of how to retrieve information in that object:\n\n    PhidgetStepper.outputs[5].currentPosition  // Motor 5's current position\n    PhidgetStepper.outputs[5].stopped          // Is motor 5 stopped?\n    PhidgetStepper.outputs.count               // Total number of outputs on the device",
             "itemtype": "property",
             "name": "outputs",
@@ -1764,7 +1766,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1859,
+            "line": 1871,
             "description": "[read-only] An object containing information about the digital inputs of the\nPhidgetStepper board. If `PhidgetStepper.inputs.count` equals 0, it simply means that\nyour board does not have any digital inputs.\n\n    PhidgetStepper.inputs[0].value  // Digital input 0's boolean value\n    PhidgetStepper.outputs.count    // Number of digital inputs on the device",
             "itemtype": "property",
             "name": "inputs",
@@ -1783,30 +1785,6 @@
                     "type": "Boolean"
                 }
             ]
-        },
-        {
-            "file": "lib/phidgets.js",
-            "line": 1875,
-            "class": "PhidgetStepper",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
-            "line": 1878,
-            "class": "PhidgetStepper",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
-            "line": 1881,
-            "class": "PhidgetStepper",
-            "module": "phidgets"
-        },
-        {
-            "file": "lib/phidgets.js",
-            "line": 1884,
-            "class": "PhidgetStepper",
-            "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
@@ -1840,7 +1818,31 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1906,
+            "line": 1902,
+            "class": "PhidgetStepper",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1905,
+            "class": "PhidgetStepper",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1908,
+            "class": "PhidgetStepper",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1911,
+            "class": "PhidgetStepper",
+            "module": "phidgets"
+        },
+        {
+            "file": "lib/phidgets.js",
+            "line": 1918,
             "description": "Starts or stops power from being sent to the motor connected to a specific output (or\narray of outputs). By default, outputs do not power connected motors. Before moving\nthe motor, you must therefore engage the motor first.\n\nTo reduce the motor's power consumption, you can disengage it once it's reached its\ntarget position. If you are concerned about keeping accurate track of position, the\nmotor should not be disengaged until the motor is stopped.",
             "itemtype": "method",
             "name": "engageMotor",
@@ -1866,7 +1868,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1945,
+            "line": 1957,
             "description": "Sets the acceleration for the motor connected to the specified output. The motor will\nboth accelerate and decelarate at this rate. For the 1062 board, this is specified in\nhalf-steps.\n\nThe minimum and maximum acceleration values can be viewed in the `minimumAcceleration`\nand `maximumAcceleration` properties.\n\nThe acceleration should be explicitely set as part of initialization because otherwise\nit will remain unknown.",
             "itemtype": "method",
             "name": "setAcceleration",
@@ -1893,7 +1895,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 1987,
+            "line": 1999,
             "description": "Sets the target speed (velocity) for the motor connected to the specified output (or\narray of outputs). If the `targetVelocity` is set to 0, the motor will not move.\n\nNote that this is not necessarily the speed that the motor is being turned at. The\nmotor is accelerated towards the target velocity and then decelerated as it approaches\nthe target position. If the target position is close enough, it may never reach the\ntarget velocity.",
             "itemtype": "method",
             "name": "setTargetVelocity",
@@ -1920,7 +1922,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2027,
+            "line": 2039,
             "description": "Sets the current position of the motor connected to the specified output (or array of\noutputs). Setting the position does not actually move the motor, it merely sets the\nreference that will be used when moving to a target position.",
             "itemtype": "method",
             "name": "setPosition",
@@ -1947,7 +1949,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2069,
+            "line": 2081,
             "description": "Sets a new target position for the motor connected to the specified output. The motor\nwill immediately start moving towards this position.\n\nNote that calling `setTargetPosition()` will override a previous call to\n`setTargetPosition()` and the motor will begin tracking to the new position\nimmediately. The velocity of the motor will be ramped appropriately.",
             "itemtype": "method",
             "name": "setTargetPosition",
@@ -1975,7 +1977,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2105,
+            "line": 2117,
             "description": "Sets the upper current limit for the motor connected to the specified output. Note that\nnot all stepper controllers support current limiting.",
             "itemtype": "method",
             "name": "setCurrentLimit",
@@ -2001,13 +2003,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2138,
+            "line": 2150,
             "class": "PhidgetStepper",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2168,
+            "line": 2180,
             "description": "Event emitted when digital input data is received.",
             "itemtype": "event",
             "name": "input",
@@ -2040,7 +2042,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2202,
+            "line": 2214,
             "description": "Event emitted to report that the position of a motor connected to one of the\nboard's outputs has changed.",
             "itemtype": "event",
             "name": "position",
@@ -2073,7 +2075,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2271,
+            "line": 2283,
             "description": "Event emitted when a motor connected to one of the board's outputs has reached\nits target position.",
             "itemtype": "event",
             "name": "target",
@@ -2106,7 +2108,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2293,
+            "line": 2305,
             "description": "Event emitted when a motor connected to one of the board's outputs starts moving.",
             "itemtype": "event",
             "name": "start",
@@ -2134,7 +2136,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2302,
+            "line": 2314,
             "description": "Event emitted when a motor connected to one of the board's outputs stops moving.",
             "itemtype": "event",
             "name": "stop",
@@ -2162,25 +2164,25 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2334,
+            "line": 2346,
             "class": "PhidgetStepper",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2335,
+            "line": 2347,
             "class": "PhidgetStepper",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2336,
+            "line": 2348,
             "class": "PhidgetStepper",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2375,
+            "line": 2387,
             "description": "[read-only] Array of all protocols supported by the device.",
             "itemtype": "property",
             "name": "SUPPORTED_PROTOCOLS",
@@ -2191,7 +2193,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2391,
+            "line": 2403,
             "description": "[read-only] An object containing information about the digital outputs of the device.\nOutput 0 is also labeled on the board as \"+5V\". Output 1 is also labeled on the board\nas \"LED\". This is not to be confused with the onboard LED. To control the onboard\nLED, please use the `PhidgetRFID.led` property.\n\nHere is how to retrieve an output's value or the total number of outputs:\n\n    PhidgetRFID.outputs[1].value     // Output 1 current value\n    PhidgetRFID.outputs.count        // Total number of outputs on the device",
             "itemtype": "property",
             "name": "outputs",
@@ -2213,7 +2215,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2408,
+            "line": 2420,
             "description": "[read-only] Status of the reader. The two possible statuses are:\n\n  - waiting: no tag is being detected because none are present or because the antenna is off\n  - detecting: a tag is currently being detected",
             "itemtype": "property",
             "name": "status",
@@ -2223,7 +2225,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2418,
+            "line": 2430,
             "description": "[read-only] An object containing information about the last tag that was read.",
             "itemtype": "property",
             "name": "tag",
@@ -2255,7 +2257,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2435,
+            "line": 2447,
             "description": "The status of the onboard LED (not to be confused with the LED output). Setting this\nproperty to `true` will turn on the onboard LED while setting it to `false` will turn it\noff.",
             "itemtype": "property",
             "name": "led",
@@ -2265,7 +2267,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2453,
+            "line": 2465,
             "description": "The activity status of the RFID antenna. The antenna must be activated in order for\nthe device to work properly. Setting this property to `true` activates the antenna\nwhile setting it to `false` deactivates it.",
             "itemtype": "property",
             "name": "antenna",
@@ -2275,7 +2277,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2502,
+            "line": 2514,
             "description": "Event emitted when a tag has been detected.",
             "itemtype": "event",
             "name": "detected",
@@ -2318,7 +2320,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2523,
+            "line": 2535,
             "description": "Event emitted when a previously detected tag is now lost",
             "itemtype": "event",
             "name": "lost",
@@ -2361,7 +2363,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2541,
+            "line": 2553,
             "description": "Event emitted when the device's status changes.",
             "itemtype": "event",
             "name": "status",
@@ -2382,7 +2384,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2558,
+            "line": 2570,
             "description": "Event emitted when the antenna's status changes.",
             "itemtype": "event",
             "name": "antenna",
@@ -2403,7 +2405,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2576,
+            "line": 2588,
             "description": "Event emitted when the onboard LED's status changes.",
             "itemtype": "event",
             "name": "led",
@@ -2424,7 +2426,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2595,
+            "line": 2607,
             "description": "Event emitted when an output's status has changed.",
             "itemtype": "event",
             "name": "output",
@@ -2457,7 +2459,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2614,
+            "line": 2626,
             "description": "Sets the specified output to active (`true`) or inactive (`false`). This method should only\nbe used after the board is 'opened'. Calling it before will fail silently.",
             "itemtype": "method",
             "name": "setOutput",
@@ -2485,7 +2487,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2644,
+            "line": 2656,
             "description": "Writes a tag. Please note that not all devices have write capacity. This method will be silently",
             "itemtype": "method",
             "name": "write",
@@ -2516,25 +2518,25 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2680,
+            "line": 2692,
             "class": "PhidgetRFID",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2681,
+            "line": 2693,
             "class": "PhidgetRFID",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2682,
+            "line": 2694,
             "class": "PhidgetRFID",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2735,
+            "line": 2747,
             "description": "[read-only] The last known ambient temperature of the sensor (where the inputs connect to the\nboard), in degrees celsius.",
             "itemtype": "property",
             "name": "ambientTemperature",
@@ -2545,7 +2547,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2749,
+            "line": 2761,
             "description": "[read-only] The highest possible ambient temperature value which can be returned by the sensor,\nin degrees celsius.",
             "itemtype": "property",
             "name": "ambientTemperatureMax",
@@ -2556,7 +2558,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2763,
+            "line": 2775,
             "description": "[read-only] The lowest possible ambient temperature value which can be returned by the sensor,\nin degrees celsius.",
             "itemtype": "property",
             "name": "ambientTemperatureMin",
@@ -2567,7 +2569,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2777,
+            "line": 2789,
             "description": "[read-only] An object containing data about each input on the device.",
             "itemtype": "property",
             "name": "inputs",
@@ -2624,25 +2626,25 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2809,
+            "line": 2821,
             "class": "PhidgetTemperatureSensor",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2812,
+            "line": 2824,
             "class": "PhidgetTemperatureSensor",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2815,
+            "line": 2827,
             "class": "PhidgetTemperatureSensor",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2823,
+            "line": 2835,
             "description": "[read-only] An enum of supported thermocouple types. Support for other thermocouple types, and\nvoltage sources other than thermocouples in the valid range (between potentialMin and\npotentialMax) can be achieved using potential.",
             "itemtype": "property",
             "name": "THERMOCOUPLE_TYPES",
@@ -2674,13 +2676,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2845,
+            "line": 2857,
             "class": "PhidgetTemperatureSensor",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2856,
+            "line": 2868,
             "description": "Sets the change trigger for an input. This is the amount by which the sensed temperature must\nchange between temperature change events. By default this is set to 0.5. Setting trigger\nto 0 will cause all temperature updates to fire events. This is helpful for applications that are\nimplementing their own filtering.",
             "itemtype": "method",
             "name": "setTemperatureChangeTrigger",
@@ -2706,7 +2708,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2893,
+            "line": 2905,
             "description": "Sets the thermocouple type for an input. The possible values are 'J', 'K', 'E', and 'T', or one\nof the values in the PhidgetTemperatureSensor.THERMOCOUPLE_TYPES enum. Support for other\nthermocouple types, and voltage sources other than thermocouples in the valid range (between\npotentialMin and potentialMax) can be achieved using potential.",
             "itemtype": "method",
             "name": "setThermocoupleType",
@@ -2732,13 +2734,13 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2938,
+            "line": 2950,
             "class": "PhidgetTemperatureSensor",
             "module": "phidgets"
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2947,
+            "line": 2959,
             "description": "The sensor's ambient temperature has changed.",
             "itemtype": "event",
             "name": "ambientTemperature",
@@ -2766,7 +2768,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2958,
+            "line": 2970,
             "description": "The calculated temperature of the given input has changed by more than\ntemperatureChangeTrigger. This value is dependent on the sensor's ambient temperature, the\ninput's thermocouple type, and the input's potential.",
             "itemtype": "event",
             "name": "temperature",
@@ -2799,7 +2801,7 @@
         },
         {
             "file": "lib/phidgets.js",
-            "line": 2974,
+            "line": 2986,
             "description": "The potential (voltage) of the given input has changed.",
             "itemtype": "event",
             "name": "potential",
@@ -2862,63 +2864,63 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1507"
+            "line": " lib/phidgets.js:1514"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1539"
+            "line": " lib/phidgets.js:1551"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1906"
+            "line": " lib/phidgets.js:1918"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1945"
+            "line": " lib/phidgets.js:1957"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:1987"
+            "line": " lib/phidgets.js:1999"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:2027"
+            "line": " lib/phidgets.js:2039"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:2069"
+            "line": " lib/phidgets.js:2081"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:2105"
+            "line": " lib/phidgets.js:2117"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:2614"
+            "line": " lib/phidgets.js:2626"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:2644"
+            "line": " lib/phidgets.js:2656"
         },
         {
             "message": "unknown tag: instance",
-            "line": " lib/phidgets.js:2735"
+            "line": " lib/phidgets.js:2747"
         },
         {
             "message": "unknown tag: instance",
-            "line": " lib/phidgets.js:2749"
+            "line": " lib/phidgets.js:2761"
         },
         {
             "message": "unknown tag: instance",
-            "line": " lib/phidgets.js:2763"
+            "line": " lib/phidgets.js:2775"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:2856"
+            "line": " lib/phidgets.js:2868"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " lib/phidgets.js:2893"
+            "line": " lib/phidgets.js:2905"
         },
         {
             "message": "Missing item type",
@@ -3002,35 +3004,19 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:1575"
+            "line": " lib/phidgets.js:1587"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:1639"
+            "line": " lib/phidgets.js:1651"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:1640"
+            "line": " lib/phidgets.js:1652"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:1641"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/phidgets.js:1875"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/phidgets.js:1878"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/phidgets.js:1881"
-        },
-        {
-            "message": "Missing item type",
-            "line": " lib/phidgets.js:1884"
+            "line": " lib/phidgets.js:1653"
         },
         {
             "message": "Missing item type",
@@ -3054,51 +3040,67 @@
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2138"
+            "line": " lib/phidgets.js:1902"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2334"
+            "line": " lib/phidgets.js:1905"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2335"
+            "line": " lib/phidgets.js:1908"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2336"
+            "line": " lib/phidgets.js:1911"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2680"
+            "line": " lib/phidgets.js:2150"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2681"
+            "line": " lib/phidgets.js:2346"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2682"
+            "line": " lib/phidgets.js:2347"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2809"
+            "line": " lib/phidgets.js:2348"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2812"
+            "line": " lib/phidgets.js:2692"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2815"
+            "line": " lib/phidgets.js:2693"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2845"
+            "line": " lib/phidgets.js:2694"
         },
         {
             "message": "Missing item type",
-            "line": " lib/phidgets.js:2938"
+            "line": " lib/phidgets.js:2821"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/phidgets.js:2824"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/phidgets.js:2827"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/phidgets.js:2857"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/phidgets.js:2950"
         }
     ]
 }
